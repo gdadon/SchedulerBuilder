@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="excelParser">
+    <CLASSES>
+      <root url="file://C:/JarsToEnd/excelParser" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://C:/JarsToEnd/excelParser/docs/apidocs" />
+    </JAVADOC>
+    <SOURCES />
+    <jarDirectory url="file://C:/JarsToEnd/excelParser" recursive="false" />
+  </library>
+</component>
