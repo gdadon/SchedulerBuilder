@@ -2,9 +2,6 @@ package database;
 
 import java.sql.*;
 
-/**
- * Created by Guy on 20/01/2017.
- */
 public class MySQLAccess implements IDataBaseAccess{
 
     // JDBC driver name and database URL
@@ -97,5 +94,4 @@ public class MySQLAccess implements IDataBaseAccess{
         closeConnection();
         return null;
     }
-
 }
