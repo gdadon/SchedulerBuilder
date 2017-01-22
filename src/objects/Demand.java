@@ -1,36 +1,42 @@
 package objects;
 
 public class Demand {
-    private int hour;
+
+    private int start;
+    private int end;
     private int day;
-    
+
     public Demand(){
-        
-    }
-    
-    public Demand(int _hour, int _day){
-        this.hour = _hour;
-        this.day = _day;
-    }
-    
-    public Demand(Demand _demandToCopy){
-        this.hour = _demandToCopy.hour;
-        this.day = _demandToCopy.day;
+
     }
 
-    public int getHour() {
-        return hour;
+    public Demand(int start, int end, int day) {
+        this.start = start;
+        this.end = end;
+        this.day = day;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
     }
 
     public int getDay() {
         return day;
     }
 
-    public void setHour(int _hour) {
-        this.hour = _hour;
-    }
-
-    public void setDay(int _day) {
-        this.day = _day;
+    public void setDay(int day) {
+        this.day = day;
     }
 }
