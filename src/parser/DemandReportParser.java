@@ -84,9 +84,4 @@ public class DemandReportParser implements ParserInterface {
         String[] ans = hour.split(":");
         return Integer.parseInt(ans[0]);
     }
-
-    public static void main(String[] args) {
-        DemandReportParser x = new DemandReportParser();
-        x.startParse("a");
-    }
 }
