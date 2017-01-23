@@ -83,9 +83,4 @@ public class CourseParserReport implements ParserInterface {
                 return 0;
         }
     }
-
-    public static void main(String[] args) {
-        CourseParserReport a = new CourseParserReport();
-        a.startParse("a");
-    }
 }
