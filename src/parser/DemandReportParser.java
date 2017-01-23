@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import objects.Demand;
+import objects.DemandToDB;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -18,7 +18,7 @@ public class DemandReportParser implements ParserInterface {
     //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            HashMap<String, ArrayList<Demand>> demandParseToDB = new HashMap<>();
+            HashMap<String, ArrayList<DemandToDB>> demandParseToDB = new HashMap<>();
             //Add load dialog
             FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\3.xls"));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
@@ -38,15 +38,22 @@ public class DemandReportParser implements ParserInterface {
                 int startHour = parseHour(cell.getRichStringCellValue().getString());
                 cell = row.getCell(3);
                 int endHour = parseHour(cell.getRichStringCellValue().getString());
+                cell = row.getCell(4);
+                String reason;
+                if(cell == null) {
+                    reason = "";
+                }else{
+                    reason = cell.getRichStringCellValue().getString();
+                }
                 if (demandParseToDB.get(lecturerId) != null) {//the lecturer already exist
-                    demandParseToDB.get(lecturerId).add(new Demand(startHour, endHour, day));
+                    demandParseToDB.get(lecturerId).add(new DemandToDB(startHour, endHour, day, reason));
                 } else {
                     demandParseToDB.put(lecturerId, new ArrayList<>());
-                    demandParseToDB.get(lecturerId).add(new Demand(startHour, endHour, day));
+                    demandParseToDB.get(lecturerId).add(new DemandToDB(startHour, endHour, day, reason));
                 }
             }
             file.close();
-            for (HashMap.Entry<String, ArrayList<Demand>> entry : demandParseToDB.entrySet()) {
+            for (HashMap.Entry<String, ArrayList<DemandToDB>> entry : demandParseToDB.entrySet()) {
                 System.out.println(entry.getKey() + " : " + entry.getValue().toString());
             }
         } catch (Exception e) {
@@ -76,5 +83,10 @@ public class DemandReportParser implements ParserInterface {
     private int parseHour(String hour) {
         String[] ans = hour.split(":");
         return Integer.parseInt(ans[0]);
+    }
+
+    public static void main(String[] args) {
+        DemandReportParser x = new DemandReportParser();
+        x.startParse("a");
     }
 }
