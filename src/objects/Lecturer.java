@@ -7,7 +7,7 @@ public class Lecturer {
     private int remainingHours;
     private int ID;
     private String name;
-    ArrayList<Demand> demads;
+    private ArrayList<Demand> demads;
 
     public Lecturer(){
         
