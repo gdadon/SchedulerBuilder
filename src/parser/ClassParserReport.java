@@ -46,9 +46,4 @@ public class ClassParserReport implements ParserInterface {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        ClassParserReport c = new ClassParserReport();
-        c.startParse("a");
-    }
 }
