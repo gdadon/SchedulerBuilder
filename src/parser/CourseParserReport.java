@@ -1,47 +1,92 @@
 package parser;
 
-import objects.Class;
+import objects.Course;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 public class CourseParserReport implements ParserInterface {
+
     @Override
+    //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            ArrayList<Class> classReport = new ArrayList<Class>();
-            int day = 1;
+            HashMap<String, Course> courseParseToDB = new HashMap<>();
             //Add load dialog
             FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\1.xls"));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0); //Sheet in index 0
             Row row = null; //Row
             Cell cell = null; //Column
-            //Starting parse from C2 -> System.out.println(cell.getAddress());
-            //Parsing from C2 -> O13
-            for (int i = 1; i < 13; i++) {
+            int lastRowNum = sheet.getLastRowNum();
+            //Parsing from A2 -> lastRowNum
+            for (int i = 1; i < lastRowNum + 1; i++) {
                 row = sheet.getRow(i);
-                day = (int) Math.ceil(i / 2.0);
-                for (int j = 2; j < 15; j++) {
-                    cell = row.getCell(j);
-                    String notAllowed = cell.getRichStringCellValue().getString();
-                    if (i % 2 == 1 && !notAllowed.equals("X")) {
-                        classReport.add(new Class(day, 'S', j + 6));
-                    } else if (i % 2 == 0 && !notAllowed.equals("X")) {
-                        classReport.add(new Class(day, ('B'), (j + 6)));
-                    }
-                }
+                cell = row.getCell(0);
+                cell.setCellType(CellType.STRING);
+                String courseCode = cell.getRichStringCellValue().getString();
+                cell = row.getCell(1);
+                String courseName = cell.getRichStringCellValue().getString();
+                cell = row.getCell(2);
+                int courseYear = parseYearSemester(cell.getRichStringCellValue().getString());
+                cell = row.getCell(3);
+                int courseSemester = parseYearSemester(cell.getRichStringCellValue().getString());
+                cell = row.getCell(4);
+                cell.setCellType(CellType.STRING);
+                int courseDuration = Integer.parseInt(cell.getRichStringCellValue().getString());
+                cell = row.getCell(5);
+                cell.setCellType(CellType.STRING);
+                int coursePoints = Integer.parseInt(cell.getRichStringCellValue().getString());
+                cell = row.getCell(6);
+                cell.setCellType(CellType.STRING);
+                int courseExpectedStudents = Integer.parseInt(cell.getRichStringCellValue().getString());
+                cell = row.getCell(7);
+                cell.setCellType(CellType.STRING);
+                int courseQuota = Integer.parseInt(cell.getRichStringCellValue().getString());
+                cell = row.getCell(8);
+                cell.setCellType(CellType.STRING);
+                int courseClassesExpected = Integer.parseInt(cell.getRichStringCellValue().getString());
+                System.out.println(courseCode + ", " + courseName + ", " + courseYear + ", " + courseSemester + ", " + courseDuration
+                        + ", " + coursePoints + ", " + courseExpectedStudents + ", " + courseQuota + ", " + courseClassesExpected);
             }
-            System.out.println(Arrays.toString(classReport.toArray()));
             file.close();
+            /*for (HashMap.Entry<String, ArrayList<Demand>> entry : demandParseToDB.entrySet()) {
+                System.out.println(entry.getKey() + " : " + entry.getValue().toString());
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private int parseYearSemester(String stringToParse) {
+        switch (stringToParse) {
+            case "א":
+                return 1;
+            case "ב":
+                return 2;
+            case "ג":
+                return 3;
+            case "ד":
+                return 4;
+            case "ה":
+                return 5;
+            case "ו":
+                return 6;
+            case "ק":
+                return 7;
+            default:
+                return 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        CourseParserReport a = new CourseParserReport();
+        a.startParse("a");
     }
 }
