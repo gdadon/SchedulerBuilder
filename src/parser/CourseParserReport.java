@@ -1,6 +1,6 @@
 package parser;
 
-import objects.Course;
+import objects.CourseToDB;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -17,7 +17,7 @@ public class CourseParserReport implements ParserInterface {
     //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            HashMap<String, Course> courseParseToDB = new HashMap<>();
+            HashMap<String, CourseToDB> courseParseToDB = new HashMap<>();
             //Add load dialog
             FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\1.xls"));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
@@ -52,13 +52,12 @@ public class CourseParserReport implements ParserInterface {
                 cell = row.getCell(8);
                 cell.setCellType(CellType.STRING);
                 int courseClassesExpected = Integer.parseInt(cell.getRichStringCellValue().getString());
-                System.out.println(courseCode + ", " + courseName + ", " + courseYear + ", " + courseSemester + ", " + courseDuration
-                        + ", " + coursePoints + ", " + courseExpectedStudents + ", " + courseQuota + ", " + courseClassesExpected);
+                courseParseToDB.put(courseCode,new CourseToDB(courseCode,courseName,courseYear,courseSemester,coursePoints,courseExpectedStudents,courseQuota,courseClassesExpected));
             }
             file.close();
-            /*for (HashMap.Entry<String, ArrayList<Demand>> entry : demandParseToDB.entrySet()) {
+            for (HashMap.Entry<String, CourseToDB> entry : courseParseToDB.entrySet()) {
                 System.out.println(entry.getKey() + " : " + entry.getValue().toString());
-            }*/
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
