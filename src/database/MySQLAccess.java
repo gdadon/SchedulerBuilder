@@ -1,6 +1,8 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MySQLAccess implements IDataBaseAccess{
 
@@ -73,6 +75,16 @@ public class MySQLAccess implements IDataBaseAccess{
 
     @Override
     public void insertToTable(String dbName, String tableName, String insertCommand) {
+
+    }
+
+    @Override
+    public void insertToTable(String dbName, String tableName, HashMap data) {
+
+    }
+
+    @Override
+    public void insertToTable(String dbName, String tableName, ArrayList data) {
 
     }
 
