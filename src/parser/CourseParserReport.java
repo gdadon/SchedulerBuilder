@@ -43,7 +43,7 @@ public class CourseParserReport implements ParserInterface {
                 int courseDuration = Integer.parseInt(cell.getRichStringCellValue().getString());
                 cell = row.getCell(5);
                 cell.setCellType(CellType.STRING);
-                int coursePoints = Integer.parseInt(cell.getRichStringCellValue().getString());
+                double coursePoints = Double.parseDouble(cell.getRichStringCellValue().getString());
                 cell = row.getCell(6);
                 cell.setCellType(CellType.STRING);
                 int courseExpectedStudents = Integer.parseInt(cell.getRichStringCellValue().getString());
@@ -53,12 +53,10 @@ public class CourseParserReport implements ParserInterface {
                 cell = row.getCell(8);
                 cell.setCellType(CellType.STRING);
                 int courseClassesExpected = Integer.parseInt(cell.getRichStringCellValue().getString());
-                courseParseToDB.put(courseCode,new CourseToDB(courseCode,courseName,courseYear,courseSemester,coursePoints,courseExpectedStudents,courseQuota,courseClassesExpected));
+                courseParseToDB.put(courseCode,new CourseToDB(courseCode,courseName,courseYear,courseSemester,courseDuration,
+                                                coursePoints,courseExpectedStudents,courseQuota,courseClassesExpected));
             }
             file.close();
-            for (HashMap.Entry<String, CourseToDB> entry : courseParseToDB.entrySet()) {
-                System.out.println(entry.getKey() + " : " + entry.getValue().toString());
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
