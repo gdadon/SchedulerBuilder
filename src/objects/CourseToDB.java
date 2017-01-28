@@ -111,8 +111,6 @@ public class CourseToDB {
         this.expectedClasses = expectedClasses;
     }
 
-
-
     @Override
     public String toString() {
         return "CourseToDB{" +
