@@ -5,6 +5,7 @@ public class CourseToDB {
     private String name;
     private int year;
     private int semester;
+    private int duration;
     private int points;
     private int expectedStudents;
     private int qoutaStudents;
@@ -13,11 +14,13 @@ public class CourseToDB {
     public CourseToDB() {
     }
 
-    public CourseToDB(String code, String name, int year, int semester, int points, int expectedStudents, int qoutaStudents, int expectedClasses) {
+    public CourseToDB(String code, String name, int year, int semester, int duration, int points, int expectedStudents,
+                      int qoutaStudents, int expectedClasses) {
         this.code = code;
         this.name = name;
         this.year = year;
         this.semester = semester;
+        this.duration = duration;
         this.points = points;
         this.expectedStudents = expectedStudents;
         this.qoutaStudents = qoutaStudents;
@@ -29,6 +32,7 @@ public class CourseToDB {
         this.name = _courseToCopy.name;
         this.year = _courseToCopy.year;
         this.semester = _courseToCopy.semester;
+        this.duration = _courseToCopy.duration;
         this.points = _courseToCopy.points;
         this.expectedStudents = _courseToCopy.expectedStudents;
         this.qoutaStudents = _courseToCopy.qoutaStudents;
@@ -67,6 +71,14 @@ public class CourseToDB {
         this.semester = semester;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     public int getPoints() {
         return points;
     }
@@ -99,6 +111,8 @@ public class CourseToDB {
         this.expectedClasses = expectedClasses;
     }
 
+
+
     @Override
     public String toString() {
         return "CourseToDB{" +
@@ -106,6 +120,7 @@ public class CourseToDB {
                 ", name='" + name + '\'' +
                 ", year=" + year +
                 ", semester=" + semester +
+                ", duration=" + duration +
                 ", points=" + points +
                 ", expectedStudents=" + expectedStudents +
                 ", qoutaStudents=" + qoutaStudents +
