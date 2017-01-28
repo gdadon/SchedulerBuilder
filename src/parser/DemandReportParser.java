@@ -1,10 +1,5 @@
 package parser;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import objects.DemandToDB;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -12,15 +7,21 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class DemandReportParser implements ParserInterface {
 
+    private HashMap<String, ArrayList<DemandToDB>> demandParseToDB = null;
+
     @Override
-    //TODO change path to fileName
-    public void startParse(String fileName) {
+    public void startParse(String filePath) {
         try {
-            HashMap<String, ArrayList<DemandToDB>> demandParseToDB = new HashMap<>();
+            demandParseToDB = new HashMap<>();
             //Add load dialog
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\3.xls"));
+            FileInputStream file = new FileInputStream(new File(filePath));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0); //Sheet in index 0
             Row row = null; //Row
@@ -83,5 +84,9 @@ public class DemandReportParser implements ParserInterface {
     private int parseHour(String hour) {
         String[] ans = hour.split(":");
         return Integer.parseInt(ans[0]);
+    }
+
+    public HashMap<String, ArrayList<DemandToDB>> getReport(){
+        return demandParseToDB;
     }
 }

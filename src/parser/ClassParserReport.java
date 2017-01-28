@@ -1,6 +1,6 @@
 package parser;
 
-import objects.Class;
+import objects.ClassRoom;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,14 +13,15 @@ import java.util.Arrays;
 
 public class ClassParserReport implements ParserInterface {
 
+    private ArrayList<ClassRoom> classRoomReport = null;
+
     @Override
-    //TODO change path to fileName
-    public void startParse(String fileName) {
+    public void startParse(String filePath) {
         try {
-            ArrayList<Class> classReport = new ArrayList<Class>();
+            classRoomReport = new ArrayList<ClassRoom>();
             int day = 1;
             //Add load dialog
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\2.xls"));
+            FileInputStream file = new FileInputStream(new File(filePath));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0); //Sheet in index 0
             Row row = null; //Row
@@ -34,16 +35,20 @@ public class ClassParserReport implements ParserInterface {
                     cell = row.getCell(j);
                     String notAllowed = cell.getRichStringCellValue().getString();
                     if (i % 2 == 1 && !notAllowed.equals("X")) {
-                        classReport.add(new Class(day, 'S', j + 6));
+                        classRoomReport.add(new ClassRoom(day, 'S', j + 6));
                     } else if (i % 2 == 0 && !notAllowed.equals("X")) {
-                        classReport.add(new Class(day, 'B', j + 6));
+                        classRoomReport.add(new ClassRoom(day, 'B', j + 6));
                     }
                 }
             }
-            System.out.println(Arrays.toString(classReport.toArray()));
+//            System.out.println(Arrays.toString(classRoomReport.toArray()));
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<ClassRoom> getReport(){
+        return classRoomReport;
     }
 }

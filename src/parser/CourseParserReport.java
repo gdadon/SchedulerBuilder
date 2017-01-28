@@ -13,13 +13,14 @@ import java.util.HashMap;
 
 public class CourseParserReport implements ParserInterface {
 
+    private HashMap<String, CourseToDB> courseParseToDB = null;
+
     @Override
-    //TODO change path to fileName
-    public void startParse(String fileName) {
+    public void startParse(String filePath) {
         try {
-            HashMap<String, CourseToDB> courseParseToDB = new HashMap<>();
+            courseParseToDB = new HashMap<>();
             //Add load dialog
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\1.xls"));
+            FileInputStream file = new FileInputStream(new File(filePath));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0); //Sheet in index 0
             Row row = null; //Row
@@ -82,5 +83,9 @@ public class CourseParserReport implements ParserInterface {
             default:
                 return 0;
         }
+    }
+
+    public HashMap<String, CourseToDB> getReport(){
+        return courseParseToDB;
     }
 }
