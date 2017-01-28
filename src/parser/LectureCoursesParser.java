@@ -50,9 +50,6 @@ public class LectureCoursesParser implements ParserInterface {
                 }
             }
             file.close();
-            for (HashMap.Entry<String, LectureCourseToDB> entry : lectureCourseToDBHashMap.entrySet()) {
-                System.out.println(entry.getKey() + " : " + entry.getValue().toString());
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
