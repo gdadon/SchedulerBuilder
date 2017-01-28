@@ -1,23 +1,23 @@
 package objects;
 
-public class Class {
+public class ClassRoom {
     private int day;
     private char size;
     private int hour;
 
-    public Class() {
+    public ClassRoom() {
     }
 
-    public Class(int _day, char _size, int _hour) {
+    public ClassRoom(int _day, char _size, int _hour) {
         this.day = _day;
         this.size = _size;
         this.hour = _hour;
     }
 
-    public Class(Class _classToCopy) {
-        this.day = _classToCopy.day;
-        this.size = _classToCopy.size;
-        this.hour = _classToCopy.hour;
+    public ClassRoom(ClassRoom _classRoomToCopy) {
+        this.day = _classRoomToCopy.day;
+        this.size = _classRoomToCopy.size;
+        this.hour = _classRoomToCopy.hour;
     }
 
     public int getDay() {
@@ -46,7 +46,7 @@ public class Class {
 
     @Override
     public String toString() {
-        return "Class{" +
+        return "ClassRoom{" +
                 "day=" + day +
                 ", size=" + size +
                 ", hour=" + hour +
