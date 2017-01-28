@@ -6,7 +6,6 @@ public class Course {
     private String name;
     private boolean isSingle;
     private int duration;
-    private String major;
     private char year;
     private char semester;
     
@@ -15,13 +14,12 @@ public class Course {
     }
 
     public Course(String _courseCode, int _courseDifficulty, String _courseName, boolean _courseIsSingle, int _courseDuration,
-                  String _courseMajor, char _courseYear, char _courseSemester) {
+                  char _courseYear, char _courseSemester) {
         this.code = _courseCode;
         this.difficulty = _courseDifficulty;
         this.name = _courseName;
         this.isSingle = _courseIsSingle;
         this.duration = _courseDuration;
-        this.major = _courseMajor;
         this.year = _courseYear;
         this.semester = _courseSemester;
     }
@@ -32,13 +30,8 @@ public class Course {
         this.name = _courseToCopy.name;
         this.isSingle = _courseToCopy.isSingle;
         this.duration = _courseToCopy.duration;
-        this.major = _courseToCopy.major;
         this.year = _courseToCopy.year;
         this.semester = _courseToCopy.semester;
-    }
-
-    public String getMajor() {
-        return major;
     }
 
     public char getYear() {
@@ -87,10 +80,6 @@ public class Course {
 
     public void setSingle(boolean _courseIsSingle){
         this.isSingle = _courseIsSingle;
-    }
-
-    public void setMajor(String _courseMajor) {
-        this.major = _courseMajor;
     }
 
     public void setYear(char _courseYear) {

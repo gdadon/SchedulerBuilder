@@ -6,7 +6,7 @@ public class CourseToDB {
     private int year;
     private int semester;
     private int duration;
-    private int points;
+    private double points;
     private int expectedStudents;
     private int qoutaStudents;
     private int expectedClasses;
@@ -14,7 +14,7 @@ public class CourseToDB {
     public CourseToDB() {
     }
 
-    public CourseToDB(String code, String name, int year, int semester, int duration, int points, int expectedStudents,
+    public CourseToDB(String code, String name, int year, int semester, int duration, double points, int expectedStudents,
                       int qoutaStudents, int expectedClasses) {
         this.code = code;
         this.name = name;
@@ -79,11 +79,11 @@ public class CourseToDB {
         this.duration = duration;
     }
 
-    public int getPoints() {
+    public double getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(double points) {
         this.points = points;
     }
 
