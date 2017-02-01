@@ -18,7 +18,7 @@ public class LectureCoursesParser implements ParserInterface {
     @Override
     public void startParse(String filePath) {
         try {
-            lectureCourseToDBHashMap = new HashMap<>();
+            lectureCourseToDBHashMap = new HashMap<String, LectureCourseToDB>();
             //Add load dialog
             FileInputStream file = new FileInputStream(new File(filePath));
             HSSFWorkbook workbook = new HSSFWorkbook(file);

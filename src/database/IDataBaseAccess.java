@@ -22,13 +22,9 @@ public interface IDataBaseAccess {
 
     void createTable(String createTableCommand) throws Exception;
 
-    void insertToTable(String dbName, String tableName, String insertCommand);
-
-    void insertToTable(String dbName, String tableName, HashMap data);
-
-    void insertToTable(String dbName, String tableName, ArrayList data);
-
     void dropTable(String dbName, String tableName);
+
+    void runCommand(String sqlCommand) throws Exception;
 
     ResultSet query(String query) throws Exception;
 }

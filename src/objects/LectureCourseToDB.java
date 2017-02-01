@@ -13,7 +13,7 @@ public class LectureCourseToDB {
     public LectureCourseToDB(String ID, String name) {
         this.ID = ID;
         this.name = name;
-        this.courses = new ArrayList<>();
+        this.courses = new ArrayList<String>();
     }
 
     public LectureCourseToDB(LectureCourseToDB _LectureCourseToDBToCopy) {
