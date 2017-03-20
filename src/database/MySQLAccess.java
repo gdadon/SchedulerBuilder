@@ -12,17 +12,17 @@ public class MySQLAccess implements IDataBaseAccess{
     private final String USER = "root";
     private final String PASS = "123456";
 
-    Connection connect = null;
-    Statement statement = null;
-    PreparedStatement preparedStatement = null;
-    ResultSet resultSet = null;
+    private Connection connect = null;
+    private Statement statement = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
 
     @Override
     public void connect() throws ClassNotFoundException, SQLException {
         // Load the MySQL driver
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
-        connect = DriverManager.getConnection(DB_URL+DB, USER, PASS);
+        connect = DriverManager.getConnection(DB_URL, USER, PASS);
     }
 
     @Override
@@ -40,6 +40,7 @@ public class MySQLAccess implements IDataBaseAccess{
             if (connect != null) {
                 connect.close();
             }
+            System.out.println("Connection to DB closed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,6 +48,7 @@ public class MySQLAccess implements IDataBaseAccess{
 
     @Override
     public void createDatabase(String dbName) throws SQLException {
+//        connect = DriverManager.getConnection(DB_URL, USER, PASS);
         statement = connect.createStatement();
         String sql = "CREATE DATABASE " + dbName;
         statement.executeUpdate(sql);
@@ -54,9 +56,15 @@ public class MySQLAccess implements IDataBaseAccess{
 
     @Override
     public void dropDatabase(String dbName) throws SQLException {
+        try {
+            connect();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         statement = connect.createStatement();
         String sql = "DROP DATABASE " + dbName;
         statement.executeUpdate(sql);
+        closeConnection();
     }
 
     @Override
@@ -68,12 +76,8 @@ public class MySQLAccess implements IDataBaseAccess{
 
     @Override
     public void createTable(String createTableCommand) throws SQLException {
-        connect.createStatement().executeUpdate(createTableCommand);
-    }
-
-    @Override
-    public void insertToTable(String dbName, String tableName, String insertCommand) {
-
+        statement = connect.createStatement();
+        statement.executeUpdate(createTableCommand);
     }
 
     @Override
@@ -82,16 +86,26 @@ public class MySQLAccess implements IDataBaseAccess{
     }
 
     @Override
+    public void runCommand(String sqlCommand) throws SQLException {
+        statement = connect.createStatement();
+        statement.executeUpdate(sqlCommand);
+    }
+
+    @Override
     public ResultSet query(String query) throws SQLException, ClassNotFoundException {
-        // get database connection
-//        connect();
-
+        connect();
         resultSet = connect.createStatement().executeQuery(query);
-
-
-
         // close database connection
         closeConnection();
-        return null;
+        return resultSet;
+    }
+
+    public PreparedStatement getPreparedStatement(String sql){
+        try {
+            preparedStatement = connect.prepareStatement(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return preparedStatement;
     }
 }

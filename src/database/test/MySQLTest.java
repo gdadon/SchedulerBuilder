@@ -22,13 +22,13 @@ public class MySQLTest {
             e.printStackTrace();
         }
 
-        try {
-            System.out.println("Trying to create new database");
-            dao.createDatabase("test");
-            System.out.println("Create new Database");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            System.out.println("Trying to create new database");
+//            dao.createDatabase("test");
+//            System.out.println("Create new Database");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
 //        try {
 //            System.out.println("Trying to drop database");
