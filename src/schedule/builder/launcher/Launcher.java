@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-/**
- * Created by Guy on 25/01/2017.
- */
 public class Launcher {
 
     public static void main(String[] args) {

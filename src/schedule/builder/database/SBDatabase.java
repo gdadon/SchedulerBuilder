@@ -2,9 +2,9 @@ package schedule.builder.database;
 
 import database.MySQLAccess;
 import objects.ClassRoom;
-import objects.CourseToDB;
-import objects.DemandToDB;
-import objects.LectureCourseToDB;
+import objects.Course;
+import objects.Demand;
+import objects.TeacherCourse;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Guy on 24/01/2017.
- */
 public class SBDatabase {
 
     private MySQLAccess dao = null;
@@ -151,7 +148,7 @@ public class SBDatabase {
         System.out.println("Done insert Classes data.");
     }
 
-    public void insertToTableCourse(HashMap<String, CourseToDB> courses) {
+    public void insertToTableCourse(HashMap<String, Course> courses) {
         // use the sbdb database
         try {
             dao.useDatabase("sbdb");
@@ -161,8 +158,8 @@ public class SBDatabase {
         // create the sql records to be insert
         double rand = 0;
         System.out.println("Start insert into Course table");
-        for (Map.Entry<String, CourseToDB> entry : courses.entrySet()) {
-            CourseToDB course = entry.getValue();
+        for (Map.Entry<String, Course> entry : courses.entrySet()) {
+            Course course = entry.getValue();
 
             String sql = "INSERT INTO COURSE (code, name, year, semester, sem_hours," +
                     "points, expectedStudents, quota, groups) VALUES " +
@@ -175,7 +172,7 @@ public class SBDatabase {
                 stmt.setInt(5, course.getDuration());
                 stmt.setDouble(6, course.getPoints());
                 stmt.setInt(7, course.getExpectedStudents());
-                stmt.setInt(8, course.getQoutaStudents());
+                stmt.setInt(8, course.getQuotaStudents());
                 stmt.setInt(9, course.getExpectedClasses());
                 for (int i = 0; i < course.getExpectedClasses(); i++) {
                     String code = course.getCode() + "-" + i;
@@ -195,7 +192,7 @@ public class SBDatabase {
         System.out.println("Done insert Classes data.");
     }
 
-    public void insertToTableDemand(HashMap<String, ArrayList<DemandToDB>> demands) {
+    public void insertToTableDemand(HashMap<String, ArrayList<Demand>> demands) {
         // use the sbdb database
         try {
             dao.useDatabase("sbdb");
@@ -205,14 +202,14 @@ public class SBDatabase {
         // create the sql records to be insert
         double rand = 0;
         System.out.println("Start insert into Demands table");
-        for (Map.Entry<String, ArrayList<DemandToDB>> entry : demands.entrySet()) {
+        for (Map.Entry<String, ArrayList<Demand>> entry : demands.entrySet()) {
             String id = entry.getKey();
-            ArrayList<DemandToDB> demandsList = entry.getValue();
+            ArrayList<Demand> demandsList = entry.getValue();
 
             String sql = "INSERT INTO DEMAND (id, day, startHour, endHour, totalHours, cause) values" +
                     "(?,?,?,?,?,?)";
             PreparedStatement stmt = dao.getPreparedStatement(sql);
-            for (DemandToDB demand : demandsList) {
+            for (Demand demand : demandsList) {
                 try {
                     stmt.setInt(1, Integer.parseInt(id));
                     stmt.setInt(2, demand.getDay());
@@ -237,7 +234,7 @@ public class SBDatabase {
         System.out.println("Done insert Demands data.");
     }
 
-    public void insertToTableLectureCourse(HashMap<String, LectureCourseToDB> lecturerCourse){
+    public void insertToTableLectureCourse(HashMap<String, TeacherCourse> lecturerCourse){
         // use the sbdb database
         try {
             dao.useDatabase("sbdb");
@@ -247,9 +244,9 @@ public class SBDatabase {
         // create the sql records to be insert
         double rand = 0;
         System.out.println("Start insert into Lecturer table");
-        for (Map.Entry<String, LectureCourseToDB> entry : lecturerCourse.entrySet()) {
+        for (Map.Entry<String, TeacherCourse> entry : lecturerCourse.entrySet()) {
             String id = entry.getKey();
-            LectureCourseToDB lecturer = entry.getValue();
+            TeacherCourse lecturer = entry.getValue();
 
             String sql = "INSERT INTO LECTURER (id, course) values" +
                     "(?,?)";
