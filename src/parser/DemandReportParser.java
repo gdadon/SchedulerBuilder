@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import objects.DemandToDB;
+import objects.Demand;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -18,7 +18,7 @@ public class DemandReportParser implements ParserInterface {
     //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            HashMap<String, ArrayList<DemandToDB>> demandParseToDB = new HashMap<>();
+            HashMap<String, ArrayList<Demand>> demandParseToDB = new HashMap<>();
             //Add load dialog
             FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\3.xls"));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
@@ -46,14 +46,14 @@ public class DemandReportParser implements ParserInterface {
                     reason = cell.getRichStringCellValue().getString();
                 }
                 if (demandParseToDB.get(lecturerId) != null) {//the lecturer already exist
-                    demandParseToDB.get(lecturerId).add(new DemandToDB(startHour, endHour, day, reason));
+                    demandParseToDB.get(lecturerId).add(new Demand.DemandBuilder().setStart(startHour).setEnd(endHour).setDay(day).setReason(reason).build());
                 } else {
                     demandParseToDB.put(lecturerId, new ArrayList<>());
-                    demandParseToDB.get(lecturerId).add(new DemandToDB(startHour, endHour, day, reason));
+                    demandParseToDB.get(lecturerId).add(new Demand.DemandBuilder().setStart(startHour).setEnd(endHour).setDay(day).setReason(reason).build());
                 }
             }
             file.close();
-            for (HashMap.Entry<String, ArrayList<DemandToDB>> entry : demandParseToDB.entrySet()) {
+            for (HashMap.Entry<String, ArrayList<Demand>> entry : demandParseToDB.entrySet()) {
                 System.out.println(entry.getKey() + " : " + entry.getValue().toString());
             }
         } catch (Exception e) {

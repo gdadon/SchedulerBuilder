@@ -5,48 +5,64 @@ public class Demand {
     private int start;
     private int end;
     private int day;
+    private String reason;
 
-    public Demand(){
-
-    }
-
-    public Demand(int start, int end, int day) {
-        this.start = start;
-        this.end = end;
-        this.day = day;
-    }
-
-    public Demand(Demand _demandToCopy) {
-        this.start = _demandToCopy.start;
-        this.end = _demandToCopy.end;
-        this.day = _demandToCopy.day;
+    private Demand(DemandBuilder builder) {
+        this.start = builder.start;
+        this.end = builder.end;
+        this.day = builder.day;
+        this.reason = builder.reason;
     }
 
     public int getStart() {
         return start;
     }
 
-    public void setStart(int start) {
-        this.start = start;
-    }
-
     public int getEnd() {
         return end;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
     }
 
     public int getDay() {
         return day;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public String getReason() {
+        return reason;
     }
 
-    public String toString(){
-        return "day: "+day+", ("+start+" - "+end+")";
+    public static class DemandBuilder{
+
+        private int start;
+        private int end;
+        private int day;
+        private String reason;
+
+        public DemandBuilder() {
+
+        }
+
+        public DemandBuilder setStart(int start) {
+            this.start = start;
+            return this;
+        }
+
+        public DemandBuilder setEnd(int end) {
+            this.end = end;
+            return this;
+        }
+
+        public DemandBuilder setDay(int day) {
+            this.day = day;
+            return this;
+        }
+
+        public DemandBuilder setReason(String reason) {
+            this.reason = reason;
+            return this;
+        }
+
+        public Demand build(){
+            return new Demand(this);
+        }
     }
 }

@@ -4,48 +4,38 @@ public class Course {
     private String code;
     private int difficulty;
     private String name;
-    private boolean isSingle;
     private int duration;
     private String major;
-    private char year;
-    private char semester;
-    
-    public Course(){
-    
-    }
+    private int year;
+    private int semester;
+    private int points;
+    private int expectedStudents;
+    private int quotaStudents;
+    private int expectedClasses;
 
-    public Course(String _courseCode, int _courseDifficulty, String _courseName, boolean _courseIsSingle, int _courseDuration,
-                  String _courseMajor, char _courseYear, char _courseSemester) {
-        this.code = _courseCode;
-        this.difficulty = _courseDifficulty;
-        this.name = _courseName;
-        this.isSingle = _courseIsSingle;
-        this.duration = _courseDuration;
-        this.major = _courseMajor;
-        this.year = _courseYear;
-        this.semester = _courseSemester;
-    }
-
-    public Course(Course _courseToCopy){
-        this.code = _courseToCopy.code;
-        this.difficulty = _courseToCopy.difficulty;
-        this.name = _courseToCopy.name;
-        this.isSingle = _courseToCopy.isSingle;
-        this.duration = _courseToCopy.duration;
-        this.major = _courseToCopy.major;
-        this.year = _courseToCopy.year;
-        this.semester = _courseToCopy.semester;
+    private Course(CourseBulider builder){
+        this.code = builder.code;
+        this.difficulty = builder.difficulty;
+        this.name = builder.name;
+        this.duration = builder.duration;
+        this.major = builder.major;
+        this.year = builder.year;
+        this.semester = builder.semester;
+        this.points = builder.points;
+        this.expectedStudents = builder.expectedStudents;
+        this.quotaStudents = builder.quotaStudents;
+        this.expectedClasses = builder.expectedClasses;
     }
 
     public String getMajor() {
         return major;
     }
 
-    public char getYear() {
+    public int getYear() {
         return year;
     }
 
-    public char getSemester() {
+    public int getSemester() {
         return semester;
     }
 
@@ -61,44 +51,102 @@ public class Course {
         return this.name;
     }
 
-    public boolean getSingle(){
-        return this.isSingle;
-    }
-
     public int getDuration() {
         return duration;
     }
 
-    public void setCode(String _courseCode){
-        this.code = _courseCode;
+    public int getPoints() {
+        return points;
     }
 
-    public void setDifficulty(int _courseDifficulty){
-        this.difficulty = _courseDifficulty;
+    public int getExpectedStudents() {
+        return expectedStudents;
     }
 
-    public void setName(String _courseName){
-        this.name = _courseName;
+    public int getQuotaStudents() {
+        return quotaStudents;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public int getExpectedClasses() {
+        return expectedClasses;
     }
 
-    public void setSingle(boolean _courseIsSingle){
-        this.isSingle = _courseIsSingle;
-    }
+    public static class CourseBulider{
 
-    public void setMajor(String _courseMajor) {
-        this.major = _courseMajor;
-    }
+        private String code;
+        private int difficulty;
+        private String name;
+        private int duration;
+        private String major;
+        private int year;
+        private int semester;
+        private int points;
+        private int expectedStudents;
+        private int quotaStudents;
+        private int expectedClasses;
 
-    public void setYear(char _courseYear) {
-        this.year = _courseYear;
-    }
+        public CourseBulider(){
 
-    public void setSemester(char _courseSemester) {
-        this.semester = _courseSemester;
+        }
+
+        public CourseBulider setCode(String _courseCode){
+            this.code = _courseCode;
+            return this;
+        }
+
+        public CourseBulider setDifficulty(int _courseDifficulty){
+            this.difficulty = _courseDifficulty;
+            return this;
+        }
+
+        public CourseBulider setName(String _courseName){
+            this.name = _courseName;
+            return this;
+        }
+
+        public CourseBulider setDuration(int duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        public CourseBulider setMajor(String _courseMajor) {
+            this.major = _courseMajor;
+            return this;
+        }
+
+        public CourseBulider setYear(int _courseYear) {
+            this.year = _courseYear;
+            return this;
+        }
+
+        public CourseBulider setSemester(int _courseSemester) {
+            this.semester = _courseSemester;
+            return this;
+        }
+
+        public CourseBulider setPoints(int points) {
+            this.points = points;
+            return this;
+        }
+
+        public CourseBulider setExpectedStudents(int expectedStudents) {
+            this.expectedStudents = expectedStudents;
+            return this;
+        }
+
+        public CourseBulider setQuotaStudents(int quotaStudents) {
+            this.quotaStudents = quotaStudents;
+            return this;
+        }
+
+        public CourseBulider setExpectedClasses(int expectedClasses) {
+            this.expectedClasses = expectedClasses;
+            return this;
+        }
+
+        public Course build(){
+            return new Course(this);
+        }
     }
 }
 

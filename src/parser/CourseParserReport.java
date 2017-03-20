@@ -1,6 +1,6 @@
 package parser;
 
-import objects.CourseToDB;
+import objects.Course;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -17,7 +17,7 @@ public class CourseParserReport implements ParserInterface {
     //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            HashMap<String, CourseToDB> courseParseToDB = new HashMap<>();
+            HashMap<String, Course> courseParseToDB = new HashMap<>();
             //Add load dialog
             FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\1.xls"));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
@@ -52,10 +52,21 @@ public class CourseParserReport implements ParserInterface {
                 cell = row.getCell(8);
                 cell.setCellType(CellType.STRING);
                 int courseClassesExpected = Integer.parseInt(cell.getRichStringCellValue().getString());
-                courseParseToDB.put(courseCode,new CourseToDB(courseCode,courseName,courseYear,courseSemester,coursePoints,courseExpectedStudents,courseQuota,courseClassesExpected));
+                Course course = new Course.CourseBulider()
+                        .setCode(courseCode)
+                        .setName(courseName)
+                        .setYear(courseYear)
+                        .setSemester(courseSemester)
+                        .setPoints(coursePoints)
+                        .setExpectedStudents(courseExpectedStudents)
+                        .setQuotaStudents(courseQuota)
+                        .setExpectedClasses(courseClassesExpected)
+                        .setDuration(courseDuration)
+                        .build();
+                courseParseToDB.put(courseCode, course);
             }
             file.close();
-            for (HashMap.Entry<String, CourseToDB> entry : courseParseToDB.entrySet()) {
+            for (HashMap.Entry<String, Course> entry : courseParseToDB.entrySet()) {
                 System.out.println(entry.getKey() + " : " + entry.getValue().toString());
             }
         } catch (Exception e) {
