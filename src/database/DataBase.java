@@ -28,13 +28,13 @@ public interface DataBase {
 
     PreparedStatement getPreparedStatement(String sql);
 
-    HashMap<String, Course> getAllCourses();
+    ArrayList<Course> getAllCourses();
 
-    HashMap<Integer, ClassRoom> getAllClassRooms();
+    ArrayList<ClassRoom> getAllClassRooms();
 
-    HashMap<String, ArrayList<Demand>> getAllDemands();
+    ArrayList<Demand> getAllDemands();
 
-    HashMap<String, TeacherCourse> getAllTeachers();
+    ArrayList<TeacherCourse> getAllTeachers();
 
     ArrayList<Demand> getDemandOfTeacher(String teacherName);
 

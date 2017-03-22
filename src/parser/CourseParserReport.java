@@ -53,7 +53,7 @@ public class CourseParserReport implements ParserInterface {
                 cell = row.getCell(8);
                 cell.setCellType(CellType.STRING);
                 int courseClassesExpected = Integer.parseInt(cell.getRichStringCellValue().getString());
-                Course course = new Course.CourseBulider()
+                Course course = new Course.CourseBuilder()
                         .setCode(courseCode)
                         .setName(courseName)
                         .setYear(courseYear)

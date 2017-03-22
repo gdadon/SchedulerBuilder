@@ -13,7 +13,7 @@ public class Course {
     private int quotaStudents;
     private int expectedClasses;
 
-    private Course(CourseBulider builder){
+    private Course(CourseBuilder builder){
         this.code = builder.code;
         this.difficulty = builder.difficulty;
         this.name = builder.name;
@@ -71,7 +71,7 @@ public class Course {
         return expectedClasses;
     }
 
-    public static class CourseBulider{
+    public static class CourseBuilder {
 
         private String code;
         private int difficulty;
@@ -85,61 +85,61 @@ public class Course {
         private int quotaStudents;
         private int expectedClasses;
 
-        public CourseBulider(){
+        public CourseBuilder(){
 
         }
 
-        public CourseBulider setCode(String _courseCode){
+        public CourseBuilder setCode(String _courseCode){
             this.code = _courseCode;
             return this;
         }
 
-        public CourseBulider setDifficulty(int _courseDifficulty){
+        public CourseBuilder setDifficulty(int _courseDifficulty){
             this.difficulty = _courseDifficulty;
             return this;
         }
 
-        public CourseBulider setName(String _courseName){
+        public CourseBuilder setName(String _courseName){
             this.name = _courseName;
             return this;
         }
 
-        public CourseBulider setDuration(int duration) {
+        public CourseBuilder setDuration(int duration) {
             this.duration = duration;
             return this;
         }
 
-        public CourseBulider setMajor(String _courseMajor) {
+        public CourseBuilder setMajor(String _courseMajor) {
             this.major = _courseMajor;
             return this;
         }
 
-        public CourseBulider setYear(int _courseYear) {
+        public CourseBuilder setYear(int _courseYear) {
             this.year = _courseYear;
             return this;
         }
 
-        public CourseBulider setSemester(int _courseSemester) {
+        public CourseBuilder setSemester(int _courseSemester) {
             this.semester = _courseSemester;
             return this;
         }
 
-        public CourseBulider setPoints(double points) {
+        public CourseBuilder setPoints(double points) {
             this.points = points;
             return this;
         }
 
-        public CourseBulider setExpectedStudents(int expectedStudents) {
+        public CourseBuilder setExpectedStudents(int expectedStudents) {
             this.expectedStudents = expectedStudents;
             return this;
         }
 
-        public CourseBulider setQuotaStudents(int quotaStudents) {
+        public CourseBuilder setQuotaStudents(int quotaStudents) {
             this.quotaStudents = quotaStudents;
             return this;
         }
 
-        public CourseBulider setExpectedClasses(int expectedClasses) {
+        public CourseBuilder setExpectedClasses(int expectedClasses) {
             this.expectedClasses = expectedClasses;
             return this;
         }
