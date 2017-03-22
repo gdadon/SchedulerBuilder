@@ -13,13 +13,14 @@ import java.util.HashMap;
 
 public class LectureCoursesParser implements ParserInterface {
 
+    HashMap<String, TeacherCourse> lectureCourseReport = null;
+
     @Override
-    //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            HashMap<String, TeacherCourse> lectureCourseToDBHashMap = new HashMap<>();
+            lectureCourseReport = new HashMap<>();
             //Add load dialog
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\4.xls"));
+            FileInputStream file = new FileInputStream(new File(fileName));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0); //Sheet in index 0
             Row row = null; //Row
@@ -36,7 +37,10 @@ public class LectureCoursesParser implements ParserInterface {
                 cell = row.getCell(j);
                 cell.setCellType(CellType.STRING);
                 String lectureName = cell.getRichStringCellValue().getString();
-                lectureCourseToDBHashMap.put(lectureID,new TeacherCourse.TeacherCourseBuilder().setID(lectureID).setName(lectureName).build());
+                lectureCourseReport.put(lectureID,new TeacherCourse.TeacherCourseBuilder()
+                        .setID(lectureID)
+                        .setName(lectureName)
+                        .build());
                 ++j;
                 while ((cell = row.getCell(j))!=null){
                     cell.setCellType(CellType.STRING);
@@ -44,21 +48,19 @@ public class LectureCoursesParser implements ParserInterface {
                         break;
                     }
                     String courseID = cell.getRichStringCellValue().getString();
-                    lectureCourseToDBHashMap.get(lectureID).addCourse(courseID);
+                    lectureCourseReport.get(lectureID).addCourse(courseID);
                     ++j;
                 }
             }
             file.close();
-            for (HashMap.Entry<String, TeacherCourse> entry : lectureCourseToDBHashMap.entrySet()) {
-                System.out.println(entry.getKey() + " : " + entry.getValue().toString());
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
-        LectureCoursesParser a = new LectureCoursesParser();
-        a.startParse("a");
+    @Override
+    public HashMap getReport() {
+        return lectureCourseReport;
     }
+
 }

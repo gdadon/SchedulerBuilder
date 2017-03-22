@@ -10,17 +10,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ClassParserReport implements ParserInterface {
 
+    HashMap<Integer, ClassRoom> classRoomReport = null;
+
     @Override
-    //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            ArrayList<ClassRoom> classRoomReport = new ArrayList<ClassRoom>();
+            classRoomReport = new HashMap<>();
             int day = 1;
+            int id = 1;
             //Add load dialog
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\2.xls"));
+            FileInputStream file = new FileInputStream(new File(fileName));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0); //Sheet in index 0
             Row row = null; //Row
@@ -34,16 +37,20 @@ public class ClassParserReport implements ParserInterface {
                     cell = row.getCell(j);
                     String notAllowed = cell.getRichStringCellValue().getString();
                     if (i % 2 == 1 && !notAllowed.equals("X")) {
-                        classRoomReport.add(new ClassRoom.ClassRoomBuilder().setDay(day).setSize('S').setHour(j+6).build());
+                        classRoomReport.put(id++, new ClassRoom.ClassRoomBuilder().setDay(day).setSize('S').setHour(j+6).build());
                     } else if (i % 2 == 0 && !notAllowed.equals("X")) {
-                        classRoomReport.add(new ClassRoom.ClassRoomBuilder().setDay(day).setSize('B').setHour(j+6).build());
+                        classRoomReport.put(id++, new ClassRoom.ClassRoomBuilder().setDay(day).setSize('B').setHour(j+6).build());
                     }
                 }
             }
-            System.out.println(Arrays.toString(classRoomReport.toArray()));
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public HashMap getReport() {
+        return classRoomReport;
     }
 }

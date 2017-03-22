@@ -14,13 +14,14 @@ import org.apache.poi.ss.usermodel.Row;
 
 public class DemandReportParser implements ParserInterface {
 
+    HashMap<String, ArrayList<Demand>> demandParseReport = null;
+
     @Override
-    //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            HashMap<String, ArrayList<Demand>> demandParseToDB = new HashMap<>();
+            demandParseReport = new HashMap<>();
             //Add load dialog
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\3.xls"));
+            FileInputStream file = new FileInputStream(new File(fileName));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0); //Sheet in index 0
             Row row = null; //Row
@@ -45,20 +46,25 @@ public class DemandReportParser implements ParserInterface {
                 }else{
                     reason = cell.getRichStringCellValue().getString();
                 }
-                if (demandParseToDB.get(lecturerId) != null) {//the lecturer already exist
-                    demandParseToDB.get(lecturerId).add(new Demand.DemandBuilder().setStart(startHour).setEnd(endHour).setDay(day).setReason(reason).build());
+                if (demandParseReport.get(lecturerId) != null) {//the lecturer already exist
+                    demandParseReport.get(lecturerId).add(new Demand.DemandBuilder().setStart(startHour).setEnd(endHour).setDay(day).setReason(reason).build());
                 } else {
-                    demandParseToDB.put(lecturerId, new ArrayList<>());
-                    demandParseToDB.get(lecturerId).add(new Demand.DemandBuilder().setStart(startHour).setEnd(endHour).setDay(day).setReason(reason).build());
+                    demandParseReport.put(lecturerId, new ArrayList<>());
+                    demandParseReport.get(lecturerId).add(new Demand.DemandBuilder().setStart(startHour).setEnd(endHour).setDay(day).setReason(reason).build());
                 }
             }
             file.close();
-            for (HashMap.Entry<String, ArrayList<Demand>> entry : demandParseToDB.entrySet()) {
+            for (HashMap.Entry<String, ArrayList<Demand>> entry : demandParseReport.entrySet()) {
                 System.out.println(entry.getKey() + " : " + entry.getValue().toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public HashMap getReport() {
+        return demandParseReport;
     }
 
     private int parseDay(String day) {

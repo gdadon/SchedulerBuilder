@@ -13,13 +13,14 @@ import java.util.HashMap;
 
 public class CourseParserReport implements ParserInterface {
 
+    HashMap<String, Course> courseParseReport = null;
+
     @Override
-    //TODO change path to fileName
     public void startParse(String fileName) {
         try {
-            HashMap<String, Course> courseParseToDB = new HashMap<>();
+            courseParseReport = new HashMap<>();
             //Add load dialog
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\Tomer\\Desktop\\1.xls"));
+            FileInputStream file = new FileInputStream(new File(fileName));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
             HSSFSheet sheet = workbook.getSheetAt(0); //Sheet in index 0
             Row row = null; //Row
@@ -42,7 +43,7 @@ public class CourseParserReport implements ParserInterface {
                 int courseDuration = Integer.parseInt(cell.getRichStringCellValue().getString());
                 cell = row.getCell(5);
                 cell.setCellType(CellType.STRING);
-                int coursePoints = Integer.parseInt(cell.getRichStringCellValue().getString());
+                double coursePoints = Double.parseDouble(cell.getRichStringCellValue().getString());
                 cell = row.getCell(6);
                 cell.setCellType(CellType.STRING);
                 int courseExpectedStudents = Integer.parseInt(cell.getRichStringCellValue().getString());
@@ -63,15 +64,17 @@ public class CourseParserReport implements ParserInterface {
                         .setExpectedClasses(courseClassesExpected)
                         .setDuration(courseDuration)
                         .build();
-                courseParseToDB.put(courseCode, course);
+                courseParseReport.put(courseCode, course);
             }
             file.close();
-            for (HashMap.Entry<String, Course> entry : courseParseToDB.entrySet()) {
-                System.out.println(entry.getKey() + " : " + entry.getValue().toString());
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public HashMap getReport() {
+        return courseParseReport;
     }
 
     private int parseYearSemester(String stringToParse) {

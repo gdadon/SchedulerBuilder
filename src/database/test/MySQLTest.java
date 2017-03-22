@@ -1,6 +1,6 @@
 package database.test;
 
-import database.MySQLAccess;
+import database.DataBaseMySQLImpl;
 
 import java.sql.SQLException;
 
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class MySQLTest {
 
     public static void main(String[] args) {
-        MySQLAccess dao = new MySQLAccess();
+        DataBaseMySQLImpl dao = new DataBaseMySQLImpl();
 
         System.out.println("Connecting to DB");
         try {

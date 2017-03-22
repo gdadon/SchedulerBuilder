@@ -10,10 +10,7 @@ public class TeacherCourse {
     private TeacherCourse(TeacherCourseBuilder builder) {
         this.ID = builder.ID;
         this.name = builder.name;
-        this.courses = new ArrayList<>();
-        for (int i = 0 ; i < builder.courses.size() ; ++i) {
-            this.courses.add(builder.courses.get(i));
-        }
+        this.courses = builder.courses;
     }
 
     public String getID() {
@@ -39,6 +36,7 @@ public class TeacherCourse {
         private ArrayList<String> courses;
 
         public TeacherCourseBuilder() {
+            this.courses = new ArrayList<>();
         }
 
         public TeacherCourseBuilder setID(String ID) {

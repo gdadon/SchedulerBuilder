@@ -8,7 +8,7 @@ public class Course {
     private String major;
     private int year;
     private int semester;
-    private int points;
+    private double points;
     private int expectedStudents;
     private int quotaStudents;
     private int expectedClasses;
@@ -55,7 +55,7 @@ public class Course {
         return duration;
     }
 
-    public int getPoints() {
+    public double getPoints() {
         return points;
     }
 
@@ -80,7 +80,7 @@ public class Course {
         private String major;
         private int year;
         private int semester;
-        private int points;
+        private double points;
         private int expectedStudents;
         private int quotaStudents;
         private int expectedClasses;
@@ -124,7 +124,7 @@ public class Course {
             return this;
         }
 
-        public CourseBulider setPoints(int points) {
+        public CourseBulider setPoints(double points) {
             this.points = points;
             return this;
         }
