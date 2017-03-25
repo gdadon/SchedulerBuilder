@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class LectureCoursesParser implements ParserInterface {
 
-    HashMap<String, TeacherCourse> lectureCourseReport = null;
+    HashMap<Integer, TeacherCourse> lectureCourseReport = null;
 
     @Override
     public void startParse(String fileName) {
@@ -32,14 +32,12 @@ public class LectureCoursesParser implements ParserInterface {
                 int j = 0;
                 cell = row.getCell(j);
                 cell.setCellType(CellType.STRING);
-                String lectureID = cell.getRichStringCellValue().getString();
+                int lectureID = Integer.parseInt(cell.getRichStringCellValue().getString());
                 ++j;
                 cell = row.getCell(j);
                 cell.setCellType(CellType.STRING);
-                String lectureName = cell.getRichStringCellValue().getString();
                 lectureCourseReport.put(lectureID,new TeacherCourse.TeacherCourseBuilder()
                         .setID(lectureID)
-                        .setName(lectureName)
                         .build());
                 ++j;
                 while ((cell = row.getCell(j))!=null){
