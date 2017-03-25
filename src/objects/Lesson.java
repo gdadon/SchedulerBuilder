@@ -1,16 +1,14 @@
 package objects;
 
 public class Lesson {
-    private Course course;
     private Teacher teacher;
-    private int present;
-    private String major;
+    private Course course;
+    private ClassRoom classRoom;
 
-    public Lesson(LessonBuilder builder) {
+    private Lesson(LessonBuilder builder) {
         this.course = builder.course;
         this.teacher = builder.teacher;
-        this.present = builder.present;
-        this.major = builder.major;
+        this.classRoom = builder.classRoom;
     }
 
     public Course getCourse() {
@@ -21,37 +19,29 @@ public class Lesson {
         return teacher;
     }
 
-    public int getPresent() {
-        return present;
-    }
-
-    public String getMajor() {
-        return major;
-    }
+    public ClassRoom getClassRoom() {return classRoom; }
 
     public static class LessonBuilder{
-        private Course course;
         private Teacher teacher;
-        private int present;
-        private String major;
+        private Course course;
+        private ClassRoom classRoom;
 
         public LessonBuilder() {
         }
 
-        public void setCourse(Course course) {
+        public LessonBuilder setCourse(Course course) {
             this.course = course;
+            return this;
         }
 
-        public void setTeacher(Teacher teacher) {
+        public LessonBuilder setTeacher(Teacher teacher) {
             this.teacher = teacher;
+            return this;
         }
 
-        public void setPresent(int present) {
-            this.present = present;
-        }
-
-        public void setMajor(String major) {
-            this.major = major;
+        public LessonBuilder setClassRoom(ClassRoom classRoom){
+            this.classRoom = classRoom;
+            return this;
         }
 
         public Lesson build(){
