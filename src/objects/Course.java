@@ -85,10 +85,6 @@ public class Course {
         private int quotaStudents;
         private int expectedClasses;
 
-        public CourseBuilder(){
-
-        }
-
         public CourseBuilder setCode(String _courseCode){
             this.code = _courseCode;
             return this;
