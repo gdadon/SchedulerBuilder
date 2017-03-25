@@ -30,6 +30,16 @@ public class Demand {
         return reason;
     }
 
+    @Override
+    public String toString() {
+        return "Demand{" +
+                "day=" + day +
+                ", start=" + start +
+                ", end=" + end +
+                ", reason='" + reason + '\'' +
+                '}';
+    }
+
     public static class DemandBuilder{
 
         private int start;
