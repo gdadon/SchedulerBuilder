@@ -3,22 +3,16 @@ package objects;
 import java.util.ArrayList;
 
 public class TeacherCourse {
-    private String ID;
-    private String name;
+    private int ID;
     private ArrayList<String> courses;
 
     private TeacherCourse(TeacherCourseBuilder builder) {
         this.ID = builder.ID;
-        this.name = builder.name;
         this.courses = builder.courses;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public ArrayList<String> getCourses() {
@@ -29,23 +23,27 @@ public class TeacherCourse {
         this.courses.add(_course);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TeacherCourse that = (TeacherCourse) o;
+
+        return this.ID == that.ID;
+    }
+
     public static class TeacherCourseBuilder{
 
-        private String ID;
-        private String name;
+        private int ID;
         private ArrayList<String> courses;
 
         public TeacherCourseBuilder() {
             this.courses = new ArrayList<>();
         }
 
-        public TeacherCourseBuilder setID(String ID) {
+        public TeacherCourseBuilder setID(int ID) {
             this.ID = ID;
-            return this;
-        }
-
-        public TeacherCourseBuilder setName(String name) {
-            this.name = name;
             return this;
         }
 
@@ -54,10 +52,14 @@ public class TeacherCourse {
             return this;
         }
 
+        public TeacherCourseBuilder setCourses(String course){
+            this.courses.add(course);
+            return this;
+        }
+
         public TeacherCourse build(){
             return new TeacherCourse(this);
         }
     }
-
 
 }
