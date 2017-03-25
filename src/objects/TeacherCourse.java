@@ -33,6 +33,14 @@ public class TeacherCourse {
         return this.ID == that.ID;
     }
 
+    @Override
+    public String toString() {
+        return "TeacherCourse{" +
+                "ID=" + ID +
+                ", courses=" + courses +
+                '}';
+    }
+
     public static class TeacherCourseBuilder{
 
         private int ID;
