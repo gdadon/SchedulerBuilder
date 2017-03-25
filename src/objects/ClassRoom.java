@@ -27,8 +27,8 @@ public class ClassRoom {
     public String toString() {
         return "ClassRoom{" +
                 "day=" + day +
-                ", size=" + size +
                 ", hour=" + hour +
+                ", size=" + size +
                 "}";
     }
 
