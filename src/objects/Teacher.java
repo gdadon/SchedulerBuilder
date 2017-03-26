@@ -7,25 +7,22 @@ public class Teacher {
     private int remainingHours;
     private int ID;
     private String name;
-    private ArrayList<Demand> demads;
+    private ArrayList<Demand> demands;
 
     public Teacher(){
         
     }
 
-    public Teacher(TeacherBulider builder) {
+    public Teacher(TeacherBuilder builder) {
         this.quotaHours = builder.quotaHours;
         this.remainingHours = builder.remainingHours;
         this.ID = builder.ID;
         this.name = builder.name;
-        this.demads = new ArrayList<>();
-        for(int i = 0; i < builder.demads.size() ; i++){
-            this.demads.add(builder.demads.get(i));
-        }
+        this.demands = builder.demands;
     }
 
-    public ArrayList<Demand> getDemads() {
-        return demads;
+    public ArrayList<Demand> getDemands() {
+        return demands;
     }
 
     public int getQuotaHours() {
@@ -44,15 +41,20 @@ public class Teacher {
         return name;
     }
 
-    public static class TeacherBulider{
+    public void addDemand(Demand demand){
+        this.demands.add(demand);
+    }
+
+    public static class TeacherBuilder {
 
         private int quotaHours;
         private int remainingHours;
         private int ID;
         private String name;
-        private ArrayList<Demand> demads;
+        private ArrayList<Demand> demands;
 
-        public TeacherBulider() {
+        public TeacherBuilder() {
+            demands = new ArrayList<>();
         }
 
         public void setQuotaHours(int quotaHours) {
@@ -71,8 +73,8 @@ public class Teacher {
             this.name = name;
         }
 
-        public void setDemads(ArrayList<Demand> demads) {
-            this.demads = demads;
+        public void setDemands(ArrayList<Demand> demands) {
+            this.demands = demands;
         }
 
         public Teacher build(){
