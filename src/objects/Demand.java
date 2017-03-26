@@ -2,15 +2,17 @@ package objects;
 
 public class Demand {
 
+    private int day;
     private int start;
     private int end;
-    private int day;
+    private int total;
     private String reason;
 
     private Demand(DemandBuilder builder) {
+        this.day = builder.day;
         this.start = builder.start;
         this.end = builder.end;
-        this.day = builder.day;
+        this.total = builder.total;
         this.reason = builder.reason;
     }
 
@@ -25,6 +27,8 @@ public class Demand {
     public int getDay() {
         return day;
     }
+
+    public int getTotal() {return total; }
 
     public String getReason() {
         return reason;
@@ -42,9 +46,10 @@ public class Demand {
 
     public static class DemandBuilder{
 
+        private int day;
         private int start;
         private int end;
-        private int day;
+        private int total;
         private String reason;
 
         public DemandBuilder() {
@@ -63,6 +68,11 @@ public class Demand {
 
         public DemandBuilder setDay(int day) {
             this.day = day;
+            return this;
+        }
+
+        public DemandBuilder setTotal(int total){
+            this.total = total;
             return this;
         }
 
