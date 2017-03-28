@@ -32,13 +32,13 @@ public interface DataBase {
 
     ArrayList<ClassRoom> getAllClassRooms();
 
-    ArrayList<Demand> getAllDemands();
+    HashMap<Integer, Demand> getAllDemands();
 
-    ArrayList<TeacherCourse> getAllTeachers();
+    ArrayList<TeacherCourse> getAllTeachersCourse();
 
-    ArrayList<Demand> getDemandOfTeacher(String teacherName);
+    ArrayList<Teacher> getAllTeachers();
 
-    ClassRoom getClassRoom(int day, int hour, char size);
+    ArrayList<Demand> getDemandOfTeacher(String teacherID);
 
     Course getCourseByName(String courseName);
 

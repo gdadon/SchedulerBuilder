@@ -109,33 +109,146 @@ public class DataBaseMySQLImpl implements DataBase {
     }
 
     @Override
-    public HashMap<String, Course> getAllCourses() {
+    public ArrayList<Course> getAllCourses() {
+        ArrayList<Course> courses = new ArrayList<>();
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sqlQuery = "SELECT * FROM course";
+            resultSet = statement.executeQuery(sqlQuery);
+            while(resultSet.next()){
+                Course c = new Course.CourseBuilder().setCode(resultSet.getString("code"))
+                        .setName(resultSet.getString("name"))
+                        .setYear(Integer.parseInt(resultSet.getString("year")))
+                        .setSemester(Integer.parseInt(resultSet.getString("semester")))
+                        .setDuration(resultSet.getInt("sem_hours"))
+                        .setQuotaStudents(resultSet.getInt("quota"))
+                        .setExpectedClasses(resultSet.getInt("groups"))
+                        .build();
+                courses.add(c);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        return courses;
+    }
+
+    @Override
+    public ArrayList<ClassRoom> getAllClassRooms() {
+        ArrayList<ClassRoom> classes = new ArrayList<>();
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sqlQuery = "SELECT * FROM classes";
+            resultSet = statement.executeQuery(sqlQuery);
+            while(resultSet.next()){
+                ClassRoom c = new ClassRoom.ClassRoomBuilder().setDay(resultSet.getInt("day")).
+                        setHour(resultSet.getInt("hour")).
+                        setSize(resultSet.getString("size").charAt(0)).build();
+                classes.add(c);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        return classes;
+    }
+
+    @Override
+    public HashMap<Integer, Demand> getAllDemands() {
+        HashMap<Integer, Demand> demands = new HashMap<>();
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sqlQuery = "SELECT * FROM demand";
+            resultSet = statement.executeQuery(sqlQuery);
+            while(resultSet.next()){
+                Demand d = new Demand.DemandBuilder().setDay(resultSet.getInt("day")).
+                        setStart(resultSet.getInt("startHour")).
+                        setEnd(resultSet.getInt("endHour")).
+                        setTotal(resultSet.getInt("totalHours")).
+                        setReason(resultSet.getString("cause")).
+                        build();
+                demands.put(resultSet.getInt("id"), d);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        return demands;
+    }
+
+    @Override
+    public ArrayList<TeacherCourse> getAllTeachersCourse() {
+        ArrayList<TeacherCourse> teachers = new ArrayList<>();
+        HashMap<Integer, ArrayList<String>> teacherCourse = new HashMap<>();
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sqlQuery = "SELECT * FROM teacher";
+            resultSet = statement.executeQuery(sqlQuery);
+            ArrayList<String> courses;
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String course = resultSet.getString("course");
+
+                if((courses = teacherCourse.get(id)) == null){
+                    courses = new ArrayList<>();
+                }
+                courses.add(resultSet.getString("course"));
+                teacherCourse.put(id, courses);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        for (Map.Entry<Integer, ArrayList<String>> tc: teacherCourse.entrySet()) {
+            teachers.add(new TeacherCourse.TeacherCourseBuilder().setID(tc.getKey()).setCourses(tc.getValue()).build());
+        }
+        return teachers;
+    }
+
+    @Override
+    public ArrayList<Teacher> getAllTeachers() {
+        // TODO - create teacher table, fill it and query
         return null;
     }
 
     @Override
-    public HashMap<Integer, ClassRoom> getAllClassRooms() {
-        return null;
-    }
-
-    @Override
-    public HashMap<String, ArrayList<Demand>> getAllDemands() {
-        return null;
-    }
-
-    @Override
-    public HashMap<String, TeacherCourse> getAllTeachers() {
-        return null;
-    }
-
-    @Override
-    public ArrayList<Demand> getDemandOfTeacher(String teacherName) {
-        return null;
-    }
-
-    @Override
-    public ClassRoom getClassRoom(int day, int hour, char size) {
-        return null;
+    public ArrayList<Demand> getDemandOfTeacher(String teacherID) {
+        ArrayList<Demand> demands = new ArrayList<>();
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sqlQuery = "SELECT * FROM demand WHERE id="+teacherID;
+            resultSet = statement.executeQuery(sqlQuery);
+            while(resultSet.next()){
+                if(resultSet.getInt("id") == Integer.parseInt(teacherID)){
+                    Demand d = new Demand.DemandBuilder().setDay(resultSet.getInt("day")).
+                            setStart(resultSet.getInt("startHour")).
+                            setEnd(resultSet.getInt("endHour")).
+                            setTotal(resultSet.getInt("totalHours")).
+                            setReason(resultSet.getString("cause")).
+                            build();
+                    demands.add(d);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        return demands;
     }
 
     @Override
@@ -283,7 +396,7 @@ public class DataBaseMySQLImpl implements DataBase {
             }
         }
         System.out.println();
-        System.out.println("Done insert Classes data.");
+        System.out.println("Done insert Course data.");
         closeConnection();
     }
 
@@ -349,7 +462,7 @@ public class DataBaseMySQLImpl implements DataBase {
                     stmt.setString(6, demand.getReason());
                     stmt.executeUpdate();
                     rand = Math.random();
-                    if (rand >= 0.5) {
+                    if (rand >= 0.25) {
                         System.out.print("#");
                     }
                 } catch (SQLException e) {
@@ -365,7 +478,7 @@ public class DataBaseMySQLImpl implements DataBase {
         closeConnection();
     }
 
-    public void insertToTableTeacherCourses(HashMap<String, TeacherCourse> lecturerCourse){
+    public void insertToTableTeacherCourses(HashMap<Integer, TeacherCourse> lecturerCourse){
         // use the sbdb database
         try {
             connect();
@@ -377,8 +490,8 @@ public class DataBaseMySQLImpl implements DataBase {
         // create the sql records to be insert
         double rand = 0;
         System.out.println("Start insert into Teachers table");
-        for (Map.Entry<String, TeacherCourse> entry : lecturerCourse.entrySet()) {
-            String id = entry.getKey();
+        for (Map.Entry<Integer, TeacherCourse> entry : lecturerCourse.entrySet()) {
+            int id = entry.getKey();
             TeacherCourse lecturer = entry.getValue();
 
             String sql = "INSERT INTO TEACHER (id, course) values" +
@@ -386,7 +499,7 @@ public class DataBaseMySQLImpl implements DataBase {
             PreparedStatement stmt = getPreparedStatement(sql);
             for (String course : lecturer.getCourses()) {
                 try {
-                    stmt.setInt(1, Integer.parseInt(lecturer.getID()));
+                    stmt.setInt(1, lecturer.getID());
                     stmt.setString(2, course);
                     stmt.executeUpdate();
                     rand = Math.random();
@@ -402,7 +515,7 @@ public class DataBaseMySQLImpl implements DataBase {
         }
 
         System.out.println();
-        System.out.println("Done insert Lecturer data.");
+        System.out.println("Done insert Teachers data.");
         closeConnection();
     }
 
