@@ -13,9 +13,16 @@ public class DatabaseUtil {
 
     private static DataBaseMySQLImpl dao = DataBaseMySQLImpl.getInstance();
 
-    public static void CreateAndFillDB(){
+    public static void createDB(){
+        System.out.println("Creating DB: Scheduler Builder Data Base (sbdb)");
         //create the scheduler db
         dao.createDB();
+        System.out.println("Succeeded creating DB.");
+    }
+
+    public static void fillDB(){
+
+        System.out.println("Filling DB with data from Reports folder");
 
         // parse and insert into tables
         ClassParserReport cpr = new ClassParserReport();
@@ -33,5 +40,8 @@ public class DatabaseUtil {
         LectureCoursesParser lcp = new LectureCoursesParser();
         lcp.startParse("Reports/LecturerReport.xls");
         dao.insertToTableTeacherCourses(lcp.getReport());
+
+        System.out.println("Done fill DB.");
     }
+
 }
