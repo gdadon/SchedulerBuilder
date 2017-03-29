@@ -1,4 +1,4 @@
-package schedule.builder.base.scheduler;
+package schedule.builder.build.scheduler;
 
 /**
  * Created by Guy on 01/02/2017.
@@ -6,6 +6,8 @@ package schedule.builder.base.scheduler;
 public class BuildBaseScheduler {
 
     public static void main(String[] argv){
+
+
 
     }
 
