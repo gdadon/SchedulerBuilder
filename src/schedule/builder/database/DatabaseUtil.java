@@ -19,25 +19,26 @@ public class DatabaseUtil {
         System.out.println("Succeeded creating DB.");
     }
 
-    public static void fillDB(){
+    public static void fillDB(String folderName){
+        folderName = "Reports/" + folderName;
 
         System.out.println("Filling DB with data from Reports folder");
 
         // parse and insert into tables
         ClassParserReport cpr = new ClassParserReport();
-        cpr.startParse("Reports/ClassesReport.xls");
+        cpr.startParse(folderName + "/ClassesReport.xls");
         dao.insertToTableClasses(cpr.getReport());
 
         CourseParserReport courseParse = new CourseParserReport();
-        courseParse.startParse("Reports/CourseReport.xls");
+        courseParse.startParse(folderName + "/CourseReport.xls");
         dao.insertToTableCourse(courseParse.getReport());
 
         DemandReportParser drp = new DemandReportParser();
-        drp.startParse("Reports/DemandsReport.xls");
+        drp.startParse(folderName + "/DemandsReport.xls");
         dao.insertToTableDemand(drp.getReport());
 
         LectureCoursesParser lcp = new LectureCoursesParser();
-        lcp.startParse("Reports/LecturerReport.xls");
+        lcp.startParse(folderName + "/LecturerReport.xls");
         dao.insertToTableTeacherCourses(lcp.getReport());
 
         System.out.println("Done fill DB.");

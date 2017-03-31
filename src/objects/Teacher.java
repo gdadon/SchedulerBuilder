@@ -8,17 +8,17 @@ public class Teacher {
     private int ID;
     private String name;
     private ArrayList<Demand> demands;
+    private ArrayList<String> courses;
+
+    private final int DEFAULT_QUOTA = 8;
 
     private Teacher(TeacherBuilder builder) {
-        this.quotaHours = builder.quotaHours;
-        this.remainingHours = builder.remainingHours;
+        this.quotaHours = DEFAULT_QUOTA;
+        this.remainingHours = DEFAULT_QUOTA;
         this.ID = builder.ID;
         this.name = builder.name;
         this.demands = builder.demands;
-    }
-
-    public ArrayList<Demand> getDemands() {
-        return demands;
+        this.courses = builder.courses;
     }
 
     public int getQuotaHours() {
@@ -37,8 +37,30 @@ public class Teacher {
         return name;
     }
 
+    public ArrayList<Demand> getDemands() {
+        return demands;
+    }
+
     public void addDemand(Demand demand){
         this.demands.add(demand);
+    }
+
+    public ArrayList<String> getCourses() {return this.courses; }
+
+    public void addCourse(String course){ this.courses.add(course); }
+
+    public void reduceHour(int hours){
+        this.quotaHours -= hours;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Teacher teacher = (Teacher) o;
+
+        return ID == teacher.ID;
     }
 
     public static class TeacherBuilder {
@@ -48,9 +70,11 @@ public class Teacher {
         private int ID;
         private String name;
         private ArrayList<Demand> demands;
+        private ArrayList<String> courses;
 
         public TeacherBuilder() {
             demands = new ArrayList<>();
+            courses = new ArrayList<>();
         }
 
         public TeacherBuilder setQuotaHours(int quotaHours) {
@@ -75,6 +99,11 @@ public class Teacher {
 
         public TeacherBuilder setDemands(ArrayList<Demand> demands) {
             this.demands = demands;
+            return this;
+        }
+
+        public TeacherBuilder setCourses(ArrayList<String> courses){
+            this.courses = courses;
             return this;
         }
 

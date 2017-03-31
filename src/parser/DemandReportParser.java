@@ -1,16 +1,16 @@
 package parser;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import objects.Demand;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DemandReportParser implements ParserInterface {
 
@@ -28,11 +28,14 @@ public class DemandReportParser implements ParserInterface {
             Cell cell = null; //Column
             int lastRowNum = sheet.getLastRowNum();
             //Parsing from A2 -> lastRowNum
-            for (int i = 1; i < lastRowNum + 1; i++) {
+            for (int i = 1; i < lastRowNum; i++) {
                 row = sheet.getRow(i);
                 cell = row.getCell(0);
                 cell.setCellType(CellType.STRING);
                 String lecturerId = cell.getRichStringCellValue().getString();
+                if(lecturerId == ""){
+                    break;
+                }
                 cell = row.getCell(1);
                 int day = parseDay(cell.getRichStringCellValue().getString());
                 cell = row.getCell(2);

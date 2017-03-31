@@ -1,18 +1,19 @@
 package objects;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by Guy on 29/03/2017.
  */
 public class Scheduler {
 
-    private ArrayList<Lesson> scheduler;
+    private SortedSet<Lesson> scheduler;
 
     public Scheduler(){
-        this.scheduler = new ArrayList<>();
+        this.scheduler = new TreeSet<>();
     }
 
     public void addLesson(Lesson lesson){
@@ -37,4 +38,17 @@ public class Scheduler {
         return lessons;
     }
 
+    @Override
+    public String toString() {
+        return "Scheduler{" +
+                "scheduler=" + scheduler +
+                '}';
+    }
+
+    private String print(){
+
+
+
+        return "";
+    }
 }

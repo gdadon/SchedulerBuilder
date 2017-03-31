@@ -1,6 +1,6 @@
 package parser;
 
-import objects.TeacherCourse;
+import objects.Teacher;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,12 +13,12 @@ import java.util.HashMap;
 
 public class LectureCoursesParser implements ParserInterface {
 
-    HashMap<Integer, TeacherCourse> lectureCourseReport = null;
+    HashMap<Integer, Teacher> teacherCourseReport = null;
 
     @Override
     public void startParse(String fileName) {
         try {
-            lectureCourseReport = new HashMap<>();
+            teacherCourseReport = new HashMap<>();
             //Add load dialog
             FileInputStream file = new FileInputStream(new File(fileName));
             HSSFWorkbook workbook = new HSSFWorkbook(file);
@@ -27,17 +27,20 @@ public class LectureCoursesParser implements ParserInterface {
             Cell cell = null; //Column
             //Starting parse from C2 -> System.out.println(cell.getAddress());
             int lastRowNum = sheet.getLastRowNum();
-            for (int i = 1; i < lastRowNum + 1; i++) {
+            for (int i = 1; i < lastRowNum; i++) {
                 row = sheet.getRow(i);
                 int j = 0;
                 cell = row.getCell(j);
+                if(cell == null){
+                    break;
+                }
                 cell.setCellType(CellType.STRING);
-                int lectureID = Integer.parseInt(cell.getRichStringCellValue().getString());
+                int teacherID = Integer.parseInt(cell.getRichStringCellValue().getString());
                 ++j;
                 cell = row.getCell(j);
                 cell.setCellType(CellType.STRING);
-                lectureCourseReport.put(lectureID,new TeacherCourse.TeacherCourseBuilder()
-                        .setID(lectureID)
+                teacherCourseReport.put(teacherID,new Teacher.TeacherBuilder()
+                        .setID(teacherID)
                         .build());
                 ++j;
                 while ((cell = row.getCell(j))!=null){
@@ -46,7 +49,7 @@ public class LectureCoursesParser implements ParserInterface {
                         break;
                     }
                     String courseID = cell.getRichStringCellValue().getString();
-                    lectureCourseReport.get(lectureID).addCourse(courseID);
+                    teacherCourseReport.get(teacherID).addCourse(courseID);
                     ++j;
                 }
             }
@@ -58,7 +61,7 @@ public class LectureCoursesParser implements ParserInterface {
 
     @Override
     public HashMap getReport() {
-        return lectureCourseReport;
+        return teacherCourseReport;
     }
 
 }

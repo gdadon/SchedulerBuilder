@@ -1,6 +1,6 @@
 package objects;
 
-public class Lesson {
+public class Lesson implements Comparable{
     private Teacher teacher;
     private Course course;
     private ClassRoom classRoom;
@@ -20,6 +20,29 @@ public class Lesson {
     }
 
     public ClassRoom getClassRoom() {return classRoom; }
+
+    @Override
+    public int compareTo(Object o) {
+        Lesson other = (Lesson) o;
+
+        //check for day
+        int sameDay = this.getClassRoom().getDay() - other.getClassRoom().getDay();
+        if(sameDay != 0){
+            return sameDay;
+        }
+        else{
+            // check hour
+            int hours = this.classRoom.getHour() - other.getClassRoom().getHour();
+            return hours;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "[" +
+                classRoom.getDay() + ", " + classRoom.getHour() +
+                "]";
+    }
 
     public static class LessonBuilder{
         private Teacher teacher;

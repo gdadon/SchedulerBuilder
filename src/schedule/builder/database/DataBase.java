@@ -1,6 +1,9 @@
 package schedule.builder.database;
 
-import objects.*;
+import objects.ClassRoom;
+import objects.Course;
+import objects.Demand;
+import objects.Teacher;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -28,15 +31,15 @@ public interface DataBase {
 
     PreparedStatement getPreparedStatement(String sql);
 
-    ArrayList<Course> getAllCourses();
+    HashMap<String, Course> getAllCourses();
 
     ArrayList<ClassRoom> getAllClassRooms();
 
     HashMap<Integer, Demand> getAllDemands();
 
-    ArrayList<TeacherCourse> getAllTeachersCourse();
+    HashMap<Integer, Teacher> getAllTeachersCourse();
 
-    ArrayList<Teacher> getAllTeachers();
+    HashMap<Integer, Teacher> getAllTeachers();
 
     ArrayList<Demand> getDemandOfTeacher(String teacherID);
 
@@ -44,6 +47,6 @@ public interface DataBase {
 
     Teacher getTeacherByName(String teacherName);
 
-    ArrayList<Teacher> getTeacherForCourse(String courseName);
+    ArrayList<Integer> getTeacherForCourse(String courseName);
 
 }
