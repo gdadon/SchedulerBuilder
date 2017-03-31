@@ -1,6 +1,5 @@
 package schedule.builder.database;
 
-import database.DataBaseMySQLImpl;
 import parser.ClassParserReport;
 import parser.CourseParserReport;
 import parser.DemandReportParser;

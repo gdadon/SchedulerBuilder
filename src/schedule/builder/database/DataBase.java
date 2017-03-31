@@ -1,4 +1,4 @@
-package database;
+package schedule.builder.database;
 
 import objects.*;
 

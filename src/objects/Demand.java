@@ -52,10 +52,6 @@ public class Demand {
         private int total;
         private String reason;
 
-        public DemandBuilder() {
-
-        }
-
         public DemandBuilder setStart(int start) {
             this.start = start;
             return this;
