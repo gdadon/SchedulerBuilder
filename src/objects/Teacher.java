@@ -9,11 +9,7 @@ public class Teacher {
     private String name;
     private ArrayList<Demand> demands;
 
-    public Teacher(){
-        
-    }
-
-    public Teacher(TeacherBuilder builder) {
+    private Teacher(TeacherBuilder builder) {
         this.quotaHours = builder.quotaHours;
         this.remainingHours = builder.remainingHours;
         this.ID = builder.ID;
@@ -57,24 +53,29 @@ public class Teacher {
             demands = new ArrayList<>();
         }
 
-        public void setQuotaHours(int quotaHours) {
+        public TeacherBuilder setQuotaHours(int quotaHours) {
             this.quotaHours = quotaHours;
+            return this;
         }
 
-        public void setRemainingHours(int remainingHours) {
+        public TeacherBuilder setRemainingHours(int remainingHours) {
             this.remainingHours = remainingHours;
+            return this;
         }
 
-        public void setID(int ID) {
+        public TeacherBuilder setID(int ID) {
             this.ID = ID;
+            return this;
         }
 
-        public void setName(String name) {
+        public TeacherBuilder setName(String name) {
             this.name = name;
+            return this;
         }
 
-        public void setDemands(ArrayList<Demand> demands) {
+        public TeacherBuilder setDemands(ArrayList<Demand> demands) {
             this.demands = demands;
+            return this;
         }
 
         public Teacher build(){
