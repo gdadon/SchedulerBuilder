@@ -27,11 +27,14 @@ public class CourseParserReport implements ParserInterface {
             Cell cell = null; //Column
             int lastRowNum = sheet.getLastRowNum();
             //Parsing from A2 -> lastRowNum
-            for (int i = 1; i < lastRowNum + 1; i++) {
+            for (int i = 1; i < lastRowNum; i++) {
                 row = sheet.getRow(i);
                 cell = row.getCell(0);
                 cell.setCellType(CellType.STRING);
                 String courseCode = cell.getRichStringCellValue().getString();
+                if(courseCode == ""){
+                    break;
+                }
                 cell = row.getCell(1);
                 String courseName = cell.getRichStringCellValue().getString();
                 cell = row.getCell(2);
