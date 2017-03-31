@@ -12,3 +12,6 @@ The development process is currently underway.<br>
 In the near future, the expectation is that this algorithm with few adjustments 
 could be used to build a general assignments scheduler system
 
+
+![under constrction](https://cloud.githubusercontent.com/assets/20511131/24558360/89d01f30-1643-11e7-9cbe-42ef0ec65b79.jpeg)
+
