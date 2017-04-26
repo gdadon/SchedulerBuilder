@@ -40,15 +40,8 @@ public class Scheduler {
 
     @Override
     public String toString() {
-        return "Scheduler{" +
-                "scheduler=" + scheduler +
+        return "Scheduler{\n" + scheduler +
                 '}';
     }
 
-    private String print(){
-
-
-
-        return "";
-    }
 }
