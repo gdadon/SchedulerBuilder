@@ -191,6 +191,7 @@ public class DataBaseMySQLImpl implements DataBase {
     @Override
     public HashMap<Integer, Teacher> getAllTeachersCourse() {
         HashMap<Integer, Teacher> teachers = new HashMap<>();
+        HashMap<Integer, String> teachersNames = new HashMap<>();
         HashMap<Integer, ArrayList<String>> teacherCourse = new HashMap<>();
         try {
             connect();
@@ -201,12 +202,13 @@ public class DataBaseMySQLImpl implements DataBase {
             while(resultSet.next()){
                 int id = resultSet.getInt("id");
                 String course = resultSet.getString("course");
-
+                String name = resultSet.getString("name");
                 if((courses = teacherCourse.get(id)) == null){
                     courses = new ArrayList<>();
                 }
-                courses.add(resultSet.getString("course"));
+                courses.add(course);
                 teacherCourse.put(id, courses);
+                teachersNames.put(id, name);
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -218,6 +220,7 @@ public class DataBaseMySQLImpl implements DataBase {
             teachers.put(tc.getKey(), new Teacher.TeacherBuilder()
                     .setID(tc.getKey())
                     .setCourses(tc.getValue())
+                    .setName(teachersNames.get(tc.getKey()))
                     .build());
         }
         return teachers;
@@ -346,6 +349,7 @@ public class DataBaseMySQLImpl implements DataBase {
     private void createTeachersCoursesTable() {
         String sqlCommand = "CREATE TABLE TEACHER_COURSE(" +
                 "id int(9)," +
+                "name varchar(50)," +
                 "course varchar(50)," +
                 "primary key(id, course)" +
                 ");";
@@ -358,21 +362,6 @@ public class DataBaseMySQLImpl implements DataBase {
         }
     }
 
-    private void createTeachersTable() {
-        String sqlCommand = "CREATE TABLE TEACHER(" +
-                "id int(9)," +
-                "name varchar(50)," +
-                "primary key(id)" +
-                ");";
-        try {
-            runCommand(sqlCommand);
-            System.out.println("Succeed create Teacher table");
-        } catch (SQLException e) {
-            System.out.println("Failed create Teacher table");
-            e.printStackTrace();
-        }
-    }
-
     public void createDB() {
         try {
             // create the database
@@ -381,7 +370,6 @@ public class DataBaseMySQLImpl implements DataBase {
             useDatabase("sbdb");
             // create the database tables
             createCourseTable();
-            createTeachersTable();
             createTeachersCoursesTable();
             createDemandTable();
             createClassesTable();
@@ -531,13 +519,14 @@ public class DataBaseMySQLImpl implements DataBase {
             int id = entry.getKey();
             Teacher teacher = entry.getValue();
 
-            String sql = "INSERT INTO TEACHER_COURSE (id, course) values" +
-                    "(?,?)";
+            String sql = "INSERT INTO TEACHER_COURSE (id, name, course) values" +
+                    "(?,?,?)";
             PreparedStatement stmt = getPreparedStatement(sql);
             for (String course : teacher.getCourses()) {
                 try {
                     stmt.setInt(1, teacher.getID());
-                    stmt.setString(2, course);
+                    stmt.setString(2, teacher.getName());
+                    stmt.setString(3, course);
                     stmt.executeUpdate();
                     rand = Math.random();
                     if (rand >= 0.5) {
