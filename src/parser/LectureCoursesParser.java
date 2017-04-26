@@ -39,8 +39,9 @@ public class LectureCoursesParser implements ParserInterface {
                 ++j;
                 cell = row.getCell(j);
                 cell.setCellType(CellType.STRING);
+                String name = cell.getRichStringCellValue().getString();
                 teacherCourseReport.put(teacherID,new Teacher.TeacherBuilder()
-                        .setID(teacherID)
+                        .setID(teacherID).setName(name)
                         .build());
                 ++j;
                 while ((cell = row.getCell(j))!=null){
