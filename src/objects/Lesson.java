@@ -40,8 +40,11 @@ public class Lesson implements Comparable{
     @Override
     public String toString() {
         return "[" +
-                classRoom.getDay() + ", " + classRoom.getHour() +
-                "]";
+                "Day: " + classRoom.getDay() +
+                ", Start Hour: " + classRoom.getHour() +
+                ", Course: " + course.getName() +
+                ", Teacher: " + teacher.getName() +
+                "]\n";
     }
 
     public static class LessonBuilder{
