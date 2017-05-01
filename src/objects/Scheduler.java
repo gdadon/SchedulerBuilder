@@ -1,9 +1,6 @@
 package objects;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Created by Guy on 29/03/2017.
@@ -11,9 +8,11 @@ import java.util.TreeSet;
 public class Scheduler {
 
     private SortedSet<Lesson> scheduler;
+    private HashMap<Integer, ArrayList<Lesson>> teacherCourseMap;
 
     public Scheduler(){
         this.scheduler = new TreeSet<>();
+        this.teacherCourseMap = new HashMap<>();
     }
 
     public void addLesson(Lesson lesson){
@@ -36,6 +35,14 @@ public class Scheduler {
             }
         }
         return lessons;
+    }
+
+    public void setTeacherCourseMap(HashMap<Integer, ArrayList<Lesson>>  map){
+        this.teacherCourseMap = map;
+    }
+
+    public HashMap<Integer, ArrayList<Lesson>>  getTeacherCourseMap(){
+        return this.teacherCourseMap;
     }
 
     @Override
