@@ -16,13 +16,15 @@ public class BuildBaseScheduler {
      * This class is responsible for building base scheduler
      * the main method should return Scheduler Obj which contains
      * all the lessons for all the years and semesters
+     * without any consideration in conflicts
      */
 
     private DataBaseMySQLImpl dao;
-//    private ArrayList<Teacher> teachers;
     private ArrayList<ClassRoom> classes;
     private HashMap<String, Course> courses;
     private HashMap<Integer, Teacher> teachers;
+
+    private HashMap<Integer, ArrayList<Lesson>> teacherCourseMap = new HashMap<>();
 
     public BuildBaseScheduler(){
         // get dao object
@@ -80,8 +82,15 @@ public class BuildBaseScheduler {
                     .setClassRoom(classRoom)
                     .build();
             scheduler.addLesson(lesson);
+            // add lesson to teacher course map
+            ArrayList<Lesson> lessonsToAdd = null;
+            if((lessonsToAdd = teacherCourseMap.get(teacher.getID())) == null){
+                lessonsToAdd = new ArrayList<>();
+            }
+            lessonsToAdd.add(lesson);
+            teacherCourseMap.put(teacher.getID(), lessonsToAdd);
         }
-
+        scheduler.setTeacherCourseMap(teacherCourseMap);
         return scheduler;
     }
 
