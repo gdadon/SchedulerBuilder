@@ -2,6 +2,7 @@ package schedule.builder.algorithm;
 
 import objects.Demand;
 import objects.Lesson;
+import objects.Scheduler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,25 +13,33 @@ import java.util.Set;
  */
 public class ConflictCounter {
 
-    public static Set<Lesson> getConflictedLessons(ArrayList<Lesson> lessons){
+    public static Set<Lesson> getConflictedLessons(Scheduler scheduler){
         Set<Lesson> conflictLesson = new HashSet<>();
+        for (Integer teacherId: scheduler.getTeacherCourseMap().keySet()) {
 
-
+        }
         return null;
     }
 
     /**
-     * check for two lessons if they overlaps
+     * check if lessons has the same teacher at overlap time
      * @param lesson1
      * @param lesson2
      * @return true if lessons overlaps
      */
     private boolean isLessonOverlap(Lesson lesson1, Lesson lesson2){
 
+        // check if same teacher
+        if(!isSameTeacher(lesson1, lesson2)){
+            return false;
+        }
+
         // lessons in different day - no overlaps
         if(lesson1.getClassRoom().getDay() != lesson2.getClassRoom().getDay()){
             return false;
         }
+
+        // same teacher and date
         // check if there is time overlaps
 
         int l1Start = lesson1.getClassRoom().getHour();
@@ -44,6 +53,12 @@ public class ConflictCounter {
         return l1Overlaps || l2Overlaps;
     }
 
+    /**
+     * check if same teacher for both lessons
+     * @param l1
+     * @param l2
+     * @return true if same teacher, false otherwise
+     */
     private boolean isSameTeacher(Lesson l1, Lesson l2){
         if(l1.getTeacher().getID() == l2.getTeacher().getID()){
             return true;
@@ -56,11 +71,26 @@ public class ConflictCounter {
      * @param lesson - lesson to check
      * @return true if there is a conflict, otherwise false
      */
-    private boolean demandConflict(Lesson lesson){
+    public static boolean demandConflict(Lesson lesson){
         // get teacher demands
         ArrayList<Demand> demands = lesson.getTeacher().getDemands();
-
         // check if there is conflict between teacher demand to lesson
+
+        int lessonDay = lesson.getClassRoom().getDay();
+        int lessonStart = lesson.getClassRoom().getHour();
+        int lessonEnd = lesson.getCourse().getDuration() + lessonStart;
+
+        for (Demand demand: demands) {
+            if(demand.getDay() == lessonDay){
+                if(demand.getStart() >= lessonStart && demand.getStart() < lessonEnd){
+                    return true;
+                }
+                else if(demand.getEnd() >= lessonStart && demand.getEnd() < lessonEnd){
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 }
