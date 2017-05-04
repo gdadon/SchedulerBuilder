@@ -1,6 +1,10 @@
 package objects;
 
-public class Lesson implements Comparable{
+import java.io.Serializable;
+
+public class Lesson implements Comparable, Serializable {
+
+    private static final long serialVersionUID = 4L;
     private Teacher teacher;
     private Course course;
     private ClassRoom classRoom;
@@ -43,6 +47,7 @@ public class Lesson implements Comparable{
                 "Day: " + classRoom.getDay() +
                 ", Start Hour: " + classRoom.getHour() +
                 ", Course: " + course.getName() +
+                ", Code: " + course.getCode() +
                 ", Teacher: " + teacher.getName() +
                 "]\n";
     }

@@ -1,6 +1,10 @@
 package objects;
 
-public class Demand {
+import java.io.Serializable;
+
+public class Demand implements Serializable{
+
+    private static final long serialVersionUID = 2L;
 
     private int day;
     private int start;

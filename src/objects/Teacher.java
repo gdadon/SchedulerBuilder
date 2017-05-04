@@ -1,8 +1,12 @@
 package objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Teacher {
+public class Teacher implements Serializable{
+
+    private static final long serialVersionUID = 3L;
+
     private int quotaHours;
     private int remainingHours;
     private int ID;
