@@ -1,4 +1,4 @@
-package schedule.builder.build.scheduler;
+package schedule.builder.scheduler;
 
 import objects.*;
 import schedule.builder.database.DataBaseMySQLImpl;
@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Created by Guy on 01/02/2017.
  */
-public class BuildBaseScheduler {
+public class BaseSchedulerBuilder {
 
     /**
      * This class is responsible for building base scheduler
@@ -28,7 +28,7 @@ public class BuildBaseScheduler {
 
     private HashMap<Integer, ArrayList<Lesson>> teacherCourseMap = new HashMap<>();
 
-    public BuildBaseScheduler(){
+    public BaseSchedulerBuilder(){
         // get dao object
         dao = DataBaseMySQLImpl.getInstance();
         // get all teachers
@@ -86,15 +86,7 @@ public class BuildBaseScheduler {
                     .setClassRoom(classRoom)
                     .build();
             scheduler.addLesson(lesson);
-            // add lesson to teacher course map
-            ArrayList<Lesson> lessonsToAdd = null;
-            if((lessonsToAdd = teacherCourseMap.get(teacher.getID())) == null){
-                lessonsToAdd = new ArrayList<>();
-            }
-            lessonsToAdd.add(lesson);
-            teacherCourseMap.put(teacher.getID(), lessonsToAdd);
         }
-        scheduler.setTeacherCourseMap(teacherCourseMap);
         return scheduler;
     }
 
