@@ -20,6 +20,16 @@ public class Scheduler implements Serializable{
 
     public void addLesson(Lesson lesson){
         this.scheduler.add(lesson);
+        addLessonToMap(lesson);
+    }
+
+    private void addLessonToMap(Lesson lesson){
+        ArrayList<Lesson> lessonsToAdd = null;
+        if((lessonsToAdd = teacherCourseMap.get(lesson.getTeacher().getID())) == null){
+            lessonsToAdd = new ArrayList<>();
+        }
+        lessonsToAdd.add(lesson);
+        teacherCourseMap.put(lesson.getTeacher().getID(), lessonsToAdd);
     }
 
     public void changeLesson(Lesson lesson){
@@ -46,6 +56,10 @@ public class Scheduler implements Serializable{
 
     public HashMap<Integer, ArrayList<Lesson>>  getTeacherCourseMap(){
         return this.teacherCourseMap;
+    }
+
+    public Set<Lesson> getLessons(){
+        return scheduler;
     }
 
     @Override
