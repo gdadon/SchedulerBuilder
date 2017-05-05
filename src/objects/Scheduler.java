@@ -1,11 +1,14 @@
 package objects;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by Guy on 29/03/2017.
  */
-public class Scheduler {
+public class Scheduler implements Serializable{
+
+    private static final long serialVersionUID = 5L;
 
     private SortedSet <Lesson> scheduler;
     private HashMap<Integer, ArrayList<Lesson>> teacherCourseMap;

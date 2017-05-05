@@ -1,6 +1,10 @@
 package objects;
 
-public class ClassRoom {
+import java.io.Serializable;
+
+public class ClassRoom implements Serializable{
+
+    private static final long serialVersionUID = 0L;
     private int day;
     private char size;
     private int hour;
