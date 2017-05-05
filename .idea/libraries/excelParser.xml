@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="excelParser">
     <CLASSES>
-      <root url="file://C:/JarsToEnd/excelParser" />
+      <root url="file://C:/Program Files/JARS/poi-bin-3.15-20160924/poi-3.15" />
     </CLASSES>
     <JAVADOC>
-      <root url="file://C:/JarsToEnd/excelParser/docs/apidocs" />
+      <root url="file://C:/Program Files/JARS/poi-bin-3.15-20160924/poi-3.15/docs/apidocs" />
     </JAVADOC>
     <SOURCES />
-    <jarDirectory url="file://C:/JarsToEnd/excelParser" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/JARS/poi-bin-3.15-20160924/poi-3.15" recursive="false" />
   </library>
 </component>

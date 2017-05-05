@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class Scheduler {
 
-    private SortedSet<Lesson> scheduler;
+    private SortedSet <Lesson> scheduler;
     private HashMap<Integer, ArrayList<Lesson>> teacherCourseMap;
 
     public Scheduler(){
