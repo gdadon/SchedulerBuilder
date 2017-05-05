@@ -75,9 +75,9 @@ public class Lesson implements Comparable, Serializable {
     @Override
     public String toString() {
         return "[" +
-                "Year: " + course.getYear() +
+                "Day: " + classRoom.getDay() +
                 ", Sem: " + course.getSemester() +
-                ", Day: " + classRoom.getDay() +
+                ", Year: " + course.getYear() +
                 ", Start Hour: " + classRoom.getHour() +
                 ", Course: " + course.getName() +
                 ", Code: " + course.getCode() +
