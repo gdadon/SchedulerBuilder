@@ -58,7 +58,6 @@ public class BuildBaseScheduler {
                 rand = (int)(Math.random() * classes.size());
                 classRoom = classes.get(rand);
                 if(classRoom.getHour() <= latestLessonTime){
-                    // lesson will start at 17:00 at most
                     isLateClass = false;
                 }
                 //classes.remove(rand);
