@@ -19,7 +19,7 @@ public class BuildBaseScheduler {
      * without any consideration in conflicts
      */
 
-    private int latestLesstonTime = 15;
+    private int latestLessonTime = 15;
 
     private DataBaseMySQLImpl dao;
     private ArrayList<ClassRoom> classes;
@@ -57,7 +57,7 @@ public class BuildBaseScheduler {
             while(isLateClass){
                 rand = (int)(Math.random() * classes.size());
                 classRoom = classes.get(rand);
-                if(classRoom.getHour() <= latestLesstonTime){
+                if(classRoom.getHour() <= latestLessonTime){
                     // lesson will start at 17:00 at most
                     isLateClass = false;
                 }
