@@ -19,6 +19,8 @@ public class BuildBaseScheduler {
      * without any consideration in conflicts
      */
 
+    private int latestLesstonTime = 15;
+
     private DataBaseMySQLImpl dao;
     private ArrayList<ClassRoom> classes;
     private HashMap<String, Course> courses;
@@ -48,23 +50,26 @@ public class BuildBaseScheduler {
             // remove it from list
             courses.remove(course.getCode());
 
-            // select class for this course
-            int rand = (int)(Math.random() * classes.size());
-            ClassRoom classRoom = classes.get(rand);
-            classes.remove(rand);
+            // select class for this course - class should be 17:00 latest
+            boolean isLateClass = true;
+            int rand;
+            ClassRoom classRoom = null;
+            while(isLateClass){
+                rand = (int)(Math.random() * classes.size());
+                classRoom = classes.get(rand);
+                if(classRoom.getHour() <= latestLesstonTime){
+                    // lesson will start at 17:00 at most
+                    isLateClass = false;
+                }
+                //classes.remove(rand);
+            }
             // get list of teachers for this course
             ArrayList<Teacher> teachersForCourse = getTeacherForCourse(course);
             // select teacher for course
             rand = (int)(Math.random() * teachersForCourse.size());
             Teacher teacher = teachersForCourse.get(rand);
             // check if teacher had passed quota
-            if(teacher.getRemainingHours() >=  course.getDuration()){
-                // teacher can teach this course - select class
-                // reduce teacher quota hours
-                // create new lesson and add to scheduler
-
-            }
-            else{
+            if(teacher.getRemainingHours() <  course.getDuration()){
                 // teacher had passed quota - iterate over all teachers and find the one that can teach
                 // if no can teach set the rand teacher that draw first, conflictCounter will resole it later
                 for (Teacher teacher2: teachersForCourse) {
