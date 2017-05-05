@@ -15,10 +15,21 @@ public class ConflictCounter {
 
     public static Set<Lesson> getConflictedLessons(Scheduler scheduler){
         Set<Lesson> conflictLesson = new HashSet<>();
-        for (Integer teacherId: scheduler.getTeacherCourseMap().keySet()) {
 
+        for (Integer id: scheduler.getTeacherCourseMap().keySet()
+                ) {
+            // get all courses of teacher by its ID
+            ArrayList<Lesson> lessons = scheduler.getTeacherCourseMap().get(id);
+            for(int i = 0; i < lessons.size(); i++){
+                for(int j = i+1; j < lessons.size(); j++){
+                    if(isLessonOverlap(lessons.get(i), lessons.get(j))){
+                        conflictLesson.add(lessons.get(i));
+                        conflictLesson.add(lessons.get(j));
+                    }
+                }
+            }
         }
-        return null;
+        return conflictLesson;
     }
 
     /**
@@ -27,10 +38,15 @@ public class ConflictCounter {
      * @param lesson2
      * @return true if lessons overlaps
      */
-    private boolean isLessonOverlap(Lesson lesson1, Lesson lesson2){
+    private static boolean isLessonOverlap(Lesson lesson1, Lesson lesson2){
 
         // check if same teacher
         if(!isSameTeacher(lesson1, lesson2)){
+            return false;
+        }
+
+        // check if same semester
+        if(lesson1.getCourse().getSemester() != lesson2.getCourse().getSemester()){
             return false;
         }
 
@@ -39,8 +55,8 @@ public class ConflictCounter {
             return false;
         }
 
-        // same teacher and date
-        // check if there is time overlaps
+        // same teacher, semester and day
+        // check if there is hour overlaps
 
         int l1Start = lesson1.getClassRoom().getHour();
         int l1End = l1Start + lesson1.getCourse().getDuration();
@@ -48,8 +64,8 @@ public class ConflictCounter {
         int l2Start = lesson2.getClassRoom().getHour();
         int l2End = l2Start + lesson2.getCourse().getDuration();
 
-        boolean l1Overlaps = ((l1Start > l2Start) && (l1Start < l2End)) || ((l1End > l2Start) && (l1End < l2End));
-        boolean l2Overlaps = ((l2Start > l1Start) && (l2Start < l1End)) || ((l2End > l1Start) && (l2End < l1End));
+        boolean l1Overlaps = ((l1Start >= l2Start) && (l1Start < l2End)) || ((l1End > l2Start) && (l1End < l2End));
+        boolean l2Overlaps = ((l2Start >= l1Start) && (l2Start < l1End)) || ((l2End > l1Start) && (l2End < l1End));
         return l1Overlaps || l2Overlaps;
     }
 
@@ -59,7 +75,7 @@ public class ConflictCounter {
      * @param l2
      * @return true if same teacher, false otherwise
      */
-    private boolean isSameTeacher(Lesson l1, Lesson l2){
+    private static boolean isSameTeacher(Lesson l1, Lesson l2){
         if(l1.getTeacher().getID() == l2.getTeacher().getID()){
             return true;
         }
