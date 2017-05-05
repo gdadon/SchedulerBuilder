@@ -25,26 +25,59 @@ public class Lesson implements Comparable, Serializable {
 
     public ClassRoom getClassRoom() {return classRoom; }
 
+    /**
+     * order is: day -> hour -> year -> semester -> course code
+     * @param o
+     * @return
+     */
     @Override
     public int compareTo(Object o) {
         Lesson other = (Lesson) o;
-
+        int compare;
         //check for day
-        int sameDay = this.getClassRoom().getDay() - other.getClassRoom().getDay();
-        if(sameDay != 0){
-            return sameDay;
+        compare = this.getClassRoom().getDay() - other.getClassRoom().getDay();
+        if(compare != 0){
+            return compare;
         }
-        else{
-            // check hour
-            int hours = this.classRoom.getHour() - other.getClassRoom().getHour();
-            return hours;
+        // check hour
+        compare = this.classRoom.getHour() - other.getClassRoom().getHour();
+        if(compare != 0){
+            return compare;
         }
+        //check for year
+        compare = this.getCourse().getYear() - other.getCourse().getYear();
+        if(compare != 0){
+            return compare;
+        }
+        //check for semester
+        compare = this.getCourse().getSemester() - other.getCourse().getSemester();
+        if(compare != 0){
+            return compare;
+        }
+
+        return checkCoursesCode(this.getCourse().getCode(), other.getCourse().getCode());
+    }
+
+    /**
+     *  this is helper for compareTo
+     *  will replace the '-' in course code
+     *  and return the bigger course code
+     * @param code1
+     * @param code2
+     * @return
+     */
+    private int checkCoursesCode(String code1, String code2) {
+        int code1Int = Integer.parseInt(code1.replace("-", ""));
+        int code2Int = Integer.parseInt(code2.replace("-", ""));
+        return code1Int - code2Int;
     }
 
     @Override
     public String toString() {
         return "[" +
-                "Day: " + classRoom.getDay() +
+                "Year: " + course.getYear() +
+                ", Sem: " + course.getSemester() +
+                ", Day: " + classRoom.getDay() +
                 ", Start Hour: " + classRoom.getHour() +
                 ", Course: " + course.getName() +
                 ", Code: " + course.getCode() +
