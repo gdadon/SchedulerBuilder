@@ -13,6 +13,7 @@ public class Lesson implements Comparable, Serializable {
         this.course = builder.course;
         this.teacher = builder.teacher;
         this.classRoom = builder.classRoom;
+
     }
 
     public Course getCourse() {
