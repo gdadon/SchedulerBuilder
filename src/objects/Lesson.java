@@ -9,6 +9,7 @@ public class Lesson implements Comparable, Serializable {
     private Course course;
     private ClassRoom classRoom;
 
+
     private Lesson(LessonBuilder builder) {
         this.course = builder.course;
         this.teacher = builder.teacher;

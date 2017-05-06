@@ -10,7 +10,7 @@ public class Scheduler implements Serializable{
 
     private static final long serialVersionUID = 5L;
 
-    private SortedSet<Lesson> scheduler;
+    private SortedSet <Lesson> scheduler;
     private HashMap<Integer, ArrayList<Lesson>> teacherCourseMap;
 
     public Scheduler(){
