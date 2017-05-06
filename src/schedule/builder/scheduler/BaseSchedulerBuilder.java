@@ -1,10 +1,8 @@
 package schedule.builder.scheduler;
 
 import objects.*;
-import schedule.builder.database.DataBaseMySQLImpl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -21,49 +19,37 @@ public class BaseSchedulerBuilder {
 
     private int latestLessonTime = 15;
 
-    private DataBaseMySQLImpl dao;
-    private ArrayList<ClassRoom> classes;
-    private HashMap<String, Course> courses;
-    private HashMap<Integer, Teacher> teachers;
-
-    private HashMap<Integer, ArrayList<Lesson>> teacherCourseMap = new HashMap<>();
+    private BaseSchedulerData data;
 
     public BaseSchedulerBuilder(){
-        // get dao object
-        dao = DataBaseMySQLImpl.getInstance();
-        // get all teachers
-        // get all available classes
-        classes = dao.getAllClassRooms();
-        // get all courses
-        courses = dao.getAllCourses();
-        teachers = dao.getAllTeachersCourse();
+        data = BaseSchedulerData.getInstance();
     }
 
     public Scheduler buildBaseScheduler(){
         Scheduler scheduler = new Scheduler();
         // combine Lesson - <Teacher, Class, Course>
-        while(courses.size() > 0){
+        while(data.courses.size() > 0){
             // select random course
             Random generator = new Random();
-            Object[] values = courses.values().toArray();
+            Object[] values = data.courses.values().toArray();
             Course course = (Course) values[generator.nextInt(values.length)];
             // remove it from list
-            courses.remove(course.getCode());
+            data.courses.remove(course.getCode());
 
             // select class for this course - class should be 17:00 latest
             boolean isLateClass = true;
             int rand;
             ClassRoom classRoom = null;
             while(isLateClass){
-                rand = (int)(Math.random() * classes.size());
-                classRoom = classes.get(rand);
+                rand = (int)(Math.random() * data.classes.size());
+                classRoom = data.classes.get(rand);
                 if(classRoom.getHour() <= latestLessonTime){
                     isLateClass = false;
                 }
                 //classes.remove(rand);
             }
             // get list of teachers for this course
-            ArrayList<Teacher> teachersForCourse = getTeacherForCourse(course);
+            ArrayList<Teacher> teachersForCourse = data.getTeacherForCourse(course);
             // select teacher for course
             rand = (int)(Math.random() * teachersForCourse.size());
             Teacher teacher = teachersForCourse.get(rand);
@@ -88,43 +74,6 @@ public class BaseSchedulerBuilder {
             scheduler.addLesson(lesson);
         }
         return scheduler;
-    }
-
-    private ArrayList<Teacher> getTeacherForCourse(Course course){
-        ArrayList<Integer> IDs = dao.getTeacherForCourse(course.getName());
-        ArrayList<Teacher> teachers = getTeachersByIDs(IDs);
-        return teachers;
-    }
-
-    /**
-     * return teachers ID that can teach given course
-     * @param course course to teach
-     * @return ArrayList<String> of teachers IDs
-     */
-    private ArrayList<Integer> getTeachersIDsForCourse(Course course){
-        ArrayList<Integer> teachers = new ArrayList<>();
-        for (Teacher tc: this.teachers.values()) {
-            if(tc.getCourses().contains(course)){
-                teachers.add(tc.getID());
-            }
-        }
-        return teachers;
-    }
-
-    /**
-     *
-     * @param IDs - ArrayList<int> of teachers ID
-     * @return ArrayList<Teacher> teacher with same ID
-     */
-    private ArrayList<Teacher> getTeachersByIDs(ArrayList<Integer> IDs){
-        ArrayList<Teacher> teachers = new ArrayList<>();
-        Teacher teacher;
-        for (int id: IDs) {
-            if((teacher = this.teachers.get(id)) != null){
-                teachers.add(teacher);
-            }
-        }
-        return teachers;
     }
 
 }
