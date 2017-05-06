@@ -3,6 +3,7 @@ package schedule.builder.algorithm;
 import objects.Demand;
 import objects.Lesson;
 import objects.Scheduler;
+import objects.Teacher;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +14,13 @@ import java.util.Set;
  */
 public class ConflictCounter {
 
-    public static Set<Lesson> getConflictedLessons(Scheduler scheduler){
+    /**
+     * This method is responsible for counting the conflicted lessons in given scheduler
+     * the conflict that is being checks here are only in time overlaps
+     * @param scheduler
+     * @return set of conflicted lessons
+     */
+    public static Set<Lesson> getOverLapsLessons(Scheduler scheduler){
         Set<Lesson> conflictLesson = new HashSet<>();
 
         for (Integer id: scheduler.getTeacherCourseMap().keySet()
@@ -32,6 +39,70 @@ public class ConflictCounter {
         return conflictLesson;
     }
 
+
+    /**
+     * This method is responsible for counting the over quota teachers in given scheduler
+     * @param scheduler
+     * @return set of over quota teachers
+     */
+    public static ArrayList<Teacher> getOverQuotaTeachers(Scheduler scheduler){
+        ArrayList<Teacher> overQuota = new ArrayList<>();
+        for (Integer id: scheduler.getTeacherCourseMap().keySet()) {
+            Teacher teacher = scheduler.getTeacherCourseMap().get(id).get(0).getTeacher();
+            if(teacher.getRemainingHours() < 0){
+                overQuota.add(teacher);
+            }
+        }
+        return overQuota;
+    }
+
+    /**
+     * This method is responsible for counting the demands conflict in given scheduler
+     * each teacher is being compared with his demands
+     * @param scheduler
+     * @return set of over quota teachers
+     */
+    public static Set<Lesson> getDemandsConflicts(Scheduler scheduler){
+        Set<Lesson> conflicts = new HashSet<>();
+        for (Integer id: scheduler.getTeacherCourseMap().keySet()) {
+            for (Lesson lesson: scheduler.getTeacherCourseMap().get(id)
+                 ) {
+                if(isDemandConflict(lesson)){
+                    conflicts.add(lesson);
+                }
+            }
+        }
+        return conflicts;
+    }
+
+    /**
+     * This method is responsible for counting the single course collision  in given scheduler
+     * collision is when there is only one "show" of course and it is at the same time
+     * as another one "show" course, meaning that student will have to choose which
+     * course attend to, and this is HARD conflict.
+     * @param scheduler
+     * @return
+     */
+    public static Set<Lesson> getSingleCourseConflicts(Scheduler scheduler){
+        ArrayList<Lesson> lessons = (ArrayList<Lesson>) scheduler.getLessons();
+        for(int i = 0; i < lessons.size(); i++){
+            for(int j = i+1; j < lessons.size(); j++){
+                Lesson lesson1 = lessons.get(i);
+                Lesson lesson2 = lessons.get(j);
+                if(isLessonOverlap(lesson1, lesson2)){
+                    // lessons overlaps need to check if both are single show
+                    if(lesson1.getCourse().getExpectedClasses() == 1 &&
+                            lesson2.getCourse().getExpectedClasses() == 1){
+                        lessons.add(lesson1);
+                        lessons.add(lesson2);
+                    }
+                }
+            }
+        }
+        Set<Lesson> lessonsToRet = new HashSet<>(lessons);
+        return lessonsToRet;
+    }
+
     /**
      * check if lessons has the same teacher at overlap time
      * @param lesson1
@@ -39,11 +110,6 @@ public class ConflictCounter {
      * @return true if lessons overlaps
      */
     private static boolean isLessonOverlap(Lesson lesson1, Lesson lesson2){
-
-        // check if same teacher
-        if(!isSameTeacher(lesson1, lesson2)){
-            return false;
-        }
 
         // check if same semester
         if(lesson1.getCourse().getSemester() != lesson2.getCourse().getSemester()){
@@ -87,7 +153,7 @@ public class ConflictCounter {
      * @param lesson - lesson to check
      * @return true if there is a conflict, otherwise false
      */
-    public static boolean demandConflict(Lesson lesson){
+    public static boolean isDemandConflict(Lesson lesson){
         // get teacher demands
         ArrayList<Demand> demands = lesson.getTeacher().getDemands();
         // check if there is conflict between teacher demand to lesson
@@ -109,4 +175,7 @@ public class ConflictCounter {
 
         return false;
     }
+
+
+
 }
