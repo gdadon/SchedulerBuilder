@@ -54,10 +54,17 @@ public class Teacher implements Serializable{
     public void addCourse(String course){ this.courses.add(course); }
 
     public void reduceHour(int hours){
-        this.quotaHours -= hours;
+        this.remainingHours -= hours;
     }
 
     public void addName(String name) { this.name = name; }
+
+    @Override
+    public String toString() {
+        return "Teacher{ID=" + ID +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
