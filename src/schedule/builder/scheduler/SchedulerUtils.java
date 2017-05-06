@@ -28,6 +28,7 @@ public class SchedulerUtils {
 
             oout.close();
             fout.close();
+            System.out.println("Scheduler has been saved to " + fileName);
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
