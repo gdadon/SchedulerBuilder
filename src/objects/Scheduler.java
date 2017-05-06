@@ -32,10 +32,6 @@ public class Scheduler implements Serializable{
         teacherCourseMap.put(lesson.getTeacher().getID(), lessonsToAdd);
     }
 
-    public void changeLesson(Lesson lesson){
-        // TODO - decide how to change lesson - by date, teacher or course
-    }
-
     public boolean removeLesson(Lesson lesson){
         return this.scheduler.remove(lesson);
     }
