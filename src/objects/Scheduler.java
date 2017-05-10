@@ -1,7 +1,10 @@
 package objects;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Guy on 29/03/2017.
@@ -10,11 +13,11 @@ public class Scheduler implements Serializable{
 
     private static final long serialVersionUID = 5L;
 
-    private SortedSet <Lesson> scheduler;
+    private ArrayList<Lesson> scheduler;
     private HashMap<Integer, ArrayList<Lesson>> teacherCourseMap;
 
     public Scheduler(){
-        this.scheduler = new TreeSet<>();
+        this.scheduler = new ArrayList<>();
         this.teacherCourseMap = new HashMap<>();
     }
 
@@ -32,8 +35,13 @@ public class Scheduler implements Serializable{
         teacherCourseMap.put(lesson.getTeacher().getID(), lessonsToAdd);
     }
 
-    public boolean removeLesson(Lesson lesson){
-        return this.scheduler.remove(lesson);
+    public void removeLesson(Lesson lesson){
+        this.scheduler.remove(lesson);
+        removeLessonFromMap(lesson);
+    }
+
+    private void removeLessonFromMap(Lesson lesson){
+        teacherCourseMap.get(lesson.getTeacher().getID()).remove(lesson);
     }
 
     public Set<Lesson> getLessonByDay(int day){
@@ -54,7 +62,7 @@ public class Scheduler implements Serializable{
         return this.teacherCourseMap;
     }
 
-    public Set<Lesson> getLessons(){
+    public ArrayList<Lesson> getLessons(){
         return scheduler;
     }
 
