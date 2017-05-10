@@ -41,8 +41,8 @@ public class BaseSchedulerBuilder {
             int rand;
             ClassRoom classRoom = null;
             while(isLateClass){
-                rand = (int)(Math.random() * data.classes.size());
-                classRoom = data.classes.get(rand);
+                // draw random class for lesson -> class must be available during all lesson
+                classRoom = data.getClassForLesson(course);
                 if(classRoom.getHour() <= latestLessonTime){
                     isLateClass = false;
                 }
