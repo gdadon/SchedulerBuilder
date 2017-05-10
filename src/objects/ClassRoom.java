@@ -36,6 +36,26 @@ public class ClassRoom implements Serializable{
                 "}";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClassRoom classRoom = (ClassRoom) o;
+
+        if (day != classRoom.day) return false;
+        if (size != classRoom.size) return false;
+        return hour == classRoom.hour;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = day;
+        result = 31 * result + (int) size;
+        result = 31 * result + hour;
+        return result;
+    }
+
     public static class ClassRoomBuilder {
         private int day;
         private char size;
