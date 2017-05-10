@@ -26,6 +26,18 @@ public class Lesson implements Comparable, Serializable {
 
     public ClassRoom getClassRoom() {return classRoom; }
 
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public void setClassRoom(ClassRoom classRoom) {
+        this.classRoom = classRoom;
+    }
+
     /**
      * order is: day -> hour -> year -> semester -> course code
      * @param o
@@ -35,16 +47,6 @@ public class Lesson implements Comparable, Serializable {
     public int compareTo(Object o) {
         Lesson other = (Lesson) o;
         int compare;
-        //check for day
-        compare = this.getClassRoom().getDay() - other.getClassRoom().getDay();
-        if(compare != 0){
-            return compare;
-        }
-        // check hour
-        compare = this.classRoom.getHour() - other.getClassRoom().getHour();
-        if(compare != 0){
-            return compare;
-        }
         //check for year
         compare = this.getCourse().getYear() - other.getCourse().getYear();
         if(compare != 0){
@@ -52,6 +54,16 @@ public class Lesson implements Comparable, Serializable {
         }
         //check for semester
         compare = this.getCourse().getSemester() - other.getCourse().getSemester();
+        if(compare != 0){
+            return compare;
+        }
+        //check for day
+        compare = this.getClassRoom().getDay() - other.getClassRoom().getDay();
+        if(compare != 0){
+            return compare;
+        }
+        // check hour
+        compare = this.classRoom.getHour() - other.getClassRoom().getHour();
         if(compare != 0){
             return compare;
         }
