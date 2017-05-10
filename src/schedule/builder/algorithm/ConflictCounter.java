@@ -4,10 +4,9 @@ import objects.Demand;
 import objects.Lesson;
 import objects.Scheduler;
 import objects.Teacher;
+import schedule.builder.scheduler.BaseSchedulerData;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Guy on 29/03/2017.
@@ -17,11 +16,11 @@ public class ConflictCounter {
     /**
      * This method is responsible for counting the conflicted lessons in given scheduler
      * the conflict that is being checks here are only in time overlaps
-     * @param scheduler
-     * @return set of conflicted lessons
+     * @param scheduler scheduler to count conflicts on
+     * @return ArrayList of conflicted lessons
      */
-    public static Set<Lesson> getOverLapsLessons(Scheduler scheduler){
-        Set<Lesson> conflictLesson = new HashSet<>();
+    public static ArrayList<Lesson> getOverLapsLessons(Scheduler scheduler){
+        ArrayList<Lesson> conflictLesson = new ArrayList<>();
 
         for (Integer id: scheduler.getTeacherCourseMap().keySet()
                 ) {
@@ -39,11 +38,10 @@ public class ConflictCounter {
         return conflictLesson;
     }
 
-
     /**
      * This method is responsible for counting the over quota teachers in given scheduler
      * @param scheduler
-     * @return set of over quota teachers
+     * @return ArrayList of over quota teachers
      */
     public static ArrayList<Teacher> getOverQuotaTeachers(Scheduler scheduler){
         ArrayList<Teacher> overQuota = new ArrayList<>();
@@ -60,13 +58,13 @@ public class ConflictCounter {
      * This method is responsible for counting the demands conflict in given scheduler
      * each teacher is being compared with his demands
      * @param scheduler
-     * @return set of over quota teachers
+     * @return ArrayList of over quota teachers
      */
-    public static Set<Lesson> getDemandsConflicts(Scheduler scheduler){
-        Set<Lesson> conflicts = new HashSet<>();
+    public static ArrayList<Lesson> getDemandsConflicts(Scheduler scheduler){
+        ArrayList<Lesson> conflicts = new ArrayList<>();
         for (Integer id: scheduler.getTeacherCourseMap().keySet()) {
             for (Lesson lesson: scheduler.getTeacherCourseMap().get(id)
-                 ) {
+                    ) {
                 if(isDemandConflict(lesson)){
                     conflicts.add(lesson);
                 }
@@ -83,24 +81,42 @@ public class ConflictCounter {
      * @param scheduler
      * @return
      */
-    public static Set<Lesson> getSingleCourseConflicts(Scheduler scheduler){
-        ArrayList<Lesson> lessons = (ArrayList<Lesson>) scheduler.getLessons();
+    public static ArrayList<Lesson> getSingleCourseConflicts(Scheduler scheduler){
+        ArrayList<Lesson> lessons = scheduler.getLessons();
+        ArrayList<Lesson> conflicted = new ArrayList<>();
         for(int i = 0; i < lessons.size(); i++){
             for(int j = i+1; j < lessons.size(); j++){
                 Lesson lesson1 = lessons.get(i);
                 Lesson lesson2 = lessons.get(j);
-                if(isLessonOverlap(lesson1, lesson2)){
-                    // lessons overlaps need to check if both are single show
-                    if(lesson1.getCourse().getExpectedClasses() == 1 &&
-                            lesson2.getCourse().getExpectedClasses() == 1){
+                if(lesson1.getCourse().getExpectedClasses() == 1 &&
+                        lesson2.getCourse().getExpectedClasses() == 1){
+                    // lessons have 1 show, checks if overlaps
+                    if(isLessonOverlap(lesson1, lesson2)){
                         lessons.add(lesson1);
                         lessons.add(lesson2);
                     }
                 }
             }
         }
-        Set<Lesson> lessonsToRet = new HashSet<>(lessons);
-        return lessonsToRet;
+        return conflicted;
+    }
+
+    /**
+     * This method will count the conflicted classrooms,
+     * if the lesson set on non-free classrooms this is a conflict
+     * @param scheduler given scheduler to count conflicts on
+     * @return array of conflicted lessons
+     */
+    public static ArrayList<Lesson> getConflictedClassrooms(Scheduler scheduler){
+        ArrayList<Lesson> conflicts = new ArrayList<>();
+        BaseSchedulerData data = BaseSchedulerData.getInstance();
+        for (Lesson lesson: scheduler.getLessons()
+                ) {
+            if(data.checkConflictLessonClassroom(lesson)){
+                conflicts.add(lesson);
+            }
+        }
+        return conflicts;
     }
 
     /**
@@ -176,6 +192,23 @@ public class ConflictCounter {
         return false;
     }
 
+
+    public static int conflictCount(Scheduler scheduler){
+        int total = 0;
+
+        total += getConflictedClassrooms(scheduler).size();
+        System.out.println(total);
+        total += getDemandsConflicts(scheduler).size();
+        System.out.println(total);
+        total += getOverLapsLessons(scheduler).size();
+        System.out.println(total);
+        total += getOverQuotaTeachers(scheduler).size();
+        System.out.println(total);
+        total += getSingleCourseConflicts(scheduler).size();
+        System.out.println(total);
+
+        return total;
+    }
 
 
 }
