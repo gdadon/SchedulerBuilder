@@ -2,6 +2,7 @@ package schedule.builder.scheduler;
 
 import objects.ClassRoom;
 import objects.Course;
+import objects.Lesson;
 import objects.Teacher;
 import schedule.builder.database.DataBaseMySQLImpl;
 
@@ -81,4 +82,59 @@ public class BaseSchedulerData {
         return retTeachers;
     }
 
+    /**
+     * This ,method checks if given lesson conflict with unavailable classrooms
+     * @param lesson lesson to check conflicts
+     * @return true if there is conflict, false otherwise
+     */
+    public static boolean checkConflictLessonClassroom(Lesson lesson){
+        ClassRoom classRoom = lesson.getClassRoom();
+        int startHour = classRoom.getHour();
+        int day = classRoom.getDay();
+        char size = classRoom.getSize();
+        int finalHour = lesson.getCourse().getDuration() + startHour;
+        for (int i = startHour + 1; i < finalHour; i++){
+            if(instance.isClassExist(day, i, size)){
+                // classrooms doesn't free -> conflict
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * This method will return classRooms for given lesson
+     * the classrooms that will be returned promised to fit for this lesson
+     * @param course
+     * @return
+     */
+    public static ClassRoom getClassForLesson(Course course){
+        // find class sequence for lesson
+        ClassRoom classRoom = null;
+        boolean isSelected;
+        do{
+            int rand = (int)(Math.random() * classes.size());
+            classRoom = classes.get(rand);
+            isSelected = true;
+            for(int i = classRoom.getHour() + 1; i < course.getDuration() + classRoom.getHour(); i++){
+                if(!instance.isClassExist(classRoom.getDay(), i, classRoom.getSize())){
+                    isSelected = false;
+                }
+            }
+        }while(!isSelected);
+
+        return classRoom;
+    }
+
+    private boolean isClassExist(int day, int hour, char size){
+        if(!classes.contains(new ClassRoom.ClassRoomBuilder()
+                .setDay(day)
+                .setHour(hour)
+                .setSize(size)
+                .build()
+        )){
+            return false;
+        }
+        return true;
+    }
 }
