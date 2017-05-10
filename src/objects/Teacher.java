@@ -59,6 +59,10 @@ public class Teacher implements Serializable{
 
     public void addName(String name) { this.name = name; }
 
+    public void addRemainingHours(int hours) {
+        this.remainingHours += hours;
+    }
+
     @Override
     public String toString() {
         return "Teacher{ID=" + ID +
