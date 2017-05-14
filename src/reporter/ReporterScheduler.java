@@ -14,12 +14,11 @@ public class ReporterScheduler {
     private String fileName;
     private Workbook workbook;
     private Sheet[] semesterSheets;
-    XLSStyles styles;
+    private XLSStyles styles;
     private HashMap<Pair,Integer> sheetMap;
     private HashMap<Integer,Integer> dayMap;
 
     public ReporterScheduler(String fileName) {
-        System.out.println("hello");
         this.fileName = fileName;
         styles = new XLSStyles();
         this.initScheduleReport();
@@ -56,14 +55,43 @@ public class ReporterScheduler {
             row = semesterSheets[sheetMap.get(new Pair(year,semster))].getRow(startingHour-8+j);
             cell = row.getCell(freeHour);
             cell.setCellValue(courseName);
+            CellStyle style = workbook.createCellStyle();
+            switch (freeHour%6){
+                case 0:
+                    style = styles.colunm6BackgroundColor(style);
+                    break;
+                case 1:
+                    style = styles.colunm5BackgroundColor(style);
+                    break;
+                case 2:
+                    style = styles.colunm4BackgroundColor(style);
+                    break;
+                case 3:
+                    style = styles.colunm3BackgroundColor(style);
+                    break;
+                case 4:
+                    style = styles.colunm2BackgroundColor(style);
+                    break;
+                case 5:
+                    style = styles.colunm1BackgroundColor(style);
+                    break;
+            }
             if(j == 0  && duration == 1){
-                //box style
+                style = styles.alignmentCellStyle(style);
+                style = styles.allBorderCellStyle(style);
+                cell.setCellStyle(style);
             } else if(j == 0 && duration > 1){
-                //box open down
+                style = styles.alignmentCellStyle(style);
+                style = styles.bottomOpenCellBorder(style);
+                cell.setCellStyle(style);
             } else if(j == (duration - 1)){
-                //box open up
+                style = styles.alignmentCellStyle(style);
+                style = styles.topOpenCellBorder(style);
+                cell.setCellStyle(style);
             } else {
-                //box open up and down
+                style = styles.alignmentCellStyle(style);
+                style = styles.bottomTopOpenCellBorder(style);
+                cell.setCellStyle(style);
             }
         }
         try {
@@ -77,8 +105,8 @@ public class ReporterScheduler {
     private int getEmptyCellLocation(int year, int semster, int day, int duration, int startingHour){
         Row row;
         Cell cell;
-        int counter = 0;
         for (int i = 0; i < 6; i++) {
+            int counter = 0;
             for (int j = 0; j < duration; j++) {
                 row = semesterSheets[sheetMap.get(new Pair(year,semster))].getRow(startingHour-8+j);
                 cell = row.getCell(dayMap.get(day)-i);
@@ -149,7 +177,7 @@ public class ReporterScheduler {
                         cell.setCellStyle(bottomBorder);
                     }
                     else {
-                        cell.setCellValue(j+","+k);
+                        //cell.setCellValue(j+","+k);
                     }
                 }
             }
@@ -175,6 +203,11 @@ public class ReporterScheduler {
 
     public static void main(String[] args) {
         ReporterScheduler rs = new ReporterScheduler("test");
+        rs.createReport(1,1,2,"Tomer",2,9);
+        rs.createReport(1,1,2,"Tomer",2,10);
+        rs.createReport(1,1,2,"Tomer",2,9);
+        rs.createReport(1,1,2,"Tomer",2,9);
+        rs.createReport(1,1,2,"Tomer",2,9);
         rs.createReport(1,1,2,"Tomer",2,9);
     }
 }
