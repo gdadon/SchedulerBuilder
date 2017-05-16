@@ -127,14 +127,14 @@ public class BaseSchedulerData {
     }
 
     private boolean isClassExist(int day, int hour, char size){
-        if(!classes.contains(new ClassRoom.ClassRoomBuilder()
+        ClassRoom classRoom = new ClassRoom.ClassRoomBuilder()
                 .setDay(day)
                 .setHour(hour)
                 .setSize(size)
-                .build()
-        )){
-            return false;
+                .build();
+        if(classes.contains(classRoom)){
+            return true;
         }
-        return true;
+        return false;
     }
 }
