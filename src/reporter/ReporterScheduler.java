@@ -64,7 +64,7 @@ public class ReporterScheduler {
             Cell cell;
             int freeHour = getEmptyCellLocation(year, semster, day, duration, startingHour);
             semesterSheets[sheetMap.get(new Pair(year, semster))].addMergedRegion(
-                    new CellRangeAddress(startingHour - 7, startingHour - 7 - duration,
+                    new CellRangeAddress(startingHour - 7, startingHour - 7 + duration,
                             freeHour, freeHour + duration));
             /*row = semesterSheets[i].getRow(0);
             cell = row.getCell(j);
