@@ -5,27 +5,20 @@ import objects.Course;
 import objects.Demand;
 import objects.Teacher;
 
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataBaseMySQLImpl implements DataBase {
+public class DataBaseMySQLImpl extends MySql implements DataBase {
 
     private static DataBaseMySQLImpl instance = new DataBaseMySQLImpl();
 
-    // JDBC driver name and database URL
-    private final String DB_URL = "jdbc:mysql://localhost/";
-    private final String DB = "sbdb";
-
-    //  Database credentials
-    private final String USER = "root";
-    private final String PASS = "123456";
-
-    private Connection connect = null;
-    private Statement statement = null;
-    private PreparedStatement preparedStatement = null;
-    private ResultSet resultSet = null;
+    private DataBaseMySQLImpl(){
+        super();
+    }
 
     public static DataBaseMySQLImpl getInstance(){
         return instance;
