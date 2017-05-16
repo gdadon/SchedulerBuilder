@@ -2,7 +2,10 @@ package reporter;
 
 import java.io.*;
 import java.util.HashMap;
+
+import objects.Lesson;
 import objects.Pair;
+import objects.Scheduler;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -18,13 +21,14 @@ public class ReporterScheduler {
     private HashMap<Pair,Integer> sheetMap;
     private HashMap<Integer,Integer> dayMap;
 
-    public ReporterScheduler(String fileName) {
+    public ReporterScheduler(String fileName, Scheduler scheduler) {
         this.fileName = fileName;
         styles = new XLSStyles();
         this.initScheduleReport();
-        sheetMap = new HashMap<Pair, Integer>();
-        dayMap = new HashMap<Integer,Integer>();
+        sheetMap = new HashMap<>();
+        dayMap = new HashMap<>();
         initHashMaps();
+        createReport(scheduler);
     }
 
     private void initHashMaps(){
@@ -42,63 +46,72 @@ public class ReporterScheduler {
         dayMap.put(6,5);
     }
 
-    public void createReport(/*Scheduler sc*/int year, int semster, int day, String courseName, int duration, int startingHour){
-        try {
-            out = new FileOutputStream("workbook7.xls");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Row row;
-        Cell cell;
-        int freeHour = getEmptyCellLocation(year,semster,day,duration,startingHour);
-        for (int j = 0; j < duration; j++) {
-            row = semesterSheets[sheetMap.get(new Pair(year,semster))].getRow(startingHour-8+j);
-            cell = row.getCell(freeHour);
-            cell.setCellValue(courseName);
-            CellStyle style = workbook.createCellStyle();
-            switch (freeHour%6){
-                case 0:
-                    style = styles.colunm6BackgroundColor(style);
-                    break;
-                case 1:
-                    style = styles.colunm5BackgroundColor(style);
-                    break;
-                case 2:
-                    style = styles.colunm4BackgroundColor(style);
-                    break;
-                case 3:
-                    style = styles.colunm3BackgroundColor(style);
-                    break;
-                case 4:
-                    style = styles.colunm2BackgroundColor(style);
-                    break;
-                case 5:
-                    style = styles.colunm1BackgroundColor(style);
-                    break;
+    private void createReport(Scheduler scheduler){
+        for (Lesson lesson: scheduler.getLessons()) {
+            int year = lesson.getCourse().getYear();
+            int semster = lesson.getCourse().getSemester();
+            int day = lesson.getClassRoom().getDay();
+            int duration = lesson.getCourse().getDuration();
+            int startingHour = lesson.getClassRoom().getHour();
+            String courseName = lesson.getCourse().getName();
+            String teacherName = lesson.getTeacher().getName();
+            try {
+                out = new FileOutputStream(fileName + ".xls");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-            if(j == 0  && duration == 1){
-                style = styles.alignmentCellStyle(style);
-                style = styles.allBorderCellStyle(style);
-                cell.setCellStyle(style);
-            } else if(j == 0 && duration > 1){
-                style = styles.alignmentCellStyle(style);
-                style = styles.bottomOpenCellBorder(style);
-                cell.setCellStyle(style);
-            } else if(j == (duration - 1)){
-                style = styles.alignmentCellStyle(style);
-                style = styles.topOpenCellBorder(style);
-                cell.setCellStyle(style);
-            } else {
-                style = styles.alignmentCellStyle(style);
-                style = styles.bottomTopOpenCellBorder(style);
-                cell.setCellStyle(style);
+            Row row;
+            Cell cell;
+            int freeHour = getEmptyCellLocation(year, semster, day, duration, startingHour);
+            for (int j = 0; j < duration; j++) {
+                row = semesterSheets[sheetMap.get(new Pair(year, semster))].getRow(startingHour - 8 + j);
+                cell = row.getCell(freeHour);
+                cell.setCellValue(courseName+teacherName);
+                CellStyle style = workbook.createCellStyle();
+                switch (freeHour % 6) {
+                    case 0:
+                        style = styles.colunm6BackgroundColor(style);
+                        break;
+                    case 1:
+                        style = styles.colunm5BackgroundColor(style);
+                        break;
+                    case 2:
+                        style = styles.colunm4BackgroundColor(style);
+                        break;
+                    case 3:
+                        style = styles.colunm3BackgroundColor(style);
+                        break;
+                    case 4:
+                        style = styles.colunm2BackgroundColor(style);
+                        break;
+                    case 5:
+                        style = styles.colunm1BackgroundColor(style);
+                        break;
+                }
+                if (j == 0 && duration == 1) {
+                    style = styles.alignmentCellStyle(style);
+                    style = styles.allBorderCellStyle(style);
+                    cell.setCellStyle(style);
+                } else if (j == 0 && duration > 1) {
+                    style = styles.alignmentCellStyle(style);
+                    style = styles.bottomOpenCellBorder(style);
+                    cell.setCellStyle(style);
+                } else if (j == (duration - 1)) {
+                    style = styles.alignmentCellStyle(style);
+                    style = styles.topOpenCellBorder(style);
+                    cell.setCellStyle(style);
+                } else {
+                    style = styles.alignmentCellStyle(style);
+                    style = styles.bottomTopOpenCellBorder(style);
+                    cell.setCellStyle(style);
+                }
             }
-        }
-        try {
-            workbook.write(out);
-            out.close();
-        } catch (IOException e){
-            e.printStackTrace();
+            try {
+                workbook.write(out);
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -123,7 +136,7 @@ public class ReporterScheduler {
 
     private void initScheduleReport(){
         try {
-            out = new FileOutputStream("workbook7.xls");
+            out = new FileOutputStream(fileName+".xls");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -176,9 +189,6 @@ public class ReporterScheduler {
                     } else if (j == 13) {
                         cell.setCellStyle(bottomBorder);
                     }
-                    else {
-                        //cell.setCellValue(j+","+k);
-                    }
                 }
             }
             int x = 5;
@@ -199,15 +209,5 @@ public class ReporterScheduler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        ReporterScheduler rs = new ReporterScheduler("test");
-        rs.createReport(1,1,2,"Tomer",2,9);
-        rs.createReport(1,1,2,"Tomer",2,10);
-        rs.createReport(1,1,2,"Tomer",2,9);
-        rs.createReport(1,1,2,"Tomer",2,9);
-        rs.createReport(1,1,2,"Tomer",2,9);
-        rs.createReport(1,1,2,"Tomer",2,9);
     }
 }
