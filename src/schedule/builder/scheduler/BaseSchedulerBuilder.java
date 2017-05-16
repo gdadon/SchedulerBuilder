@@ -54,7 +54,7 @@ public class BaseSchedulerBuilder {
             rand = (int)(Math.random() * teachersForCourse.size());
             Teacher teacher = teachersForCourse.get(rand);
             // check if teacher had passed quota
-            if(teacher.getRemainingHours() <  course.getDuration()){
+            if(teacher.getRemainingHours() <=  course.getDuration()){
                 // teacher had passed quota - iterate over all teachers and find the one that can teach
                 // if no can teach set the rand teacher that draw first, conflictCounter will resole it later
                 for (Teacher teacher2: teachersForCourse) {

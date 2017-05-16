@@ -22,7 +22,7 @@ public class LocalSearch {
 
     public static Scheduler startLocalSearch(Scheduler scheduler){
 
-        for (int i = 0; i < 50 && isConflicted; i++){
+        for (int i = 0; i < 500 && isConflicted; i++){
             System.out.println("Round " + i);
             scheduler = localSearchRun(scheduler);
         }
@@ -47,9 +47,10 @@ public class LocalSearch {
         ArrayList<Lesson> singleConflicts = ConflictCounter.getSingleCourseConflicts(scheduler);
         int singles = singleConflicts.size();
         // count unavailable classrooms conflicts
-        ArrayList<Lesson> classesConflicts = ConflictCounter.getSingleCourseConflicts(scheduler);
+        ArrayList<Lesson> classesConflicts = ConflictCounter.getConflictedClassrooms(scheduler);
         int classrooms = classesConflicts.size();
         System.out.println("Total conflicts: " + (overLaps + overQuota + demands + singles + classrooms));
+
         if(overLaps > 0){
             System.out.println("Overlaps conflicted: " + overLaps);
             return swapClassesTime(scheduler, conflictedOverLaps);
@@ -74,7 +75,7 @@ public class LocalSearch {
         if(classrooms > 0){
             // draw new classrooms for this lesson
             System.out.println("Classrooms conflicted: " + classrooms);
-            return swapClassesTime(scheduler, classesConflicts);
+            return drawNewClassForLesson(scheduler, classesConflicts);
         }
 
         isConflicted = false;
