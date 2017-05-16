@@ -47,6 +47,7 @@ public class ReporterScheduler {
     }
 
     private void createReport(Scheduler scheduler){
+
         for (Lesson lesson: scheduler.getLessons()) {
             int year = lesson.getCourse().getYear();
             int semster = lesson.getCourse().getSemester();
@@ -64,9 +65,9 @@ public class ReporterScheduler {
             Cell cell;
             int freeHour = getEmptyCellLocation(year, semster, day, duration, startingHour);
             for (int j = 0; j < duration; j++) {
-                row = semesterSheets[sheetMap.get(new Pair(year, semster))].getRow(startingHour - 8 + j);
+                row = semesterSheets[sheetMap.get(new Pair(year, semster))].getRow(startingHour - 7 + j);
                 cell = row.getCell(freeHour);
-                cell.setCellValue(courseName+teacherName);
+                cell.setCellValue(courseName+" "+teacherName);
                 CellStyle style = workbook.createCellStyle();
                 switch (freeHour % 6) {
                     case 0:
@@ -89,19 +90,15 @@ public class ReporterScheduler {
                         break;
                 }
                 if (j == 0 && duration == 1) {
-                    style = styles.alignmentCellStyle(style);
                     style = styles.allBorderCellStyle(style);
                     cell.setCellStyle(style);
                 } else if (j == 0 && duration > 1) {
-                    style = styles.alignmentCellStyle(style);
                     style = styles.bottomOpenCellBorder(style);
                     cell.setCellStyle(style);
                 } else if (j == (duration - 1)) {
-                    style = styles.alignmentCellStyle(style);
                     style = styles.topOpenCellBorder(style);
                     cell.setCellStyle(style);
                 } else {
-                    style = styles.alignmentCellStyle(style);
                     style = styles.bottomTopOpenCellBorder(style);
                     cell.setCellStyle(style);
                 }
@@ -121,7 +118,7 @@ public class ReporterScheduler {
         for (int i = 0; i < 6; i++) {
             int counter = 0;
             for (int j = 0; j < duration; j++) {
-                row = semesterSheets[sheetMap.get(new Pair(year,semster))].getRow(startingHour-8+j);
+                row = semesterSheets[sheetMap.get(new Pair(year,semster))].getRow(startingHour-7+j);
                 cell = row.getCell(dayMap.get(day)-i);
                 if(cell.getStringCellValue().equals("")){
                     counter++;
@@ -152,13 +149,9 @@ public class ReporterScheduler {
         CellStyle bottomBorder = workbook.createCellStyle();
         CellStyle leftBottomBorder = workbook.createCellStyle();
         style = styles.alignmentCellStyle(style);
-        margeStyle = styles.alignmentCellStyle(margeStyle);
         margeStyle = styles.allBorderCellStyle(margeStyle);
         leftBorder = styles.leftBorderCellStyle(leftBorder);
-        leftBorder = styles.alignmentCellStyle(leftBorder);
         bottomBorder = styles.bottomBorderCellStyle(bottomBorder);
-        bottomBorder = styles.alignmentCellStyle(bottomBorder);
-        leftBottomBorder = styles.alignmentCellStyle(leftBottomBorder);
         leftBottomBorder = styles.leftBorderCellStyle(leftBottomBorder);
         leftBottomBorder = styles.bottomBorderCellStyle(leftBottomBorder);
         Row row;
