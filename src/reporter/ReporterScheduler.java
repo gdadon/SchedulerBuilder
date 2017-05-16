@@ -47,7 +47,6 @@ public class ReporterScheduler {
     }
 
     private void createReport(Scheduler scheduler){
-
         for (Lesson lesson: scheduler.getLessons()) {
             int year = lesson.getCourse().getYear();
             int semster = lesson.getCourse().getSemester();
@@ -61,10 +60,24 @@ public class ReporterScheduler {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            Row row;
+            Row row = null;
             Cell cell;
             int freeHour = getEmptyCellLocation(year, semster, day, duration, startingHour);
-            for (int j = 0; j < duration; j++) {
+            semesterSheets[sheetMap.get(new Pair(year, semster))].addMergedRegion(
+                    new CellRangeAddress(startingHour - 7, startingHour - 7 - duration,
+                            freeHour, freeHour + duration));
+            /*row = semesterSheets[i].getRow(0);
+            cell = row.getCell(j);
+            cell.setCellValue(days[x--]);*/
+            cell = row.getCell(freeHour);
+            CellStyle style = workbook.createCellStyle();
+            style = styles.allBorderCellStyle(style);
+            cell.setCellStyle(style);
+
+
+
+
+            /*for (int j = 0; j < duration; j++) {
                 row = semesterSheets[sheetMap.get(new Pair(year, semster))].getRow(startingHour - 7 + j);
                 cell = row.getCell(freeHour);
                 cell.setCellValue(courseName+" "+teacherName);
@@ -102,7 +115,7 @@ public class ReporterScheduler {
                     style = styles.bottomTopOpenCellBorder(style);
                     cell.setCellStyle(style);
                 }
-            }
+            }*/
             try {
                 workbook.write(out);
                 out.close();
@@ -125,6 +138,7 @@ public class ReporterScheduler {
                 }
             }
             if (counter == duration){
+                //mergeCell
                 return dayMap.get(day)-i;
             }
         }
