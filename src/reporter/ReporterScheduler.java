@@ -164,7 +164,7 @@ public class ReporterScheduler {
         Row row;
         Cell cell;
         for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 14; j++) {
+            for (int j = 0; j < 15; j++) {
                 row = semesterSheets[i].getRow(j);
                 if(row == null) {
                     row = semesterSheets[i].createRow(j);
@@ -178,15 +178,15 @@ public class ReporterScheduler {
                         if(j == 0) {
                             cell.setCellValue("שעה / יום");
                         } else {
-                            cell.setCellValue((j+8)+":00");
+                            cell.setCellValue((j+7)+":00");
                         }
                     } else if (k % 6 == 0) {
-                        if(j == 13){
+                        if(j == 14){
                             cell.setCellStyle(leftBottomBorder);
                         } else {
                             cell.setCellStyle(leftBorder);
                         }
-                    } else if (j == 13) {
+                    } else if (j == 14) {
                         cell.setCellStyle(bottomBorder);
                     }
                 }
