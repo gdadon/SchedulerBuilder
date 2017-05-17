@@ -18,11 +18,13 @@ public class BaseSchedulerBuilder {
      */
 
     private int latestLessonTime = 15;
+    private int earlierLessonTime = 9;
 
     private BaseSchedulerData data;
 
     public BaseSchedulerBuilder(){
         data = BaseSchedulerData.getInstance();
+        data.reset();
     }
 
     public Scheduler buildBaseScheduler(){
@@ -38,13 +40,17 @@ public class BaseSchedulerBuilder {
 
             // select class for this course - class should be 17:00 latest
             boolean isLateClass = true;
+            boolean isEarlyClass = false;
             int rand;
             ClassRoom classRoom = null;
-            while(isLateClass){
+            while(isLateClass && !isEarlyClass){
                 // draw random class for lesson -> class must be available during all lesson
                 classRoom = data.getClassForLesson(course);
                 if(classRoom.getHour() <= latestLessonTime){
                     isLateClass = false;
+                }
+                if(classRoom.getHour() < earlierLessonTime){
+                    isEarlyClass = true;
                 }
                 //classes.remove(rand);
             }
