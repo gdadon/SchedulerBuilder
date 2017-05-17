@@ -193,19 +193,14 @@ public class ConflictCounter {
     }
 
 
-    public static int conflictCount(Scheduler scheduler){
+    public static int countConflict(Scheduler scheduler){
         int total = 0;
 
         total += getConflictedClassrooms(scheduler).size();
-        System.out.println(total);
         total += getDemandsConflicts(scheduler).size();
-        System.out.println(total);
         total += getOverLapsLessons(scheduler).size();
-        System.out.println(total);
         total += getOverQuotaTeachers(scheduler).size();
-        System.out.println(total);
         total += getSingleCourseConflicts(scheduler).size();
-        System.out.println(total);
 
         return total;
     }
