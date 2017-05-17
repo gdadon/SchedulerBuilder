@@ -45,6 +45,10 @@ public class BaseSchedulerData {
         teachers = dao.getAllTeachersCourse();
     }
 
+    public static void reset(){
+        instance = new BaseSchedulerData();
+    }
+
     public static ArrayList<Teacher> getTeacherForCourse(Course course){
         ArrayList<Integer> IDs = dao.getTeacherForCourse(course.getName());
         ArrayList<Teacher> teachers = getTeachersByIDs(IDs);
@@ -126,7 +130,7 @@ public class BaseSchedulerData {
         return classRoom;
     }
 
-    private boolean isClassExist(int day, int hour, char size){
+    public boolean isClassExist(int day, int hour, char size){
         ClassRoom classRoom = new ClassRoom.ClassRoomBuilder()
                 .setDay(day)
                 .setHour(hour)
