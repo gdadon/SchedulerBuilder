@@ -1,10 +1,10 @@
 package schedule.builder.algorithm;
 
 import objects.Lesson;
-import objects.Course;
+import objects.Scheduler;
 
-import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by Liat on 02-May-17.
@@ -12,18 +12,19 @@ import java.util.SortedSet;
 
 public class Ranking {
 
-    public static int getOptimizationScore(SortedSet<Lesson> scheduler){
+    public static int getOptimizationScore(Scheduler scheduler){
         int optimizationScore=100;
-        for (Lesson l: scheduler){
-            optimizationScore=checkLessonScore(l, scheduler, optimizationScore);
+        for (Lesson l: scheduler.getLessons()){
+            SortedSet<Lesson> lessons = new TreeSet<>(scheduler.getLessons());
+            optimizationScore=checkLessonScore(l, lessons, optimizationScore);
         }
         return optimizationScore;
     }
 
     public static int checkLessonScore(Lesson lesson, SortedSet<Lesson> scheduler, int optimizationScore){
-        if (isDifficultAndLateHour(lesson)){
-            optimizationScore-=2;
-        }
+//        if (isDifficultAndLateHour(lesson)){
+//            optimizationScore-=2;
+//        }
 
         if(isOnFriday(lesson)){
             optimizationScore--;
