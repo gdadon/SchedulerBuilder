@@ -3,8 +3,7 @@ package objects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Guy on 29/03/2017.
@@ -44,18 +43,49 @@ public class Scheduler implements Serializable{
         teacherCourseMap.get(lesson.getTeacher().getID()).remove(lesson);
     }
 
-    public Set<Lesson> getLessonByDay(int day){
-        HashSet<Lesson> lessons = new HashSet<>();
+    public TreeSet<Lesson> getLessonByDay(int day, int semester, int year){
+        TreeSet<Lesson> lessons = new TreeSet<>();
         for (Lesson l: this.scheduler) {
-            if(l.getClassRoom().getDay() == day){
+            if(l.getClassRoom().getDay() == day
+                    && l.getCourse().getSemester() == semester
+                    && l.getCourse().getYear() == year){
                 lessons.add(l);
             }
         }
         return lessons;
     }
 
-    public void setTeacherCourseMap(HashMap<Integer, ArrayList<Lesson>>  map){
-        this.teacherCourseMap = map;
+    public ArrayList<Lesson> getFirstLessonOfDay(int day, int semester, int year){
+        ArrayList<Lesson> lessonsToRet = new ArrayList<>();
+        TreeSet<Lesson> lessons = getLessonByDay(day, semester, year);
+        if(lessons.size() == 0){
+            return lessonsToRet;
+        }
+        // pull the first lesson and remove it from set
+        Lesson lesson = lessons.first();
+        lessons.remove(lesson);
+        // add lesson to return arrayList
+        lessonsToRet.add(lesson);
+        // pull all other lessons until other lesson start time has shown
+        Lesson lesson1 = null;
+        while(lessons.size() > 0 &&((lesson1 = lessons.first()) != null)){
+            // if same hour add to arrayList, otherwise break
+            if(lesson.getClassRoom().getHour() != lesson1.getClassRoom().getHour()){
+                break;
+            }
+            lessonsToRet.add(lesson1);
+            lessons.remove(lesson1);
+        }
+        return lessonsToRet;
+    }
+
+    public Lesson getLessonByCode(String code){
+        for (Lesson lesson: scheduler) {
+            if(lesson.getCourse().getCode().equals(code)){
+                return lesson;
+            }
+        }
+        return null;
     }
 
     public HashMap<Integer, ArrayList<Lesson>>  getTeacherCourseMap(){
