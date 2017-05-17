@@ -23,12 +23,13 @@ public class LocalSearch {
     public static Scheduler startLocalSearch(Scheduler scheduler){
 
         for (int i = 0; i < 500 && isConflicted; i++){
-            System.out.println("Round " + i);
+//            System.out.println("Round " + i);
             scheduler = localSearchRun(scheduler);
         }
         if(isConflicted){
             System.out.println("Scheduler still have conflicts");
         }
+        isConflicted = true;
         return scheduler;
     }
 
@@ -49,26 +50,26 @@ public class LocalSearch {
         // count unavailable classrooms conflicts
         ArrayList<Lesson> classesConflicts = ConflictCounter.getConflictedClassrooms(scheduler);
         int classrooms = classesConflicts.size();
-        System.out.println("Total conflicts: " + (overLaps + overQuota + demands + singles + classrooms));
+//        System.out.println("Total conflicts: " + (overLaps + overQuota + demands + singles + classrooms));
 
         if(overLaps > 0){
-            System.out.println("Overlaps conflicted: " + overLaps);
+//            System.out.println("Overlaps conflicted: " + overLaps);
             return swapClassesTime(scheduler, conflictedOverLaps);
         }
 
         if(overQuota > 0){
             // change course's teacher
-            System.out.println("Over Quota conflicted: " + overQuota);
+//            System.out.println("Over Quota conflicted: " + overQuota);
             return swapTeacher(scheduler, conflictedOverQuota);
         }
 
         if(demands > 0){
-            System.out.println("Demands conflicted: " + demands);
+//            System.out.println("Demands conflicted: " + demands);
             return swapClassesTime(scheduler, conflictedDemands);
         }
 
         if(singles > 0){
-            System.out.println("Single show conflicted: " + singles);
+//            System.out.println("Single show conflicted: " + singles);
             return swapClassesTime(scheduler, singleConflicts);
         }
 
@@ -96,7 +97,7 @@ public class LocalSearch {
         int rand = (int)(Math.random() * conflictedLessons.size());
         Lesson conflictLesson = conflictedLessons.get(rand);
         scheduler.removeLesson(conflictLesson);
-        System.out.println("Selected conflict lesson to swap: " + conflictLesson);
+//        System.out.println("Selected conflict lesson to swap: " + conflictLesson);
         int teacherID = conflictLesson.getTeacher().getID();
         // draw random teacher
         ArrayList id = new ArrayList(scheduler.getTeacherCourseMap().keySet());
@@ -111,7 +112,7 @@ public class LocalSearch {
         rand = (int)(Math.random() * lessons.size());
         Lesson randLesson = lessons.get(rand);
         scheduler.removeLesson(randLesson);
-        System.out.println("Selected rand lesson to swap: " + randLesson);
+//        System.out.println("Selected rand lesson to swap: " + randLesson);
         ClassRoom classToSwap = conflictLesson.getClassRoom();
         conflictLesson.setClassRoom(randLesson.getClassRoom());
         randLesson.setClassRoom(classToSwap);
