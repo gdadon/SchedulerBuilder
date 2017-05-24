@@ -41,7 +41,7 @@ public class DBUsersMySqlImpl extends MySql implements DBUsers {
             if (connect != null) {
                 connect.close();
             }
-            System.out.println("Connection to DB closed.");
+//            System.out.println("Connection to DB closed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,9 +58,6 @@ public class DBUsersMySqlImpl extends MySql implements DBUsers {
             while(resultSet.next()){
                 if(resultSet.getString("password").equals(password)){
                     privilege = resultSet.getInt("admin");
-                }
-                else{
-                    return -2;
                 }
             }
         } catch (ClassNotFoundException e) {
