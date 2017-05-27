@@ -92,8 +92,8 @@ public class ConflictCounter {
                         lesson2.getCourse().getExpectedClasses() == 1){
                     // lessons have 1 show, checks if overlaps
                     if(isLessonOverlap(lesson1, lesson2)){
-                        lessons.add(lesson1);
-                        lessons.add(lesson2);
+                        conflicted.add(lesson1);
+                        conflicted.add(lesson2);
                     }
                 }
             }
