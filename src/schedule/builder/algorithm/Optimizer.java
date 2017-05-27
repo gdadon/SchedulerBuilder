@@ -129,7 +129,6 @@ public class Optimizer {
 
         if(ConflictCounter.countConflict(scheduler) > 0){
             lesson.setClassRoom(oldClass);
-            System.out.println("Cant move lesson due to conflict");
             return false;
         }
 
