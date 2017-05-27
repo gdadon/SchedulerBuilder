@@ -43,6 +43,8 @@ public class BaseSchedulerData {
         classes = dao.getAllClassRooms();
         // get all courses
         teachers = dao.getAllTeachersCourse();
+        // generate random classes array
+//        generateClassArray();
     }
 
     public static void reset(){
@@ -97,13 +99,14 @@ public class BaseSchedulerData {
         int day = classRoom.getDay();
         char size = classRoom.getSize();
         int finalHour = lesson.getCourse().getDuration() + startHour;
+        boolean occupied = false;
         for (int i = startHour + 1; i < finalHour; i++){
-            if(instance.isClassExist(day, i, size)){
+            if(!instance.isClassExist(day, i, size)){
                 // classrooms doesn't free -> conflict
-                return false;
+                occupied = true;
             }
         }
-        return true;
+        return occupied;
     }
 
     /**
@@ -140,5 +143,32 @@ public class BaseSchedulerData {
             return true;
         }
         return false;
+    }
+
+    /**
+     * This method should generate classes array with change probability
+     */
+    private static void generateClassArray(){
+        ArrayList<ClassRoom> newClasses = new ArrayList<>();
+        int early = 11;
+        int mid = 15;
+
+        for(ClassRoom clas: classes){
+            if(clas.getHour() <= early){
+                // class should have better chance to be pulled
+                for(int i =0; i < 2; i++){
+                    newClasses.add(clas);
+                }
+            }
+            else if(clas.getHour() <= mid){
+                for(int i =0; i < 1; i++){
+                    newClasses.add(clas);
+                }
+            }
+            else{
+                newClasses.add(clas);
+            }
+        }
+        classes = newClasses;
     }
 }
