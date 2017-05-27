@@ -30,6 +30,7 @@ public class ReporterScheduler {
         sheetMap = new HashMap<>();
         dayMap = new HashMap<>();
         initHashMaps();
+        System.out.println("Start saving schedule report to: " + fileName);
         createReport(scheduler);
     }
 
@@ -40,24 +41,27 @@ public class ReporterScheduler {
         sheetMap.put((new Pair(2,2)),3);
         sheetMap.put((new Pair(3,1)),4);
         sheetMap.put((new Pair(3,2)),5);
-        dayMap.put(1,35);
-        dayMap.put(2,29);
-        dayMap.put(3,23);
-        dayMap.put(4,17);
-        dayMap.put(5,11);
-        dayMap.put(6,5);
+        dayMap.put(1,59);
+        dayMap.put(2,49);
+        dayMap.put(3,39);
+        dayMap.put(4,29);
+        dayMap.put(5,19);
+        dayMap.put(6,9);
     }
 
     private void createReport(Scheduler scheduler){
         CellStyle style = workbook.createCellStyle();
         CellStyle style1 = workbook.createCellStyle();
         CellStyle style2 = workbook.createCellStyle();
+        CellStyle style3 = workbook.createCellStyle();
         style = styles.colunm1BackgroundColor(style);
         style1 = styles.colunm1BackgroundColor(style1);
         style2 = styles.colunm1BackgroundColor(style2);
+        style3 = styles.colunm1BackgroundColor(style3);
         CellStyle bottomOpenBorder = styles.bottomOpenCellBorder(style);
         CellStyle bottomTopOpenBorder = styles.bottomTopOpenCellBorder(style1);
         CellStyle topOpenBorder = styles.topOpenCellBorder(style2);
+        CellStyle boxBorder = styles.allBorderCellStyle(style3);
         for (Lesson lesson: scheduler.getLessons()) {
             int year = lesson.getCourse().getYear();
             int semster = lesson.getCourse().getSemester();
@@ -102,7 +106,7 @@ public class ReporterScheduler {
                 }*/
                 if (j == 0 && duration == 1) {
                     //style = styles.allBorderCellStyle(style);
-                    //cell.setCellStyle(style);
+                    cell.setCellStyle(boxBorder);
                 } else if (j == 0 && duration > 1) {
                     //style = styles.bottomOpenCellBorder(style);
                     cell.setCellStyle(bottomOpenBorder);
@@ -126,7 +130,7 @@ public class ReporterScheduler {
     private int getEmptyCellLocation(int year, int semster, int day, int duration, int startingHour){
         Row row;
         Cell cell;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 10; i++) {
             int counter = 0;
             for (int j = 0; j < duration; j++) {
                 row = semesterSheets[sheetMap.get(new Pair(year,semster))].getRow(startingHour-7+j);
@@ -136,25 +140,23 @@ public class ReporterScheduler {
                 }
             }
             if (counter == duration){
-                //mergeCell
                 return dayMap.get(day)-i;
             }
         }
         return -1;
     }
 
-    private void initScheduleReport(){
+    private void initScheduleReport() {
         try {
-            out = new FileOutputStream(fileName+".xls");
+            out = new FileOutputStream(fileName + ".xls");
         } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-            System.out.println("File not found, try close file and run again");
+            e.printStackTrace();
         }
         workbook = new HSSFWorkbook();
         semesterSheets = new Sheet[6];
-        for(int i = 0 ; i < 6 ; i++){
+        for (int i = 0; i < 6; i++) {
             semesterSheets[i] = workbook.createSheet();
-            workbook.setSheetName(i, "Year " + ((i/2)+1) + " semester " + ((i%2)+1));
+            workbook.setSheetName(i, "Year " + ((i / 2) + 1) + " semester " + ((i % 2) + 1));
         }
         CellStyle style = workbook.createCellStyle();
         CellStyle margeStyle = workbook.createCellStyle();
@@ -172,22 +174,22 @@ public class ReporterScheduler {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 15; j++) {
                 row = semesterSheets[i].getRow(j);
-                if(row == null) {
+                if (row == null) {
                     row = semesterSheets[i].createRow(j);
                 }
-                for (int k = 0; k < 37; k++) {
+                for (int k = 0; k < 61; k++) {
                     cell = row.createCell(k);
                     cell.setCellType(CellType.STRING);
                     cell.setCellStyle(style);
-                    if (k == 36){
+                    if (k == 60) {
                         cell.setCellStyle(margeStyle);
-                        if(j == 0) {
+                        if (j == 0) {
                             cell.setCellValue("שעה / יום");
                         } else {
-                            cell.setCellValue((j+7)+":00");
+                            cell.setCellValue((j + 7) + ":00");
                         }
-                    } else if (k % 6 == 0) {
-                        if(j == 14){
+                    } else if (k % 10 == 0) {
+                        if (j == 14) {
                             cell.setCellStyle(leftBottomBorder);
                         } else {
                             cell.setCellStyle(leftBorder);
@@ -198,12 +200,12 @@ public class ReporterScheduler {
                 }
             }
             int x = 5;
-            for (int j = 0; j < 36 ; j+=6) {
-                semesterSheets[i].addMergedRegion(new CellRangeAddress(0, 0, j, j+5));
+            for (int j = 0; j < 60; j += 10) {
+                semesterSheets[i].addMergedRegion(new CellRangeAddress(0, 0, j, j + 9));
                 row = semesterSheets[i].getRow(0);
                 cell = row.getCell(j);
                 cell.setCellValue(days[x--]);
-                for (int k = j; k < j+6; k++) {
+                for (int k = j; k < j + 10; k++) {
                     cell = row.getCell(k);
                     cell.setCellStyle(margeStyle);
                 }
