@@ -76,6 +76,11 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
 
     @Override
     public void dropDatabase(String dbName) throws SQLException {
+        try {
+            connect();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         statement = connect.createStatement();
         String sql = "DROP DATABASE " + dbName;
         statement.executeUpdate(sql);
