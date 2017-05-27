@@ -23,11 +23,10 @@ public class LocalSearch {
     public static Scheduler startLocalSearch(Scheduler scheduler){
 
         for (int i = 0; i < 500 && isConflicted; i++){
-//            System.out.println("Round " + i);
             scheduler = localSearchRun(scheduler);
         }
         if(isConflicted){
-            System.out.println("Scheduler still have conflicts");
+//            System.out.println("Scheduler still have conflicts");
         }
         isConflicted = true;
         return scheduler;
@@ -74,8 +73,8 @@ public class LocalSearch {
         }
 
         if(classrooms > 0){
-            // draw new classrooms for this lesson
-            System.out.println("Classrooms conflicted: " + classrooms);
+//             draw new classrooms for this lesson
+//            System.out.println("Classrooms conflicted: " + classrooms);
             return drawNewClassForLesson(scheduler, classesConflicts);
         }
 
@@ -135,6 +134,7 @@ public class LocalSearch {
         // select teacher
         int rand = (int)(Math.random() * conflictedTeachers.size());
         Teacher quotaTeacher = conflictedTeachers.get(rand);
+//        System.out.println("Selected Teacher: " + quotaTeacher.getName() + " Over Quota: " + quotaTeacher.getRemainingHours());
         // select course
         ArrayList<Lesson> lessons = scheduler.getTeacherCourseMap().get(quotaTeacher.getID());
         rand = (int)(Math.random() * lessons.size());
@@ -151,7 +151,8 @@ public class LocalSearch {
             rand = (int)(Math.random() * ids.size());
             int randTeacherId = ids.get(rand);
             randTeacher = scheduler.getTeacherCourseMap().get(randTeacherId).get(0).getTeacher();
-            if(randTeacher.getRemainingHours() > lesson.getCourse().getDuration()){
+//            System.out.println("Swap selected teacher: " + randTeacher.getName() + " Remaining hours: " + randTeacher.getRemainingHours());
+            if(randTeacher.getRemainingHours() >= lesson.getCourse().getDuration()){
                 isSelected = true;
                 break;
             }
