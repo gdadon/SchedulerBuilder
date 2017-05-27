@@ -5,6 +5,8 @@ import parser.CourseParserReport;
 import parser.DemandReportParser;
 import parser.LectureCoursesParser;
 
+import java.sql.SQLException;
+
 /**
  * Created by Guy on 22/03/2017.
  */
@@ -17,6 +19,15 @@ public class DatabaseUtil {
         //create the scheduler db
         dao.createDB();
         System.out.println("Succeeded creating DB.");
+    }
+
+    public static void dropDataBase(String dbName){
+        try {
+            dao.dropDatabase(dbName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Succeeded drop DB " + dbName);
     }
 
     public static void fillDB(String folderName){
