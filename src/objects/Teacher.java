@@ -14,7 +14,7 @@ public class Teacher implements Serializable{
     private ArrayList<Demand> demands;
     private ArrayList<String> courses;
 
-    private final int DEFAULT_QUOTA = 8;
+    private final int DEFAULT_QUOTA = 16;
 
     private Teacher(TeacherBuilder builder) {
         this.quotaHours = DEFAULT_QUOTA;
