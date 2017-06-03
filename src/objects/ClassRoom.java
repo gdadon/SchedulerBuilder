@@ -2,7 +2,7 @@ package objects;
 
 import java.io.Serializable;
 
-public class ClassRoom implements Serializable{
+public class ClassRoom implements Serializable, Comparable{
 
     private static final long serialVersionUID = 0L;
     private int day;
@@ -26,6 +26,8 @@ public class ClassRoom implements Serializable{
     public int getHour() {
         return hour;
     }
+
+
 
     @Override
     public String toString() {
@@ -54,6 +56,25 @@ public class ClassRoom implements Serializable{
         result = 31 * result + (int) size;
         result = 31 * result + hour;
         return result;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        ClassRoom other = (ClassRoom) o;
+        int compare = 0;
+
+        compare = this.day - other.day;
+        if(compare != 0){
+            return compare;
+        }
+
+        compare = this.hour - other.hour;
+        if(compare != 0){
+            return compare;
+        }
+
+        compare = (int) this.size - other.size;
+        return compare;
     }
 
     public static class ClassRoomBuilder {
