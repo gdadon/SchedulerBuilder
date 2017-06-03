@@ -371,10 +371,29 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             createTeachersCoursesTable();
             createDemandTable();
             createClassesTable();
+
+            //create users table
+            createUsersTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         closeConnection();
+    }
+
+    private void createUsersTable() {
+        String sqlCommand = "CREATE TABLE users(" +
+                "id varchar(20) primary key," +
+                "name varchar(100)," +
+                "password varchar(20)," +
+                "admin int(1) DEFAULT 0" +
+                ");";
+        try {
+            runCommand(sqlCommand);
+            System.out.println("Succeed create Classes table");
+        } catch (SQLException e) {
+            System.out.println("Failed to create Classes table");
+            e.printStackTrace();
+        }
     }
 
     public void insertToTableCourse(HashMap<String, Course> courses) {
