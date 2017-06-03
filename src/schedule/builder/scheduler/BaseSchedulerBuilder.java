@@ -29,7 +29,7 @@ public class BaseSchedulerBuilder {
 
     public Scheduler buildBaseScheduler(){
         Scheduler scheduler = new Scheduler();
-        // combine Lesson - <Teacher, Class, Course>
+        // combine Lesson - <Teacher, Class, Course, Practice>
         while(data.courses.size() > 0){
             // select random course
             Random generator = new Random();
@@ -72,6 +72,20 @@ public class BaseSchedulerBuilder {
             }
             // reduce the selected teacher quota hours
             teacher.reduceHour(course.getDuration());
+
+            // ---------------------------------------------------------
+            // add practice for this course
+
+            // find matching practice
+
+            // select matching teacher
+
+            // select classRoom
+
+            // build practice
+
+            // ---------------------------------------------------------
+
             //build Lesson and add to scheduler
             Lesson lesson = new Lesson.LessonBuilder().setTeacher(teacher)
                     .setCourse(course)
@@ -81,5 +95,7 @@ public class BaseSchedulerBuilder {
         }
         return scheduler;
     }
+
+    private void addPractices(Course course){}
 
 }
