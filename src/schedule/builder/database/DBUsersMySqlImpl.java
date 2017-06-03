@@ -1,5 +1,7 @@
 package schedule.builder.database;
 
+import objects.UserInfo;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -68,4 +70,28 @@ public class DBUsersMySqlImpl extends MySql implements DBUsers {
         closeConnection();
         return privilege;
     }
+
+    public UserInfo findUser(String id, String password){
+        UserInfo user = null;
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sqlQuery = "SELECT * FROM users WHERE id='"+ id +"'";
+            resultSet = statement.executeQuery(sqlQuery);
+            while(resultSet.next()){
+                if(resultSet.getString("password").equals(password)){
+                    String name = resultSet.getString("name");
+                    int privilege = resultSet.getInt("admin");
+                    user = new UserInfo(id, name, privilege);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        return user;
+    }
+
 }
