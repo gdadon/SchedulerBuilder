@@ -50,40 +50,41 @@ public class ReporterScheduler {
     }
 
     private void createReport(Scheduler scheduler){
-        CellStyle style = workbook.createCellStyle();
-        CellStyle style1 = workbook.createCellStyle();
-        CellStyle style2 = workbook.createCellStyle();
-        CellStyle style3 = workbook.createCellStyle();
-        style = styles.colunm1BackgroundColor(style);
-        style1 = styles.colunm1BackgroundColor(style1);
-        style2 = styles.colunm1BackgroundColor(style2);
-        style3 = styles.colunm1BackgroundColor(style3);
-        CellStyle bottomOpenBorder = styles.bottomOpenCellBorder(style);
-        CellStyle bottomTopOpenBorder = styles.bottomTopOpenCellBorder(style1);
-        CellStyle topOpenBorder = styles.topOpenCellBorder(style2);
-        CellStyle boxBorder = styles.allBorderCellStyle(style3);
-        for (Lesson lesson: scheduler.getLessons()) {
-            int year = lesson.getCourse().getYear();
-            int semster = lesson.getCourse().getSemester();
-            int day = lesson.getClassRoom().getDay();
-            int duration = lesson.getCourse().getDuration();
-            int startingHour = lesson.getClassRoom().getHour();
-            String courseName = lesson.getCourse().getName();
-            String teacherName = lesson.getTeacher().getName();
-            try {
-                out = new FileOutputStream(fileName + ".xls");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Row row;
-            Cell cell;
-            int freeHour = getEmptyCellLocation(year, semster, day, duration, startingHour);
-            for (int j = 0; j < duration; j++) {
-                row = semesterSheets[sheetMap.get(new Pair(year, semster))].getRow(startingHour - 7 + j);
-                cell = row.getCell(freeHour);
-                cell.setCellValue(courseName+" - "+teacherName);
-                cell.setCellStyle(style);
-                semesterSheets[sheetMap.get(new Pair(year, semster))].autoSizeColumn(cell.getColumnIndex());
+        try {
+            CellStyle style = workbook.createCellStyle();
+            CellStyle style1 = workbook.createCellStyle();
+            CellStyle style2 = workbook.createCellStyle();
+            CellStyle style3 = workbook.createCellStyle();
+            style = styles.colunm1BackgroundColor(style);
+            style1 = styles.colunm1BackgroundColor(style1);
+            style2 = styles.colunm1BackgroundColor(style2);
+            style3 = styles.colunm1BackgroundColor(style3);
+            CellStyle bottomOpenBorder = styles.bottomOpenCellBorder(style);
+            CellStyle bottomTopOpenBorder = styles.bottomTopOpenCellBorder(style1);
+            CellStyle topOpenBorder = styles.topOpenCellBorder(style2);
+            CellStyle boxBorder = styles.allBorderCellStyle(style3);
+            for (Lesson lesson : scheduler.getLessons()) {
+                int year = lesson.getCourse().getYear();
+                int semster = lesson.getCourse().getSemester();
+                int day = lesson.getClassRoom().getDay();
+                int duration = lesson.getCourse().getDuration();
+                int startingHour = lesson.getClassRoom().getHour();
+                String courseName = lesson.getCourse().getName();
+                String teacherName = lesson.getTeacher().getName();
+                try {
+                    out = new FileOutputStream(fileName + ".xls");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Row row;
+                Cell cell;
+                int freeHour = getEmptyCellLocation(year, semster, day, duration, startingHour);
+                for (int j = 0; j < duration; j++) {
+                    row = semesterSheets[sheetMap.get(new Pair(year, semster))].getRow(startingHour - 7 + j);
+                    cell = row.getCell(freeHour);
+                    cell.setCellValue(courseName + " - " + teacherName);
+                    cell.setCellStyle(style);
+                    semesterSheets[sheetMap.get(new Pair(year, semster))].autoSizeColumn(cell.getColumnIndex());
                 /*switch (freeHour % 6) {
                     case 0:
                         style = styles.colunm6BackgroundColor(style);
@@ -104,26 +105,30 @@ public class ReporterScheduler {
                         style = styles.colunm1BackgroundColor(style);
                         break;
                 }*/
-                if (j == 0 && duration == 1) {
-                    //style = styles.allBorderCellStyle(style);
-                    cell.setCellStyle(boxBorder);
-                } else if (j == 0 && duration > 1) {
-                    //style = styles.bottomOpenCellBorder(style);
-                    cell.setCellStyle(bottomOpenBorder);
-                } else if (j == (duration - 1)) {
-                    //style = styles.topOpenCellBorder(style);
-                    cell.setCellStyle(topOpenBorder);
-                } else {
-                    //style = styles.bottomTopOpenCellBorder(style);
-                    cell.setCellStyle(bottomTopOpenBorder);
+                    if (j == 0 && duration == 1) {
+                        //style = styles.allBorderCellStyle(style);
+                        cell.setCellStyle(boxBorder);
+                    } else if (j == 0 && duration > 1) {
+                        //style = styles.bottomOpenCellBorder(style);
+                        cell.setCellStyle(bottomOpenBorder);
+                    } else if (j == (duration - 1)) {
+                        //style = styles.topOpenCellBorder(style);
+                        cell.setCellStyle(topOpenBorder);
+                    } else {
+                        //style = styles.bottomTopOpenCellBorder(style);
+                        cell.setCellStyle(bottomTopOpenBorder);
+                    }
+                }
+                try {
+                    workbook.write(out);
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            try {
-                workbook.write(out);
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        }catch (Exception e){
+            System.out.println("Unhandled Exception " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
