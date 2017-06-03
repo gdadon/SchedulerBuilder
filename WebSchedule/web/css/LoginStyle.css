@@ -1,0 +1,110 @@
+html {
+    background: url(../images/background.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+body {
+    margin: 0;
+}
+
+.container{
+    width: 500px;
+    height: 330px;
+    text-align: center;
+    background-color: rgba(225, 230, 239, 0.7);
+    border-radius: 24px;
+    margin: 150px auto 0;
+}
+
+.container img{
+    width: 120px;
+    height: 120px;
+    margin-top: -60px;
+}
+
+input[type="text"], input[type="password"] {
+    height: 45px;
+    width: 300px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding-left: 20px;
+}
+
+form-input:before{
+    background: url(../images/man.png);
+    content: "\f007";
+    position: absolute;
+    font-family: "FontAwesome";
+    font-size: 30px;
+    color: #985986;
+    padding-top: 5px;
+    font-size: 35px;
+}
+
+.btn-login {
+    display: inline-block;
+    border:1px solid #4DB6EB;
+    color: #317596;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    font-family: Verdana;
+    font-size: 16px;
+    padding: 12px 25px;
+    box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+    -moz-box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+    -webkit-box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+    text-shadow: 1px 2px 1px #C1E2FB;
+    background-image: linear-gradient(to top, #4FBCF2, #53C6FF);
+    background-color: #52C3FB;
+}
+
+.btn-login:hover{
+    border:1px solid #46D4D9;
+    color: #317596;
+    box-shadow: inset 0px 2px 9px 0 #3989B0;
+    -moz-box-shadow: inset 0px 2px 9px 0 #3989B0;
+    -webkit-box-shadow: inset 0px 2px 9px 0 #3989B0;
+    background-color: #52C3FB;
+}
+
+a {
+    color: black;
+    font-family: sans-serif;
+}
+
+a:hover {
+    color: #70a3f4;
+    font-weight: bold;
+}
+
+#error {
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px;
+}
+
+footer {
+    margin: 0;
+}
+
+footer p {
+    float: left;
+    margin-left: 10px;
+    margin-top: 120px;
+    color: black;
+    font-family: sans-serif;
+}
+
+footer-text {
+    color: black;
+}
+
+footer-text:hover {
+    color: blue;
+}

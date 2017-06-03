@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ScheduleBuilder.iml" filepath="$PROJECT_DIR$/ScheduleBuilder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WebSchedule/WebSchedule.iml" filepath="$PROJECT_DIR$/WebSchedule/WebSchedule.iml" />
     </modules>
   </component>
 </project>
