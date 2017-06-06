@@ -1,9 +1,6 @@
 package schedule.builder.database;
 
-import objects.ClassRoom;
-import objects.Course;
-import objects.Demand;
-import objects.Teacher;
+import objects.*;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -48,5 +45,7 @@ public interface DataBase {
     Teacher getTeacherByName(String teacherName);
 
     ArrayList<Integer> getTeacherForCourse(String courseName);
+
+    void addDemand(String id, int day, int start, int end, String reason, Status status) throws SQLException;
 
 }
