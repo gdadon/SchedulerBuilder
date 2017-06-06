@@ -1,9 +1,6 @@
 package schedule.builder.database;
 
-import objects.ClassRoom;
-import objects.Course;
-import objects.Demand;
-import objects.Teacher;
+import objects.*;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -172,7 +169,6 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
                 Demand d = new Demand.DemandBuilder().setDay(resultSet.getInt("day")).
                         setStart(resultSet.getInt("startHour")).
                         setEnd(resultSet.getInt("endHour")).
-                        setTotal(resultSet.getInt("totalHours")).
                         setReason(resultSet.getString("cause")).
                         build();
                 demands.put(resultSet.getInt("id"), d);
@@ -240,11 +236,22 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             resultSet = statement.executeQuery(sqlQuery);
             while(resultSet.next()){
                 if(resultSet.getInt("id") == Integer.parseInt(teacherID)){
+                    Status stat = Status.PENDING;
+                    switch(resultSet.getInt("status")){
+                        case 0:
+                            stat = Status.PENDING;
+                            break;
+                        case 1:
+                            stat = Status.ACCEPT;
+                            break;
+                        case 2:
+                            stat = Status.DECLINE;break;
+                    }
                     Demand d = new Demand.DemandBuilder().setDay(resultSet.getInt("day")).
                             setStart(resultSet.getInt("startHour")).
                             setEnd(resultSet.getInt("endHour")).
-                            setTotal(resultSet.getInt("totalHours")).
                             setReason(resultSet.getString("cause")).
+                            setStatus(stat).
                             build();
                     demands.add(d);
                 }
@@ -331,9 +338,9 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
                 "day int(1)," +
                 "startHour int(2)," +
                 "endHour int(2)," +
-                "totalHours int(2)," +
                 "cause varchar(255)," +
-                "primary key(id, day, startHour)" +
+                "status int(1) default 0," +
+                "primary key(id, day, startHour, endHour)" +
                 ");";
         try {
             runCommand(sqlCommand);
@@ -491,7 +498,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             String id = entry.getKey();
             ArrayList<Demand> demandsList = entry.getValue();
 
-            String sql = "INSERT INTO DEMAND (id, day, startHour, endHour, totalHours, cause) values" +
+            String sql = "INSERT INTO DEMAND (id, day, startHour, endHour, cause, status) values" +
                     "(?,?,?,?,?,?)";
             PreparedStatement stmt = getPreparedStatement(sql);
             for (Demand demand : demandsList) {
@@ -500,8 +507,8 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
                     stmt.setInt(2, demand.getDay());
                     stmt.setInt(3, demand.getStart());
                     stmt.setInt(4, demand.getEnd());
-                    stmt.setInt(5, (demand.getEnd() - demand.getStart()));
-                    stmt.setString(6, demand.getReason());
+                    stmt.setString(5, demand.getReason());
+                    stmt.setInt(6, 0);
                     stmt.executeUpdate();
                     rand = Math.random();
                     if (rand >= 0.25) {
@@ -557,9 +564,33 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             }
         }
 
+
+
         System.out.println();
         System.out.println("Done insert Teacher Course data.");
         closeConnection();
     }
 
+    @Override
+    public void addDemand(String id, int day, int start, int end, String reason, Status status) throws SQLException {
+        try {
+            connect();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // create the sql records to be insert
+        String sql = "INSERT INTO DEMAND (id, day, startHour, endHour, cause, status) values" +
+                "(?,?,?,?,?,?)";
+        PreparedStatement stmt = getPreparedStatement(sql);
+            stmt.setInt(1, Integer.parseInt(id));
+            stmt.setInt(2, day);
+            stmt.setInt(3, start);
+            stmt.setInt(4, end);
+            stmt.setString(5, reason);
+            stmt.setInt(6, status.ordinal());
+            stmt.executeUpdate();
+        closeConnection();
+    }
 }
