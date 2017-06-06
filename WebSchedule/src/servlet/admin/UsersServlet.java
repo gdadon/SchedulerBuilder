@@ -1,4 +1,4 @@
-package servlet;
+package servlet.admin;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,14 +11,14 @@ import java.io.IOException;
 /**
  * Created by Guy on 02/06/2017.
  */
-@WebServlet(name = "ReportServlet", urlPatterns = {"/Reports"})
-public class ReportServlet extends HttpServlet {
+@WebServlet(name = "UsersServlet", urlPatterns = {"/Users"})
+public class UsersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/public/reports.jsp");
+        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/public/admin/users.jsp");
         dispatcher.forward(request, response);
     }
 }

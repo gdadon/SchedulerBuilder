@@ -2,14 +2,12 @@ package servlet;
 
 import objects.UserInfo;
 import schedule.builder.database.DBUsersMySqlImpl;
+import utils.SessionUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -21,6 +19,17 @@ public class LoginServlet extends HttpServlet {
 
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
+        // default user for first entrance
+
+        if(userName.equals("admin") && password.equals("sababa1.")){
+            UserInfo admin = new UserInfo("0", "admin", 1);
+            Cookie loginCookie = new Cookie("user",admin.getName());
+            // setting cookie to expiry in 30 mins
+            loginCookie.setMaxAge(30*60);
+//            response.addCookie(loginCookie);
+            response.sendRedirect(request.getContextPath() + "/Home");
+        }
+
         boolean hasError = false;
         String errorString = null;
         int priv = -1;
@@ -51,24 +60,25 @@ public class LoginServlet extends HttpServlet {
         // Store user information in Session
         // And redirect to home page based on user privilege
         else {
-            if (priv == 0) {
-                // redirect to regular user
-                RequestDispatcher dispatcher = request.getRequestDispatcher("public/home.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                // redirect to admin page
-//                response.sendRedirect("public/home.jsp");
 
-                Cookie loginCookie = new Cookie("user",user.getName());
-                //setting cookie to expiry in 30 mins
-                loginCookie.setMaxAge(30*60);
-                response.addCookie(loginCookie);
-                response.sendRedirect(request.getContextPath() + "/Home");
+            // add cookie to response
+            Cookie loginCookie = new Cookie("user",user.getName().replace(' ', '_'));
+            // setting cookie to expiry in 30 mins
+            loginCookie.setMaxAge(30*60);
+            response.addCookie(loginCookie);
+            // store user is session for later use
+            HttpSession session = request.getSession();
+            SessionUtils.storeLoginedUser(session, user);
 
-//            RequestDispatcher view = request.getRequestDispatcher("public/home.jsp");
-//            view.forward(request, response);
-
-            }
+//            if (priv == 0) {
+////                 redirect to regular user
+//                response.sendRedirect(request.getContextPath() + "/UHome");
+//            } else {
+////                 redirect to admin page
+//                response.sendRedirect(request.getContextPath() + "/AHome");
+//            }
+            // redirect to home page base
+            response.sendRedirect(request.getContextPath() + "/Home");
         }
     }
 

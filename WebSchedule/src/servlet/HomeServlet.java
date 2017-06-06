@@ -1,5 +1,8 @@
 package servlet;
 
+import objects.UserInfo;
+import utils.SessionUtils;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,9 +21,14 @@ public class HomeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String id = "Guy";
-//        request.setAttribute("name", id);
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/public/home.jsp");
+        UserInfo user = SessionUtils.getLoginedUser(request.getSession());
+        RequestDispatcher dispatcher = null;
+        if(user.getPrivilege() == 0){
+            dispatcher = this.getServletContext().getRequestDispatcher("/public/user/home.jsp");
+        }
+        else{
+            dispatcher = this.getServletContext().getRequestDispatcher("/public/admin/home.jsp");
+        }
         dispatcher.forward(request, response);
     }
 }
