@@ -48,4 +48,5 @@ public interface DataBase {
 
     void addDemand(String id, int day, int start, int end, String reason, Status status) throws SQLException;
 
+    int getPendingDemand();
 }
