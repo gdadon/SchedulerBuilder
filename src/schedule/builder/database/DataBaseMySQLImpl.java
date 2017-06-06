@@ -266,6 +266,27 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
     }
 
     @Override
+    public int getPendingDemand() {
+        ArrayList<Demand> demands = new ArrayList<>();
+        int pendingCounter = 0;
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sqlQuery = "SELECT * FROM demand WHERE status = 1";
+            resultSet = statement.executeQuery(sqlQuery);
+            while(resultSet.next()){
+                pendingCounter++;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+        return pendingCounter;
+    }
+
+    @Override
     public Course getCourseByName(String courseName) {
         return null;
     }
