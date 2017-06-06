@@ -1,9 +1,3 @@
-/*
-	 CSS-Tricks Example
-	 by Chris Coyier
-	 http://css-tricks.com
-*/
-
 * { margin: 0; padding: 0; }
 html { overflow-y: scroll;
     background: url(../images/background.jpg) no-repeat center center fixed;
@@ -15,7 +9,7 @@ body { font: 12px/1.4 Helvetica, sans-serif; color: #333; }
 .group:after { visibility: hidden; display: inline-block; font-size: 0; content: " "; clear: both; height: 0; }
 .group { display: inline-block; clear: both; }
 /* start commented backslash hack \*/ * html .group { height: 10%; } .group { display: inline-block; padding: 10px;} /* close commented backslash hack */
-article, aside, figure, footer, header, hgroup, menu, nav, section { display: block; }
+article, aside, figure, header, hgroup, menu, nav, section { display: block; }
 a:focus { outline: 0; }
 
 #page-wrap {
@@ -147,6 +141,7 @@ nav ul li a.active {
     background-color: #5cc3f4;
     color: white;
     border-radius: 60px;
+    height: 21px;
 }
 
 .d_list {
@@ -179,4 +174,39 @@ nav ul li a.active {
 
 .d_list li:nth-child(odd) {
     background: #f9f9f9;
+}
+
+#demandError {
+    color: red;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.3);
+    /*     -webkit-filter: blur(1px); */
+    width: 570px;
+    margin: 10px 350px 0;
+    border-radius: 40px;
+}
+
+#myTable {
+    border-collapse: collapse;
+    width: 70%;
+    border: 1px solid #ddd;
+    font-size: 18px;
+    margin: 20px 200px;
+}
+
+#myTable th, #myTable td {
+    text-align: left;
+    padding: 12px;
+}
+
+#myTable tr {
+    border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+    background-color: #f1f1f1;
+}
+
+.saveChange{
+
 }

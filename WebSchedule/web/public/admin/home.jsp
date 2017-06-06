@@ -6,12 +6,11 @@
 
 	<title>Schedule | Home</title>
 
-	<link rel='stylesheet' type='text/css' href='../css/style.css' />
-
+	<link rel='stylesheet' type='text/css' href='../../css/style.css' />
 	<!--[if IE]>
 	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<script type='text/javascript' src='../js/submitBtn.js'></script>
+	<script type="text/javascript" src="../../js/submitBtn.js"></script>
 </head>
 
 <body>
@@ -22,7 +21,6 @@
 
 	<section id="main-content">
 		<div id="guts">
-
 			<h2>Home</h2>
 
 			<p>Pellentesque habitant morbi tristique senectus et netus et malesuada. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
@@ -32,11 +30,6 @@
 		</div>
 	</section>
 </div>
-<footer>
-	&copy;2017 LGTM
-</footer>
-<?php include('../footer.php'); ?>
-
 </body>
 
 </html>

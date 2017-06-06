@@ -3,13 +3,12 @@
 
     <title>Schedule | Schedule Builder</title>
 
-    <link rel='stylesheet' type='text/css' href='../css/style.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/style.css' />
 
     <!--[if IE]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <script type='text/javascript' src='../js/submitBtn.js'></script>
+    <script type="text/javascript" src="../../js/submitBtn.js"></script>
 </head>
 
 <body>
@@ -32,12 +31,6 @@
         </div>
     </section>
 </div>
-
-<footer>
-    &copy;2017 LGTM
-</footer>
-
-<?php include('../footer.php'); ?>
 
 </body>
 

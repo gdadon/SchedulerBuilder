@@ -111,7 +111,7 @@ function setActive() {
     var list = document.getElementsByTagName("li");
     for(i = 0; i < list.length; i++){
         var t = list[i].innerText;
-        if(t == current) {
+        if(t == (current) || ("a"+t == current) || ("u"+t == current)) {
             list[i].getElementsByTagName('a')[0].className = "active";
         }
     }
