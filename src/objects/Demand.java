@@ -9,15 +9,15 @@ public class Demand implements Serializable{
     private int day;
     private int start;
     private int end;
-    private int total;
     private String reason;
+    private Status status;
 
     private Demand(DemandBuilder builder) {
         this.day = builder.day;
         this.start = builder.start;
         this.end = builder.end;
-        this.total = builder.total;
         this.reason = builder.reason;
+        this.status = builder.status;
     }
 
     public int getStart() {
@@ -32,11 +32,13 @@ public class Demand implements Serializable{
         return day;
     }
 
-    public int getTotal() {return total; }
-
     public String getReason() {
         return reason;
     }
+
+    public Status getStatus() { return status; }
+
+    public void setStatus(Status status) { this.status = status; }
 
     @Override
     public String toString() {
@@ -44,8 +46,8 @@ public class Demand implements Serializable{
                 "day=" + day +
                 ", start=" + start +
                 ", end=" + end +
-                ", reason='" + reason + '\'' +
-                '}';
+                ", reason= " + reason +
+                ", status= " + status + "}" ;
     }
 
     public static class DemandBuilder{
@@ -53,8 +55,8 @@ public class Demand implements Serializable{
         private int day;
         private int start;
         private int end;
-        private int total;
         private String reason;
+        private Status status;
 
         public DemandBuilder setStart(int start) {
             this.start = start;
@@ -71,13 +73,13 @@ public class Demand implements Serializable{
             return this;
         }
 
-        public DemandBuilder setTotal(int total){
-            this.total = total;
+        public DemandBuilder setReason(String reason) {
+            this.reason = reason;
             return this;
         }
 
-        public DemandBuilder setReason(String reason) {
-            this.reason = reason;
+        public DemandBuilder setStatus(Status status){
+            this.status = status;
             return this;
         }
 
