@@ -1,6 +1,8 @@
 package servlet;
 
 import objects.UserInfo;
+import schedule.builder.database.DBUsersMySqlImpl;
+import schedule.builder.database.DataBaseMySQLImpl;
 import utils.SessionUtils;
 
 import javax.servlet.RequestDispatcher;
@@ -27,6 +29,9 @@ public class HomeServlet extends HttpServlet {
             dispatcher = this.getServletContext().getRequestDispatcher("/public/user/home.jsp");
         }
         else{
+            DataBaseMySQLImpl dao = DataBaseMySQLImpl.getInstance();
+            int pendingDemands = dao.getPendingDemand();
+            request.setAttribute("pendingDemands", pendingDemands);
             dispatcher = this.getServletContext().getRequestDispatcher("/public/admin/home.jsp");
         }
         dispatcher.forward(request, response);
