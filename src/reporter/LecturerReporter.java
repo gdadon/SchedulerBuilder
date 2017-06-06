@@ -28,7 +28,7 @@ public class LecturerReporter {
         this.initScheduleReport();
         dayMap = new HashMap<>();
         initHashMaps();
-        //createReport(courcesForTeacher);
+        createReport(courcesForTeacher);
     }
 
     private void initHashMaps(){
