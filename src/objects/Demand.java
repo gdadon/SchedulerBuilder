@@ -6,6 +6,7 @@ public class Demand implements Serializable{
 
     private static final long serialVersionUID = 2L;
 
+    private String dayStr;
     private int day;
     private int start;
     private int end;
@@ -19,6 +20,12 @@ public class Demand implements Serializable{
         this.reason = builder.reason;
         this.status = builder.status;
     }
+
+    public void addDayStr(String day){
+        this.dayStr = day;
+    }
+
+    public String getDayStr() {return dayStr; }
 
     public int getStart() {
         return start;
