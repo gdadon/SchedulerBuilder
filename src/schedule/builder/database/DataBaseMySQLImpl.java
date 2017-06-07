@@ -13,11 +13,11 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
 
     private static DataBaseMySQLImpl instance = new DataBaseMySQLImpl();
 
-    private DataBaseMySQLImpl(){
+    private DataBaseMySQLImpl() {
         super();
     }
 
-    public static DataBaseMySQLImpl getInstance(){
+    public static DataBaseMySQLImpl getInstance() {
         return instance;
     }
 
@@ -26,7 +26,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
         // Load the MySQL driver
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
-        connect = DriverManager.getConnection(DB_URL+DB, USER, PASS);
+        connect = DriverManager.getConnection(DB_URL + DB, USER, PASS);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             if (statement != null) {
                 statement.close();
             }
-            if (preparedStatement != null){
+            if (preparedStatement != null) {
                 preparedStatement.close();
             }
             if (connect != null) {
@@ -52,7 +52,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
 
     @Override
     public void createDatabase(String dbName) throws SQLException {
-        if(connect != null){
+        if (connect != null) {
             closeConnection();
         }
         useDatabase("");
@@ -64,11 +64,11 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
 
     @Override
     public void useDatabase(String dbName) throws SQLException {
-        if(connect != null) {
+        if (connect != null) {
             closeConnection();
         }
 
-        connect = DriverManager.getConnection(DB_URL+dbName, USER, PASS);
+        connect = DriverManager.getConnection(DB_URL + dbName, USER, PASS);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
     }
 
     @Override
-    public PreparedStatement getPreparedStatement(String sql){
+    public PreparedStatement getPreparedStatement(String sql) {
         try {
             preparedStatement = connect.prepareStatement(sql);
         } catch (SQLException e) {
@@ -114,7 +114,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             statement = connect.createStatement();
             String sqlQuery = "SELECT * FROM course";
             resultSet = statement.executeQuery(sqlQuery);
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Course c = new Course.CourseBuilder().setCode(resultSet.getString("code"))
                         .setName(resultSet.getString("name"))
                         .setYear(Integer.parseInt(resultSet.getString("year")))
@@ -142,7 +142,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             statement = connect.createStatement();
             String sqlQuery = "SELECT * FROM classes";
             resultSet = statement.executeQuery(sqlQuery);
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 ClassRoom c = new ClassRoom.ClassRoomBuilder().setDay(resultSet.getInt("day")).
                         setHour(resultSet.getInt("hour")).
                         setSize(resultSet.getString("size").charAt(0)).build();
@@ -158,20 +158,34 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
     }
 
     @Override
-    public HashMap<Integer, Demand> getAllDemands() {
-        HashMap<Integer, Demand> demands = new HashMap<>();
+    public HashMap<Integer, ArrayList<Demand>> getAllDemands() {
+        HashMap<Integer, ArrayList<Demand>> demands = new HashMap<>();
         try {
             connect();
             statement = connect.createStatement();
             String sqlQuery = "SELECT * FROM demand";
             resultSet = statement.executeQuery(sqlQuery);
-            while(resultSet.next()){
+            Status[] statusValues = Status.values();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                // create new ArrayList for demands of teachers
+                ArrayList<Demand> teacherDemand = null;
+                // check if current teacher already exist in map
+                if ((teacherDemand = demands.get(id)) == null) {
+                    // need to create new array
+                    teacherDemand = new ArrayList<>();
+                }
+                // create demand
                 Demand d = new Demand.DemandBuilder().setDay(resultSet.getInt("day")).
                         setStart(resultSet.getInt("startHour")).
                         setEnd(resultSet.getInt("endHour")).
                         setReason(resultSet.getString("cause")).
+                        setStatus(statusValues[resultSet.getInt("status")]).
                         build();
-                demands.put(resultSet.getInt("id"), d);
+                // add it to array
+                teacherDemand.add(d);
+                // update array at map
+                demands.put(id, teacherDemand);
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -193,11 +207,11 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             String sqlQuery = "SELECT * FROM TEACHER_COURSE";
             resultSet = statement.executeQuery(sqlQuery);
             ArrayList<String> courses;
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String course = resultSet.getString("course");
                 String name = resultSet.getString("name");
-                if((courses = teacherCourse.get(id)) == null){
+                if ((courses = teacherCourse.get(id)) == null) {
                     courses = new ArrayList<>();
                 }
                 courses.add(course);
@@ -210,7 +224,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             e.printStackTrace();
         }
         closeConnection();
-        for (Map.Entry<Integer, ArrayList<String>> tc: teacherCourse.entrySet()) {
+        for (Map.Entry<Integer, ArrayList<String>> tc : teacherCourse.entrySet()) {
             teachers.put(tc.getKey(), new Teacher.TeacherBuilder()
                     .setID(tc.getKey())
                     .setCourses(tc.getValue())
@@ -232,12 +246,12 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
         try {
             connect();
             statement = connect.createStatement();
-            String sqlQuery = "SELECT * FROM demand WHERE id="+teacherID;
+            String sqlQuery = "SELECT * FROM demand WHERE id=" + teacherID;
             resultSet = statement.executeQuery(sqlQuery);
-            while(resultSet.next()){
-                if(resultSet.getInt("id") == Integer.parseInt(teacherID)){
+            while (resultSet.next()) {
+                if (resultSet.getInt("id") == Integer.parseInt(teacherID)) {
                     Status stat = Status.PENDING;
-                    switch(resultSet.getInt("status")){
+                    switch (resultSet.getInt("status")) {
                         case 0:
                             stat = Status.PENDING;
                             break;
@@ -245,7 +259,8 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
                             stat = Status.ACCEPT;
                             break;
                         case 2:
-                            stat = Status.DECLINE;break;
+                            stat = Status.DECLINE;
+                            break;
                     }
                     Demand d = new Demand.DemandBuilder().setDay(resultSet.getInt("day")).
                             setStart(resultSet.getInt("startHour")).
@@ -272,9 +287,9 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
         try {
             connect();
             statement = connect.createStatement();
-            String sqlQuery = "SELECT * FROM demand WHERE status = 1";
+            String sqlQuery = "SELECT * FROM demand WHERE status = 0";
             resultSet = statement.executeQuery(sqlQuery);
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 pendingCounter++;
             }
         } catch (ClassNotFoundException e) {
@@ -302,9 +317,9 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
         try {
             connect();
             statement = connect.createStatement();
-            String sqlQuery = "SELECT * FROM TEACHER_COURSE WHERE course='"+courseName+"'";
+            String sqlQuery = "SELECT * FROM TEACHER_COURSE WHERE course='" + courseName + "'";
             resultSet = statement.executeQuery(sqlQuery);
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 IDs.add(resultSet.getInt("id"));
             }
         } catch (ClassNotFoundException e) {
@@ -417,9 +432,9 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
                 ");";
         try {
             runCommand(sqlCommand);
-            System.out.println("Succeed create Classes table");
+            System.out.println("Succeed create Users table");
         } catch (SQLException e) {
-            System.out.println("Failed to create Classes table");
+            System.out.println("Failed to create Users table");
             e.printStackTrace();
         }
     }
@@ -548,7 +563,7 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
         closeConnection();
     }
 
-    public void insertToTableTeacherCourses(HashMap<Integer, Teacher> lecturerCourse){
+    public void insertToTableTeacherCourses(HashMap<Integer, Teacher> lecturerCourse) {
         // use the sbdb database
         try {
             connect();
@@ -586,7 +601,6 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
         }
 
 
-
         System.out.println();
         System.out.println("Done insert Teacher Course data.");
         closeConnection();
@@ -605,13 +619,42 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
         String sql = "INSERT INTO DEMAND (id, day, startHour, endHour, cause, status) values" +
                 "(?,?,?,?,?,?)";
         PreparedStatement stmt = getPreparedStatement(sql);
-            stmt.setInt(1, Integer.parseInt(id));
-            stmt.setInt(2, day);
-            stmt.setInt(3, start);
-            stmt.setInt(4, end);
-            stmt.setString(5, reason);
-            stmt.setInt(6, status.ordinal());
-            stmt.executeUpdate();
+        stmt.setInt(1, Integer.parseInt(id));
+        stmt.setInt(2, day);
+        stmt.setInt(3, start);
+        stmt.setInt(4, end);
+        stmt.setString(5, reason);
+        stmt.setInt(6, status.ordinal());
+        stmt.executeUpdate();
         closeConnection();
+    }
+
+    @Override
+    public HashMap<Integer, String> getTeacherIdNameMap() {
+        HashMap<Integer, String> idToName = new HashMap<>();
+        try {
+            connect();
+            statement = connect.createStatement();
+            // create Map to return
+
+            // create the sql records to be insert
+            String sqlQuery = "select DISTINCT id, name from teacher_course";
+            try {
+                resultSet = statement.executeQuery(sqlQuery);
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    idToName.put(id, name);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return idToName;
     }
 }
