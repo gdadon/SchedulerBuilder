@@ -13,7 +13,7 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/submitBtn.js"></script>
-    <link rel='stylesheet' type='text/css' href='../../css/style2.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/style.css' />
 </head>
 
 <body>
