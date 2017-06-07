@@ -32,7 +32,7 @@ public interface DataBase {
 
     ArrayList<ClassRoom> getAllClassRooms();
 
-    HashMap<Integer, Demand> getAllDemands();
+    HashMap<Integer, ArrayList<Demand>> getAllDemands();
 
     HashMap<Integer, Teacher> getAllTeachersCourse();
 
@@ -49,4 +49,6 @@ public interface DataBase {
     void addDemand(String id, int day, int start, int end, String reason, Status status) throws SQLException;
 
     int getPendingDemand();
+
+    HashMap<Integer, String> getTeacherIdNameMap();
 }
