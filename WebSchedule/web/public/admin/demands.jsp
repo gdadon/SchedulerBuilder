@@ -13,7 +13,7 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/submitBtn.js"></script>
-    <link rel='stylesheet' type='text/css' href='../../css/style.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/style2.css' />
 </head>
 
 <body>
@@ -78,23 +78,31 @@
                 </div>
             </form>
 
+
             <table id="myTable">
                 <tr class="header">
-                    <th>Name</th>
-                    <th>Details</th>
+                    <th style="width: 30%">Name</th>
+                    <th style="width: 50%">Details</th>
                     <th>Status</th>
                     <th></th>
                 </tr>
-                <tr>
-                    <td>Berglunds snabbkop</td>
-                    <td>Sweden</td>
-                    <TD class = "select"><select>
-                        <option value="Pending">Pending</option>
-                        <option value="Approved">Approved</option>
-                        <option value="Declined">Declined</option>
-                    </select>
-                    <td><button type="button" class="saveChange">Save</button></td>
-                </tr>
+                <c:forEach var="demandArr" items="${demandsList}">
+                    <c:forEach var="demand" items="${demandArr.value}">
+                        <tr>
+                            <td>
+                                <c:out value="${demandArr.key}" />
+                            </td>
+                            <td><c:out value= "${demand.dayStr} | ${demand.start}:00 - ${demand.end}:00 | ${demand.reason}" /></td>
+                            <TD class = "select">
+                                <select class="selectStatus">
+                                    <option value="Pending" ${demand.status.name == 'Pending' ? 'selected="selected"' : ''} >Pending</option>
+                                    <option value="Approved" ${demand.status.name == 'Approved' ? 'selected="selected"' : ''}>Approved</option>
+                                    <option value="Declined" ${demand.status.name == 'Declined' ? 'selected="selected"' : ''}>Declined</option>
+                                </select>
+                            <td><button type="button" class="saveChange">Save</button></td>
+                        </tr>
+                    </c:forEach>
+                </c:forEach>
             </table>
 
         </div>
