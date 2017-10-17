@@ -63,6 +63,27 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
     }
 
     @Override
+    public void dropTable(String tableName) {
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sql = "DROP TABLE " + tableName;
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+    }
+
+    public void autoDropTables(){
+        dropTable("Classes");
+        dropTable("Course");
+        dropTable("teacher_course");
+    }
+
+    @Override
     public void useDatabase(String dbName) throws SQLException {
         if (connect != null) {
             closeConnection();
@@ -423,6 +444,21 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
         closeConnection();
     }
 
+    public void autoCreateDB() {
+        try {
+            useDatabase("sbdb");
+            // create the database tables
+            createCourseTable();
+            createTeachersCoursesTable();
+            createClassesTable();
+            //create users table
+//            createUsersTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
+    }
+
     private void createUsersTable() {
         String sqlCommand = "CREATE TABLE users(" +
                 "id varchar(20) primary key," +
@@ -656,5 +692,26 @@ public class DataBaseMySQLImpl extends MySql implements DataBase {
             e.printStackTrace();
         }
         return idToName;
+    }
+
+    public void changeDemandStatus(int id, Demand d, Status s){
+        try {
+            connect();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            statement = connect.createStatement();
+            String sql = "UPDATE DEMAND " +
+                    "SET status=" + s.ordinal() +
+                    " WHERE id=" + id + " AND day=" + d.getDay() +" AND startHour=" + d.getStart() +
+                    " AND endHour=" +d.getEnd();
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        closeConnection();
     }
 }

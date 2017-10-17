@@ -41,7 +41,6 @@ public class LoginServlet extends HttpServlet {
         } else {
             DBUsersMySqlImpl dao = DBUsersMySqlImpl.getInstance();
             user = dao.findUser(userName, password);
-            dao.closeConnection();
             if (user == null) {
                 hasError = true;
                 errorString = "User Name or password invalid";

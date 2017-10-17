@@ -1,6 +1,7 @@
-package servlet.admin;
+package servlet;
 
-import javax.servlet.RequestDispatcher;
+import schedule.builder.database.DataBaseMySQLImpl;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,17 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Guy on 02/06/2017.
+ * Created by Guy on 07/06/2017.
  */
-@WebServlet(name = "ScheduleServlet", urlPatterns = {"/aSchedule"})
-public class ScheduleServlet extends HttpServlet {
+@WebServlet(name = "DBServlet", urlPatterns = {"/DB"})
+public class DBServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DataBaseMySQLImpl dao = DataBaseMySQLImpl.getInstance();
 
-        RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/public/admin/schedule.jsp");
-        dispatcher.forward(request, response);
     }
 }

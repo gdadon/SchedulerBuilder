@@ -97,6 +97,13 @@ nav ul li a.active {
 
 }
 
+#homeBase {
+    padding-top: 36px;
+    font-size: 20px;
+    font-weight: bold;
+    color:red
+}
+
 .start, .end{ width: 80px}
 
 .c_reason{ width: 300px; height: 28px}
@@ -207,6 +214,77 @@ nav ul li a.active {
     background-color: #f1f1f1;
 }
 
-.saveChange{
+.saveChange, .selectStatus{
+    display: inline-block;
+    min-width: 110px;
+    height: 30px;
+    font: 700 12px/1 'Open Sans', sans-serif;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 1px rgba(0,0,0,.1), inset 0 -10px 20px rgba(0,0,0,.1);
+    cursor: pointer;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+    background: #59d
+}
 
+.saveChange:hover{
+    background: #48c
+}
+
+.selectStatus{
+    padding: 0 0 0 20px;;;
+}
+
+.selectStatus option{
+    font-size: 15px;
+    color: #c5cdd9;
+    background: hsl(204, 24%, 29%);
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-upload, .file-submit {
+    margin-top: 20px;
+    padding: 10px 10px;
+    height: 20px;
+    width: 250px;
+    border-radius: 100px;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid #cad7eb;
+    overflow: hidden;
+    background-image: linear-gradient(to bottom, #5493be 50%, #c8d7e9 50%);
+    background-size: 100% 200%;
+    transition: all 1s;
+    color: #FFFFFF;
+    font-size: 20px;
+}
+
+
+.file-upload input[type='file'], .file-submit input[type='submit']{
+    height:100%;
+    width:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0;
+    cursor:pointer;
+}
+
+.file-upload:hover{
+    background-position: 0 -100%;
+    color:#2590EB;
+}
+
+#logoutStyle{
+    background: red;
+    border-top: 1px solid #ff0768;
 }

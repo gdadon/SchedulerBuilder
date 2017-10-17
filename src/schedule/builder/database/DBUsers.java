@@ -1,6 +1,7 @@
 package schedule.builder.database;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Created by Guy on 11/05/2017.
@@ -21,6 +22,8 @@ public interface DBUsers {
      *          -2 if wrong password
      */
     int checkLoginUser(String id, String password);
+
+    Map<String, String> getAllUsers();
 
 
 

@@ -2,7 +2,6 @@ package schedule.builder.database;
 
 import parser.ClassParserReport;
 import parser.CourseParserReport;
-import parser.DemandReportParser;
 import parser.LectureCoursesParser;
 
 import java.sql.SQLException;
@@ -21,6 +20,19 @@ public class DatabaseUtil {
         System.out.println("Succeeded creating DB.");
     }
 
+    public static void autoDropTables(){
+        // drop previous tables
+        dao.autoDropTables();
+        System.out.println("Dropped previous tables");
+    }
+
+    public static void autoCreateDB(){
+        System.out.println("Creating DB: Scheduler Builder Data Base (sbdb)");
+        //create the scheduler db
+        dao.autoCreateDB();
+        System.out.println("Succeeded creating DB.");
+    }
+
     public static void dropDataBase(String dbName){
         try {
             dao.dropDatabase(dbName);
@@ -30,7 +42,7 @@ public class DatabaseUtil {
         System.out.println("Succeeded drop DB " + dbName);
     }
 
-    public static void fillDB(String folderName){
+    public static void autoFillDB(String folderName){
         folderName = "Reports/" + folderName;
 
         System.out.println("Filling DB with data from Reports folder");
@@ -44,12 +56,33 @@ public class DatabaseUtil {
         courseParse.startParse(folderName + "/CourseReport.xls");
         dao.insertToTableCourse(courseParse.getReport());
 
-        DemandReportParser drp = new DemandReportParser();
-        drp.startParse(folderName + "/DemandsReport.xls");
-        dao.insertToTableDemand(drp.getReport());
+//        DemandReportParser drp = new DemandReportParser();
+//        drp.startParse(folderName + "/DemandsReport.xls");
+//        dao.insertToTableDemand(drp.getReport());
 
         LectureCoursesParser lcp = new LectureCoursesParser();
         lcp.startParse(folderName + "/LecturerReport.xls");
+        dao.insertToTableTeacherCourses(lcp.getReport());
+
+        System.out.println("Done fill DB.");
+    }
+
+    public static void fillDB(String classReport, String CourseReport, String teachersReport){
+
+        System.out.println("Filling DB with data from Reports folder");
+
+        // parse and insert into tables
+        // make sure to drop previous table
+        ClassParserReport cpr = new ClassParserReport();
+        cpr.startParse(classReport);
+        dao.insertToTableClasses(cpr.getReport());
+
+        CourseParserReport courseParse = new CourseParserReport();
+        courseParse.startParse(CourseReport);
+        dao.insertToTableCourse(courseParse.getReport());
+
+        LectureCoursesParser lcp = new LectureCoursesParser();
+        lcp.startParse(teachersReport);
         dao.insertToTableTeacherCourses(lcp.getReport());
 
         System.out.println("Done fill DB.");

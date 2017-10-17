@@ -14,6 +14,7 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/submitBtn.js"></script>
     <link rel='stylesheet' type='text/css' href='../../css/style.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/Buttons2.css' />
 </head>
 
 <body>
@@ -27,11 +28,11 @@
     <section id="main-content">
         <div id="guts">
 
-            <h2>Add Demands</h2>
+            <h2>Filter Demands</h2>
 
             <form action="aDemands" method="post">
                 <div class="demands">
-                    <select required name="day" id="day" class="day">
+                    <select name="day" id="day" class="day">
                         <option value="" selected="true" disabled>Day</option>
                         <option value="1" ${1 == day ? 'selected="selected"' : ''} class="optOdd">Sunday</option>
                         <option value="2" ${2 == day ? 'selected="selected"' : ''}>Monday</option>
@@ -40,41 +41,10 @@
                         <option value="5" ${5 == day ? 'selected="selected"' : ''}class="optOdd">Thursday</option>
                         <option value="6" ${6 == day ? 'selected="selected"' : ''}>Friday</option>
                     </select>
-                    <select required name="start" id="start" class="start">
-                        <option value="" selected="true" disabled>Start</option>
-                        <option value= "8" ${8 == start ? 'selected="selected"' : ''} class="optOdd">8:00</option>
-                        <option value= "9" ${9 == start ? 'selected="selected"' : ''} >9:00</option>
-                        <option value="10" ${10 == start ? 'selected="selected"' : ''} class="optOdd">10:00</option>
-                        <option value="11" ${11 == start ? 'selected="selected"' : ''} >11:00</option>
-                        <option value="12" ${12 == start ? 'selected="selected"' : ''} class="optOdd">12:00</option>
-                        <option value="13" ${13 == start ? 'selected="selected"' : ''} >13:00</option>
-                        <option value="14" ${14 == start ? 'selected="selected"' : ''} class="optOdd">14:00</option>
-                        <option value="15" ${15 == start ? 'selected="selected"' : ''} >15:00</option>
-                        <option value="16" ${16 == start ? 'selected="selected"' : ''} class="optOdd">16:00</option>
-                        <option value="17" ${17 == start ? 'selected="selected"' : ''} >17:00</option>
-                        <option value="18" ${18 == start ? 'selected="selected"' : ''} class="optOdd">18:00</option>
-                        <option value="19" ${19 == start ? 'selected="selected"' : ''} >19:00</option>
-                        <option value="20" ${20 == start ? 'selected="selected"' : ''} class="optOdd">20:00</option>
                     </select>
-                    <select required name="end" id="end" class="end">
-                        <option value="" selected="true" disabled>End</option>
-                        <option value= "8" ${8 == end ? 'selected="selected"' : ''} class="optOdd">8:00</option>
-                        <option value= "9" ${9 == end ? 'selected="selected"' : ''} >9:00</option>
-                        <option value="10" ${10 == end ? 'selected="selected"' : ''} class="optOdd">10:00</option>
-                        <option value="11" ${11 == end ? 'selected="selected"' : ''} >11:00</option>
-                        <option value="12" ${12 == end ? 'selected="selected"' : ''} class="optOdd">12:00</option>
-                        <option value="13" ${13 == end ? 'selected="selected"' : ''} >13:00</option>
-                        <option value="14" ${14 == end ? 'selected="selected"' : ''} class="optOdd">14:00</option>
-                        <option value="15" ${15 == end ? 'selected="selected"' : ''} >15:00</option>
-                        <option value="16" ${16 == end ? 'selected="selected"' : ''} class="optOdd">16:00</option>
-                        <option value="17" ${17 == end ? 'selected="selected"' : ''} >17:00</option>
-                        <option value="18" ${18 == end ? 'selected="selected"' : ''} class="optOdd">18:00</option>
-                        <option value="19" ${19 == end ? 'selected="selected"' : ''} >19:00</option>
-                        <option value="20" ${20 == end ? 'selected="selected"' : ''} class="optOdd">20:00</option>
-                    </select>
-                    <input class="c_reason" id="reason" type="text" name="reason" value="${reason}" placeholder="Enter Your Reason..." required>
+                    <input class="c_reason" id="reason" type="text" name="reason" value="${reason}" placeholder="Lecture...">
                     <%--<button class="btn" type="button" onclick="submitDemand()">Submit</button>--%>
-                    <button class="btn" type="submit" value="Demands">Submit</button>
+                    <button class="btn" type="submit" value="Demands">Search</button>
                 </div>
             </form>
 
@@ -89,21 +59,61 @@
                 <c:forEach var="demandArr" items="${demandsList}">
                     <c:forEach var="demand" items="${demandArr.value}">
                         <tr>
-                            <td>
+                            <td class="teacher_name">
                                 <c:out value="${demandArr.key}" />
                             </td>
-                            <td><c:out value= "${demand.dayStr} | ${demand.start}:00 - ${demand.end}:00 | ${demand.reason}" /></td>
+                            <td class="dtime"><c:out value= "${demand.dayStr} | ${demand.start}:00 - ${demand.end}:00 | ${demand.reason}" /></td>
                             <TD class = "select">
                                 <select class="selectStatus">
-                                    <option value="Pending" ${demand.status.name == 'Pending' ? 'selected="selected"' : ''} >Pending</option>
-                                    <option value="Approved" ${demand.status.name == 'Approved' ? 'selected="selected"' : ''}>Approved</option>
-                                    <option value="Declined" ${demand.status.name == 'Declined' ? 'selected="selected"' : ''}>Declined</option>
+                                    <%--<option value="Pending" ${demand.status.name == 'Pending' ? 'selected="selected"' : ''} >Pending</option>--%>
+                                    <%--<option value="Approved" ${demand.status.name == 'Approved' ? 'selected="selected"' : ''}>Approved</option>--%>
+                                    <%--<option value="Declined" ${demand.status.name == 'Declined' ? 'selected="selected"' : ''}>Declined</option>--%>
+                                    <option value="0" ${demand.status.name == 'Pending' ? 'selected="selected"' : ''} >Pending</option>
+                                    <option value="1" ${demand.status.name == 'Approved' ? 'selected="selected"' : ''}>Approved</option>
+                                    <option value="2" ${demand.status.name == 'Declined' ? 'selected="selected"' : ''}>Declined</option>
                                 </select>
-                            <td><button type="button" class="saveChange">Save</button></td>
+                            </TD>
+                            <td>
+                                <%--<button type="button" class="btn pri" onclick="changeStyle(this)">Save</button>--%>
+                                <button type="button" id="saveStatus" class="btn pri">Save</button>
+                            </td>
                         </tr>
                     </c:forEach>
                 </c:forEach>
             </table>
+            <script>
+                $("#saveStatus").click(function() {
+                    var $row = $(this).closest("tr");    // Find the row
+                    console.log($row);
+                    var $name = $row.find(".teacher_name").text(); // Find the text
+                    console.log($name);
+                    var $time = $row.find(".dtime").text().split(/([a-zA-Z]*day)|(\d{1,2})/); // Find the text
+                    var time2 = [$time[1], $time[5], $time[11]];
+                    console.log(time2);
+                    var $selVal = $('.select').find(":selected").val();
+                    console.log("status:" + $selVal);
+                    $('#saveStatus').addClass("btn pri ico");
+//                    $('#saveStatus').className = "btn pri ico";
+                    $('#saveStatus').text("Saved");
+                });
+
+                function changeStyle(btn){
+                    var tblrw = btn.closest("tr");
+                    var cell1 = tblrw.cells[0];
+                    var cell2 = tblrw.cells[1];
+                    var value1 = cell1.innerHTML;
+                    var value2 = cell2.innerHTML;
+//                    console.log(value1 + value2);
+                    var val3 = tblrw.cells[2];
+                    console.log(val3);
+                    val3 = val3.getElementsByClassName("selectStatus");
+//                    console.log(val3);
+                    var status = val3.getPropertyValue();
+                    console.log(status);
+                    btn.className = "btn pri ico";
+                    btn.innerText = "Saved";
+                }
+            </script>
 
         </div>
     </section>

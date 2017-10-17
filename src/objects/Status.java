@@ -5,7 +5,18 @@ package objects;
  */
 public enum Status {
 
-    PENDING,
-    ACCEPT,
-    DECLINE;
+    PENDING("Pending"),
+    ACCEPT("Approved"),
+    DECLINE("Declined");
+
+    private String name;
+
+    private Status(String value) {
+        name = value;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
+

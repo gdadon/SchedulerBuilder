@@ -42,13 +42,6 @@ public class AdminDemandServlet extends HttpServlet {
                 HashMap<Integer, String> idToName = dao.getTeacherIdNameMap();
                 Map<Integer, String> daysToString = Utils.initDaysMap();
                 HashMap<String, ArrayList<Demand>> stringDemands = new HashMap<>();
-//                HashMap<String, ArrayList<String>> stringDemands = new HashMap<>();
-                // gather all demands of each teacher into arrayList
-//                for(Integer id: demandList.keySet()){
-//                    // convert demands to string
-//                    ArrayList<String> demandsString = Utils.DemandsToString(demands.get(id));
-//                    stringDemands.put(idToName.get(id), demandsString);
-//                }
                 // add day as string to each demand
                 for(Map.Entry<Integer, ArrayList<Demand>> entry: demandList.entrySet()){
                     for(Demand d: entry.getValue()){

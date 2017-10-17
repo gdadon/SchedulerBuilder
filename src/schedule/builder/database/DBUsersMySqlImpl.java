@@ -4,6 +4,8 @@ import objects.UserInfo;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Guy on 11/05/2017.
@@ -92,6 +94,25 @@ public class DBUsersMySqlImpl extends MySql implements DBUsers {
         }
         closeConnection();
         return user;
+    }
+
+    @Override
+    public Map<String, String> getAllUsers() {
+        Map<String, String> users = new HashMap<>();
+        try {
+            connect();
+            statement = connect.createStatement();
+            String sqlQuery = "SELECT * FROM users WHERE id=0";
+            resultSet = statement.executeQuery(sqlQuery);
+            while(resultSet.next()){
+                users.put(resultSet.getString("id"), resultSet.getString("name"));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
 }

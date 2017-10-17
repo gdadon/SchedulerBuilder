@@ -7,6 +7,7 @@
     <title>Schedule | Reports</title>
 
     <link rel='stylesheet' type='text/css' href='../../css/style.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/Buttons2.css' />
 
     <!--[if IE]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -25,9 +26,52 @@
     <section id="main-content">
         <div id="guts">
 
-            <h2>Reports</h2>
+            <a href="DownloadFileServlet?file=template" class="buttonDownload" >Download Templates</a>
 
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+
+
+            <form method="post" action="Upload" enctype="multipart/form-data">
+
+                <h2><br/>
+                    Select files to upload:<br/>
+                </h2><br/>
+
+                <div class="wrapper">
+                    <div class="file-upload">
+                        <input type="file" name="uploadFileClassR" />Class Report
+                        <i class="fa fa-arrow-up"></i>
+                    </div>
+                </div>
+
+                <div class="wrapper">
+                    <div class="file-upload">
+                        <input type="file" name="uploadFileCourseR" />Course Report
+                        <i class="fa fa-arrow-up"></i>
+                    </div>
+                </div>
+
+                <div class="wrapper">
+                    <div class="file-upload">
+                        <input type="file" name="uploadFileTR" />Teachers Report
+                        <i class="fa fa-arrow-up"></i>
+                    </div>
+                </div>
+
+
+
+                <div class="wrapper">
+                    <div class="file-submit">
+                        <input type="submit" value="Upload" />Submit Files
+                        <i class="fa fa-upload"></i>
+                    </div>
+                </div>
+
+            </form>
+
+            <br>
+            <h2>
+              ${message}
+            </h2>
 
         </div>
     </section>

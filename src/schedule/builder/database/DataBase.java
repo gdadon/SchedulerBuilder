@@ -16,6 +16,8 @@ public interface DataBase {
 
     void closeConnection();
 
+    void dropTable(String tableName);
+
     void createDatabase(String dbName) throws Exception;
 
     void useDatabase(String dbName) throws SQLException;

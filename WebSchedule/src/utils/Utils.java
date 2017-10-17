@@ -34,7 +34,7 @@ public class Utils {
     }
 
     // init days map -> day num to value
-    private static Map<Integer, String> initDaysMap(){
+    public static Map<Integer, String> initDaysMap(){
         Map<Integer, String> days = new HashMap();
         days.put(1, "Sunday");
         days.put(2, "Monday");

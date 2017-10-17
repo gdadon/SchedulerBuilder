@@ -4,15 +4,18 @@
     <title>Schedule | Schedule Builder</title>
 
     <link rel='stylesheet' type='text/css' href='../../css/style.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/loader2.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/Buttons2.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <!--[if IE]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script type="text/javascript" src="../../js/submitBtn.js"></script>
+
 </head>
 
 <body>
-
 <div id="page-wrap">
 
     <header>
@@ -23,11 +26,80 @@
         <div id="guts">
 
             <h2>Schedule Builder</h2>
+            <div class="btn-container">
+                <a id="run" href="#" class="btn-3d blue">Build Schedule</a>
+            </div>
 
-            <p>Pellentesque habitant morbi tristique senectus et netus et malesuada. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+            <a href="DownloadFileServlet?file=schedule" class="buttonDownload" style="display: none;" id="link">Download Generated Schedules</a>
 
+            <script>
+                $("#run").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/BuildSchedule',
+                        beforeSend: function () {
+                            $("#run").hide();
+                            $("#circle_container").css("display", "block");
+                            $("#link").hide();
+                        },
+                        success: function (data) {
+                            $("#run").show();
+                            $("#circle_container").hide();
+                            $("#link").show();
 
-            <!--<iframe height="517" allowTransparency="true" frameborder="0" scrolling="no" style="width:100%;border:none"  src="https://chriscoyier.wufoo.com/embed/s7p1p9/"><a href="https://chriscoyier.wufoo.com/forms/s7p1p9/" title="Example Form" rel="nofollow">Fill out my Wufoo form!</a></iframe>-->
+                        },
+                        error: function () {
+                            alert("Something went wrong try again later");
+                        }
+                    });
+                });
+
+            </script>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div id="circle_container" style="display: none;">
+                <div id="stars"></div>
+                <div id="load_wrapper">
+                    <div id="sun"></div>
+                    <div id="moon"></div>
+                </div>
+            </div>
+
+            <script>
+                function getRandom (size)
+                {
+                    return Math.floor(Math.random() * size);
+                }
+
+                //Creating the layers for the stars
+                for (i = 2; i < 12; i++)
+                {
+                    $("#stars").append('<div class="star_layer" style="transform: translateZ(' + i + 'px) scale(' + (15 - i)/(15) +');"></div>')
+                }
+
+                //Creating the stars
+                for (i = 0; i < 70; i++)
+                {
+                    $(".star_layer").eq(getRandom(10)).append('<div class="star"></div>');
+                }
+
+                updateStars();
+
+                //Change stars every cycle
+                setInterval(updateStars, 4000);
+
+                //Randomising stars. Position and opacity is changed every cycle.
+                function updateStars ()
+                {
+                    $(".star").each(function() {
+                        $(this).css({"top": getRandom(200) + "px", "left": getRandom(200) + "px", "opacity": (20 + getRandom(50))/100});
+                    });
+                }
+            </script>
+
         </div>
     </section>
 </div>

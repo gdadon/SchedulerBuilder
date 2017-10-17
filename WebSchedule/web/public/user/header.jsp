@@ -24,6 +24,7 @@
             <li><a href="${pageContext.request.contextPath}/Home">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/uDemands">Demands</a></li>
             <li><a href="${pageContext.request.contextPath}/Schedule">Schedule</a></li>
+            <li><a id="logoutStyle" href="${pageContext.request.contextPath}/Logout">Logout</a></li>
         </ul>
     </nav>
     <script>setActive()</script>

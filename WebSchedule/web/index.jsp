@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <meta http-equiv="refresh" content="/public/Login.html">
+    <meta http-equiv="refresh" content="/public/Login.jsp">
   </head>
   <body>
   </body>

@@ -15,10 +15,14 @@
             if(cookie.getName().equals("user")) userName = cookie.getValue();
         }
     }
-    if(userName == null) response.sendRedirect("/Login");
+    if(userName == null || userName == ""){
+//        response.sendRedirect(request.getContextPath() + "/Login");
+        RequestDispatcher dispatcher = this.getServletConfig().getServletContext().getRequestDispatcher("/public/Login.jsp");
+        dispatcher.forward(request, response);
+    }
 %>
 <div>
-    <h1>Hello again, <%=userName.replace('_', ' ') %></h1>
+    <h1>Hello again, <%=userName.replace('_', ' ')%></h1>
     <nav>
         <ul class="group">
             <li><a href="${pageContext.request.contextPath}/Home">Home</a></li>
@@ -26,6 +30,7 @@
             <li><a href="${pageContext.request.contextPath}/Reports">Reports</a></li>
             <li><a href="${pageContext.request.contextPath}/aSchedule">Schedule</a></li>
             <li><a href="${pageContext.request.contextPath}/Users">Users</a></li>
+            <li><a id="logoutStyle" href="${pageContext.request.contextPath}/Logout">Logout</a></li>
         </ul>
     </nav>
     <script>setActive()</script>
